@@ -1,0 +1,71 @@
+
+
+header .dark-logo{max-width: 233px;}
+
+.left-sidebar.mini-side{top: 100px;}
+.logo-my-icon{display: none;}
+
+.topbar .top-navbar{height: 70px;}
+
+.navbar-header.mini-nav{padding: 106px 10px 0; }
+
+.theme-color{color:#d63943!important}
+.theme-bg{background:#d63943!important;border: 1px solid #d63943!important;}
+
+.delivered { color      : rgb(116, 120, 235); font-weight: bold; }
+
+.pending { color      : rgb(168, 169, 170); font-weight: bold; font-style : italic; }
+
+.fbold{font-weight: bold;}
+
+hr{height: 1px;}
+
+.po-table{}
+.po-table thead{}
+/* .po-table thead tr td{min-width: 101px;} */
+
+.select2-selection__rendered{max-width: 274px!important;}
+
+.po-table thead td{font-weight: bold;}
+
+.o-total{font-weight: bold; font-size: 17px;}
+.o-total span{font-weight: normal;}
+
+.btn {min-width: 200px;}
+
+.sidebar-nav > ul > li > a.active { font-weight: 400; background: #e8e2e3; color: #26c6da; border-left: 3px solid #20aee3; border-left-color: rgb(32, 174, 227); color: #d42c36 !important; }
+
+.sidebar-nav ul li a.active i, .sidebar-nav ul li a:hover i { color: #d42c36!important; }
+.sidebar-nav > ul > li.active > a{border-color: #d42c36;}
+
+.remove-po-item{font-size: 20px; display: block; text-align: center; margin: 6px 0 0;}
+
+.text-themecolor{color: #d42c36!important;}
+
+.paging_simple_numbers .pagination .paginate_button.active a, .paging_simple_numbers .pagination .paginate_button:hover a { background: #d42c36; color: #ffffff; }
+.sidebar-nav ul li a.active, .sidebar-nav ul li a:hover{color: #d42c36 !important;}
+.sidebar-nav > ul > li.active > a{color: #d42c36 !important;}
+.sidebar-nav > ul > li.active > a i { color: #d42c36; }
+.action-btn-div{}
+.action-btn-div a{display: inline-block;vertical-align: top;margin: 0 5px;}
+
+.row_po_received { background: #daf4e5 !important; }
+
+.po-stats{font-weight: bold;}
+
+.discrep_item{background: #f7e6e6;}
+
+.btn-circle.right-side-toggle{display: none;}
+
+.buttons-excel { color: #fff !important; background-color: #28a745 !important; border-color: #28a745; box-shadow: none; display: inline-block; font-weight: 400; color: #212529; text-align: center; vertical-align: middle; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-color: transparent; border: 1px solid transparent; padding: .375rem .75rem; font-size: 1rem; line-height: 1.5; border-radius: .25rem; transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out; }
+
+.buttons-excel:hover{opacity: .5;}
+
+ul.pagination {
+    float: right;
+}
+
+@media only screen
+and (max-width : 1024px) {
+.login_container { padding: 15px; }
+}

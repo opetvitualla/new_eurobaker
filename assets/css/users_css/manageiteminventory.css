@@ -1,0 +1,17 @@
+.in_stock {
+  color      : #fb8f5c;
+  font-weight: bold;
+}
+
+.out_of_stock {
+  color      : rgb(168, 169, 170);
+  font-weight: bold;
+  font-style : italic;
+}
+
+#item_Inventory span, #Inventory_Item_Add span {
+  margin-left : 10%;
+  margin-right: 10%;
+  font-size   : 16px;
+  color       : #8b8b8b;
+}
