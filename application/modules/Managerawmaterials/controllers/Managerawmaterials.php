@@ -340,7 +340,6 @@ class ManageRawMaterials extends MY_Controller {
 			}
 
 		}
-
 		echo json_encode($reponse);
 	}
 
@@ -386,169 +385,187 @@ class ManageRawMaterials extends MY_Controller {
 
 	}
 
-		public function units(){
-			$data["title"] 		  = "Units";
-			$data["page_name"]  = "Raw Materials > Units";
-			$data['has_header'] = "includes/admin/header";
-			$data['has_footer']	= "includes/index_footer";
+	public function units(){
+		$data["title"] 		  = "Units";
+		$data["page_name"]  = "Raw Materials > Units";
+		$data['has_header'] = "includes/admin/header";
+		$data['has_footer']	= "includes/index_footer";
 
-			$this->load_page('units',$data);
-		}
+		$this->load_page('units',$data);
+	}
 
-		public function get_units() {
-			$limit        = $this->input->post('length');
-			$offset       = $this->input->post('start');
-			$search       = $this->input->post('search');
-			$order        = $this->input->post('order');
-			$draw         = $this->input->post('draw');
-			$column_order = array(
-												'PK_unit_id',
-												'unit_name',
-												'date_added',
-											);
-			$join         = array();
-			$select       = "*";
-			$where        = array(
-													'status'	=> 1
-											);
-			$group        = array();
-			$list         = $this->MY_Model->get_datatables('eb_units',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
-
-			$list_of_units = array(
-												"draw" => $draw,
-												"recordsTotal" => $list['count_all'],
-												"recordsFiltered" => $list['count'],
-												"data" => $list['data']
-											);
-			echo json_encode($list_of_units);
-		}
-
-		public function add_unit() {
-			$category         = $this->input->post();
-
-			$insert_data  = $this->MY_Model->insert('eb_units',$category);
-
-			if ($insert_data) {
-				$response = array( 'result' => 'success', );
-			} else {
-				$response = array( 'result' => 'error', );
-			}
-			echo json_encode($response);
-		}
-
-		public function viewUnitDetails() {
-			$data_id          = $this->input->post('id');
-			$options['where'] = array( 'pk_unit_id' => $data_id );
-			$data             = $this->MY_Model->getRows('eb_units', $options, 'row');
-
-			echo json_encode($data);
-		}
-
-		public function update_unit_details() {
-			$data         = $this->input->post();
-			if ($data['delete']) {
-				$set  = array( 'status' => 0, );
-			} else {
-				$set  = array( 'unit_name' => $data['unit_name'] );
-			}
-
-			$where        = array( 'pk_unit_id' => $data['id'] );
-			$update_data  = $this->MY_Model->update('eb_units',$set,$where);
-
-			if ($update_data) {
-				$response = array( 'result' => 'success',
+	public function get_units() {
+		$limit        = $this->input->post('length');
+		$offset       = $this->input->post('start');
+		$search       = $this->input->post('search');
+		$order        = $this->input->post('order');
+		$draw         = $this->input->post('draw');
+		$column_order = array(
+											'PK_unit_id',
+											'unit_name',
+											'date_added',
 										);
-			} else {
-				$response = array( 'result' => 'error', );
+		$join         = array();
+		$select       = "*";
+		$where        = array(
+												'status'	=> 1
+										);
+		$group        = array();
+		$list         = $this->MY_Model->get_datatables('eb_units',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+
+		$list_of_units = array(
+											"draw" => $draw,
+											"recordsTotal" => $list['count_all'],
+											"recordsFiltered" => $list['count'],
+											"data" => $list['data']
+										);
+		echo json_encode($list_of_units);
+	}
+
+	public function add_unit() {
+		$category         = $this->input->post();
+
+		$insert_data  = $this->MY_Model->insert('eb_units',$category);
+
+		if ($insert_data) {
+			$response = array( 'result' => 'success', );
+		} else {
+			$response = array( 'result' => 'error', );
+		}
+		echo json_encode($response);
+	}
+
+	public function viewUnitDetails() {
+		$data_id          = $this->input->post('id');
+		$options['where'] = array( 'pk_unit_id' => $data_id );
+		$data             = $this->MY_Model->getRows('eb_units', $options, 'row');
+
+		echo json_encode($data);
+	}
+
+	public function update_unit_details() {
+		$data         = $this->input->post();
+		if ($data['delete']) {
+			$set  = array( 'status' => 0, );
+		} else {
+			$set  = array( 'unit_name' => $data['unit_name'] );
+		}
+
+		$where        = array( 'pk_unit_id' => $data['id'] );
+		$update_data  = $this->MY_Model->update('eb_units',$set,$where);
+
+		if ($update_data) {
+			$response = array( 'result' => 'success',
+									);
+		} else {
+			$response = array( 'result' => 'error', );
+		}
+		echo json_encode($response);
+	}
+
+	public function PriceLogs(){
+		$data["title"] 		  = "Price Logs";
+		$data["page_name"]  = "Raw Materials > Price Logs";
+		$data['has_header'] = "includes/admin/header";
+		$data['has_footer']	= "includes/index_footer";
+
+		$this->load_page('pricelogs',$data);
+	}
+
+	public function getPriceLogs() {
+		$limit        = $this->input->post('length');
+		$offset       = $this->input->post('start');
+		$search       = $this->input->post('search');
+		$order        = $this->input->post('order');
+		$draw         = $this->input->post('draw');
+		$column_order = array(
+											'PK_log_id',
+											'material_name',
+											'previous_price',
+											'current_price',
+											'eb_raw_materials_price_logs.date_added',
+										);
+		$join         = array(
+											'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
+										);
+		$select       = "*";
+		$where        = array();
+		$group        = array();
+		$list         = $this->MY_Model->get_datatables('eb_raw_materials_price_logs',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+
+		$list_of_price = array(
+																"draw" => $draw,
+																"recordsTotal" => $list['count_all'],
+																"recordsFiltered" => $list['count'],
+																"data" => $list['data']
+															);
+		echo json_encode($list_of_price);
+	}
+
+	public function generatePriceLogs() {
+			$report = $this->input->post();
+
+			$storData = array();
+			$metaData[] = array(
+					'PK_log_id' => 'Log ID',
+					'material_name' => 'Raw Material',
+					'previous_price' => 'Previous Price',
+					'current_price' => 'Current Price',
+					'date_added' => 'Date',
+			);
+			$options['join'] = array(
+					'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
+			);
+
+			$generateData = $this->MY_Model->getRows('eb_raw_materials_price_logs', $options);
+
+			foreach($generateData as $key=>$element) {
+					$storData[] = array(
+							'PK_log_id' => 'PR-'.$element['PK_log_id'],
+							'material_name' => $element['material_name'],
+							'previous_price' => $element['previous_price'],
+							'current_price' => $element['current_price'],
+							'date_added' => $element['date_added']
+					);
 			}
-			echo json_encode($response);
+			$data = array_merge($metaData,$storData);
+			header("Content-type: application/csv");
+			header("Content-Disposition: attachment; filename=\"Price_Logs".".csv\"");
+			header("Pragma: no-cache");
+			header("Expires: 0");
+			$handle = fopen('php://output', 'w');
+			foreach ($data as $data) {
+					fputcsv($handle, $data);
+			}
+					fclose($handle);
+			exit;
+	}
+
+	public function expired_items() {
+		$data["title"] 		  = "Expired Items";
+		$data["page_name"]  = "Raw Materials > Expired Items";
+		$data['has_header'] = "includes/admin/header";
+		$data['has_footer']	= "includes/index_footer";
+
+		$this->load_page('expired_items',$data);
+	}
+
+
+	public function check_unit_exist($id = 0){
+
+		$response = array("status" => "error");
+		
+		$par['select'] = 'fk_item_id';
+		$par['where']  = array('fk_item_id' => $id, "status" => 1);
+		
+		$getdata       = getData('eb_unit_converted', $par, 'obj');
+
+		if(empty($getdata)){
+			$response = array("status" => "success");
 		}
 
-		public function PriceLogs(){
-			$data["title"] 		  = "Price Logs";
-			$data["page_name"]  = "Raw Materials > Price Logs";
-			$data['has_header'] = "includes/admin/header";
-			$data['has_footer']	= "includes/index_footer";
+		echo json_encode($response);
 
-			$this->load_page('pricelogs',$data);
-		}
-
-		public function getPriceLogs() {
-			$limit        = $this->input->post('length');
-			$offset       = $this->input->post('start');
-			$search       = $this->input->post('search');
-			$order        = $this->input->post('order');
-			$draw         = $this->input->post('draw');
-			$column_order = array(
-												'PK_log_id',
-												'material_name',
-												'previous_price',
-												'current_price',
-												'eb_raw_materials_price_logs.date_added',
-											);
-			$join         = array(
-												'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
-											);
-			$select       = "*";
-			$where        = array();
-			$group        = array();
-			$list         = $this->MY_Model->get_datatables('eb_raw_materials_price_logs',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
-
-			$list_of_price = array(
-																	"draw" => $draw,
-																	"recordsTotal" => $list['count_all'],
-																	"recordsFiltered" => $list['count'],
-																	"data" => $list['data']
-																);
-			echo json_encode($list_of_price);
-		}
-
-		public function generatePriceLogs() {
-				$report = $this->input->post();
-
-				$storData = array();
-				$metaData[] = array(
-						'PK_log_id' => 'Log ID',
-						'material_name' => 'Raw Material',
-						'previous_price' => 'Previous Price',
-						'current_price' => 'Current Price',
-						'date_added' => 'Date',
-				);
-				$options['join'] = array(
-						'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
-				);
-
-				$generateData = $this->MY_Model->getRows('eb_raw_materials_price_logs', $options);
-
-				foreach($generateData as $key=>$element) {
-						$storData[] = array(
-								'PK_log_id' => 'PR-'.$element['PK_log_id'],
-								'material_name' => $element['material_name'],
-								'previous_price' => $element['previous_price'],
-								'current_price' => $element['current_price'],
-								'date_added' => $element['date_added']
-						);
-				}
-				$data = array_merge($metaData,$storData);
-				header("Content-type: application/csv");
-				header("Content-Disposition: attachment; filename=\"Price_Logs".".csv\"");
-				header("Pragma: no-cache");
-				header("Expires: 0");
-				$handle = fopen('php://output', 'w');
-				foreach ($data as $data) {
-						fputcsv($handle, $data);
-				}
-						fclose($handle);
-				exit;
-		}
-
-		public function expired_items() {
-			$data["title"] 		  = "Expired Items";
-			$data["page_name"]  = "Raw Materials > Expired Items";
-			$data['has_header'] = "includes/admin/header";
-			$data['has_footer']	= "includes/index_footer";
-
-			$this->load_page('expired_items',$data);
-		}
+	}
 
 }

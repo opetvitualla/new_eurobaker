@@ -48,7 +48,7 @@ $(document).ready(function () {
 
 				let html = "";
 
-				data.map(dta => {
+				data.items.map(dta => {
 
 					html += `
 						<tr>
@@ -62,9 +62,8 @@ $(document).ready(function () {
 				})
 
 				$(".table-po-body-received").html(html)
-
-
 				$(".discrepancy_modal").modal();
+				$(".txt_desc_note").html(data.reason);
 			}
 		})
 

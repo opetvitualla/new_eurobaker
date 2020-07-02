@@ -165,7 +165,7 @@ $(document).ready(function () {
 
 	$(".btn-add-item").click(function () {
 
-		let options = "<option  value=''>Please select an item<option>";
+		let options = "<option  value=''>Please select an item</option>";
 		items.map(item => {
 			options += `<option data-id="${item.PK_raw_materials_id}" value="${item.material_name}">${item.material_name}</option>`;
 		})
@@ -222,28 +222,34 @@ $(document).ready(function () {
 
 		let item = items.find(itm => itm.PK_raw_materials_id == item_id);
 
-		let row = $(this).closest('tr');
-		if (is_item_exist(item_id)) {
-			s_alert("This item is already added!", "error")
-			row.remove()
-			return;
-		}
-		let qty = row.find(".item-qty").val()
-		let total = calculateTotal(item.sales_price, qty)
+		axios.get(`${base_url}managepurchaseorders/get_item_unit/${item.unit}`).then(res => {
+			if (res.data.status == "success") {
+				let resdata = res.data.data;
+
+				let row = $(this).closest('tr');
+				if (is_item_exist(item_id)) {
+					s_alert("This item is already added!", "error")
+					row.remove()
+					return;
+				}
+				let qty = row.find(".item-qty").val()
+				let total = calculateTotal(item.sales_price, qty)
+
+				row.find(".item-price").val(item.sales_price)
+				row.find(".item-total").val(total)
+
+				let html = `<option value="${resdata.PK_unit_id}">${resdata.unit_name}</option>`
+
+				row.find(".item-unit").html(html)
+
+				generateOverTotal();
+			}
+			else {
+
+			}
+		})
 
 
-		//get  item units
-
-		// axios.get(`${base_url}global_api/get_item_units`).then(res => {
-		// 	if (res.data.result) {
-
-		// 	}
-		// })
-
-		row.find(".item-price").val(item.sales_price)
-		row.find(".item-total").val(total)
-
-		generateOverTotal();
 	})
 
 	$(document).on("click", ".remove-po-item", function () {
@@ -467,10 +473,10 @@ $(document).ready(function () {
 
 				po_items.map(po_item => {
 
-					let options = "<option  value=''>Please select an item<option>";
+					let options = "<option  value=''>Please select an item</option>";
 
 					items.map(item => {
-						options += `<option ${po_item.FK_raw_material_id == item.PK_raw_materials_id ? 'selected' : ''} data-id="${item.PK_raw_materials_id}" value="${item.material_name}">${item.material_name}<option>`;
+						options += `<option ${po_item.FK_raw_material_id == item.PK_raw_materials_id ? 'selected' : ''} data-id="${item.PK_raw_materials_id}" value="${item.material_name}">${item.material_name}</option>`;
 					})
 
 					let html = `
@@ -604,10 +610,10 @@ $(document).ready(function () {
 
 				po_items.map(po_item => {
 
-					let options = "<option  value=''>Please select an item<option>";
+					let options = "<option  value=''>Please select an item</option>";
 
 					items.map(item => {
-						options += `<option ${po_item.FK_raw_material_id == item.PK_raw_materials_id ? 'selected' : ''} data-id="${item.PK_raw_materials_id}" value="${item.material_name}">${item.material_name}<option>`;
+						options += `<option ${po_item.FK_raw_material_id == item.PK_raw_materials_id ? 'selected' : ''} data-id="${item.PK_raw_materials_id}" value="${item.material_name}">${item.material_name}</option>`;
 					})
 
 					let option_units = "";

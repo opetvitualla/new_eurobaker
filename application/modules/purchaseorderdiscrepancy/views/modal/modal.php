@@ -22,6 +22,13 @@
                                 </thead>
                                 <tbody class="table-po-body-received"> </tbody>
                             </table>
+                            <div class="notes_disc">
+                                <div class="fbold mt-4">Note:</div>
+                                <div class="mt-3 txt_desc_note">
+                                   
+                                </div>
+                                <hr>
+                            </div>
                             <div class="form-actions">
                                 <div class="card-body text-right ">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal"> Close</button>

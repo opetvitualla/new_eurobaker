@@ -52,7 +52,8 @@ class Purchaseorderdiscrepancy extends MY_Controller {
 	public function get_descripancy ($id = 0){
 	
 		$response = array('result'=>false);
-		
+		$items = array();
+
 		if($id != 0){
 			$par['select'] = '*';
 			$par['where']  = array('fk_po_discrepancy_id' => $id);
@@ -60,7 +61,21 @@ class Purchaseorderdiscrepancy extends MY_Controller {
 			$getdata       = getData('eb_po_discrepancy_items', $par, 'obj');
 
 			if(!empty($getdata)){
-				$response = array('result'=>true, "data" => $getdata);
+
+				$items["items"] = $getdata;
+
+				$par['select'] = 'reason';
+				$par['where']  = array('pk_po_discrepancy_id' => $id);
+
+				$getdata2       = getData('eb_purchase_order_discrepancy', $par, 'obj');
+
+				$items["reason"] = "";
+				if(!empty($getdata2)){
+					$items["reason"] = $getdata2[0]->reason;
+				}
+				
+
+				$response = array('result'=>true, "data" => $items);
 			}
 		}
 
@@ -68,5 +83,3 @@ class Purchaseorderdiscrepancy extends MY_Controller {
 	}
 
 }
-
-	

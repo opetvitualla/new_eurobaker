@@ -106,7 +106,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Unit</label>
-                                                    <input type="text" class="form-control" name="unit">
+                                                    <select name="unit" class="form-control mat_units"></select>  
                                                 </div>
                                             </div>
                                             <!--/span-->
@@ -174,7 +174,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Unit</label>
-                                                    <input type="text" class="form-control" name="unit">
+                                                    <input type="text" class="form-control" readonly name="unit">
                                                 </div>
                                             </div>
                                             <!--/span-->
@@ -240,7 +240,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Unit</label>
-                                                    <input type="text" class="form-control" name="unit">
+                                                    <select name="unit" class="form-control mat_units"></select>  
                                                 </div>
                                             </div>
                                             <!--/span-->

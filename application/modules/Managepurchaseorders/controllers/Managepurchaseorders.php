@@ -309,5 +309,28 @@ class Managepurchaseorders extends MY_Controller {
 
 	}
 
+	public function get_item_unit($unit = ""){
+
+		$response = array("status" => "error");
+
+		if($unit != ""){
+
+			$par['select'] = 'PK_unit_id, unit_name';
+			$par['where']  = array('unit_name' => $unit);
+			
+			$getdata       = getData('eb_units', $par, 'obj');
+
+			if(!empty($getdata)){
+
+				$response = array("status" => "success", "data" => $getdata[0]);
+
+			}
+
+		}
+
+		echo json_encode($response);
+
+	}
+
 
 }

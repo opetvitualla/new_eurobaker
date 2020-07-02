@@ -61,12 +61,10 @@ hr{height: 1px;}
 
 .buttons-excel:hover{opacity: .5;}
 
-ul.pagination {
-    float: right;
-}
+ul.pagination { float: right; }
 
-
-.po-table tbody  tr td:first-child{width: 300px;}
+.po-table tbody  tr td:first-child{width: 250px;}
+.po-table tbody td{text-align: left;}
 
 @media only screen
 and (max-width : 1024px) {
