@@ -300,7 +300,6 @@ $(document).ready(function () {
                {
                     "data": "pk_unit_con_id", "render": function (data, type, row, meta) {
                          var str = '<div class="action-btn-div">';
-                         str += '<a href="javascript:;" class="text-success view_units_con"  data-id="' + row.pk_unit_con_id + '"><i class="fa fa-eye"></i></a>';
                          str += '<a href="javascript:;" class="text-primary btn-edit-unit"  data-id="' + row.pk_unit_con_id + '"><i class="fa fa-edit"></i></a></div>';
                          return str;
                     }
@@ -654,19 +653,17 @@ $(document).ready(function () {
           "order": [[0, 'desc']], //Initial no order.
           "columns": [
                {
-                    "data": "PK_category_id", "render": function (data, type, row, meta) {
-                         var str = 'UNIT-' + row.pk_unit_id;
+                    "data": "PK_unit_id", "render": function (data, type, row, meta) {
+                         var str = 'UNIT-' + row.PK_unit_id;
                          return str;
                     }
                },
                { "data": "unit_name" },
-               { "data": "unit_abbr" },
                { "data": "date_added" },
                {
                     "data": "PK_category_id", "render": function (data, type, row, meta) {
-                         var str = '<div class="action-btn-div"><a href="javascript:;" id="edit_Unit_Details" data-id="' + row.pk_unit_id + '"><i class="fa fa-edit"></i></a>';
-                         str += '<a href="javascript:;" id="view_Unit_Details" class="text-success"  data-id="' + row.pk_unit_id + '"><i class="fa fa-eye"></i></a>';
-                         str += '<a href="javascript:;" id="delete_unit" class="text-danger"  data-id="' + row.pk_unit_id + '"><i class="fa fa-trash"></i></a></div>';
+                         var str = '<div class="action-btn-div"><a href="javascript:;" id="edit_Unit_Details" data-id="' + row.PK_unit_id + '"><i class="fa fa-edit"></i></a>';
+                         str += '<a href="javascript:;" id="delete_unit" class="text-danger"  data-id="' + row.PK_unit_id + '"><i class="fa fa-trash"></i></a></div>';
                          return str;
                     }
                },
@@ -677,7 +674,7 @@ $(document).ready(function () {
           },
           "columnDefs": [
                {
-                    "targets": [4],
+                    "targets": [3],
                     "orderable": false,
                },
           ],
@@ -730,8 +727,8 @@ $(document).ready(function () {
                dataType: 'json',
                success: function (data) {
                     $('.edit_unit_details_modal input[name="unit_name"]').val(data.unit_name);
-                    $('.edit_unit_details_modal input[name="unit_abbr"]').val(data.unit_abbr);
-                    $('.edit_unit_details_modal .edit_Button').attr('data-id', data.pk_unit_id);
+                    // $('.edit_unit_details_modal input[name="unit_abbr"]').val(data.unit_abbr);
+                    $('.edit_unit_details_modal .edit_Button').attr('data-id', data.PK_unit_id);
                }
           });
      });
@@ -760,7 +757,10 @@ $(document).ready(function () {
      $(document).on('submit', '#Raw_Material_Unit_Edit', function (e) {
           e.preventDefault();
           var formData = new FormData($(this)[0]);
-          var dataid = $('#Raw_Material_Unit_Edit .edit_Button').data('id');
+          var dataid = $('.edit_unit_details_modal .edit_Button').data('id');
+
+          alert(dataid)
+
           formData.append('id', dataid)
 
           $.ajax({

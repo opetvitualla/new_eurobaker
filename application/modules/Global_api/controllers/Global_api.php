@@ -31,6 +31,14 @@ class Global_api extends MY_Controller {
 			);
 			echo json_encode($response);
 		}
+
+		public function get_item_units($item_id = 0){
+			$response = array(
+				"data" => _get_item_units($item_id)
+			);
+			echo json_encode($response);
+		}
+
 		
 		public function get_all_purchase_order_processing(){
 

@@ -402,9 +402,8 @@ class ManageRawMaterials extends MY_Controller {
 			$order        = $this->input->post('order');
 			$draw         = $this->input->post('draw');
 			$column_order = array(
-												'pk_unit_id',
+												'PK_unit_id',
 												'unit_name',
-												'unit_abbr',
 												'date_added',
 											);
 			$join         = array();
@@ -413,7 +412,7 @@ class ManageRawMaterials extends MY_Controller {
 													'status'	=> 1
 											);
 			$group        = array();
-			$list         = $this->MY_Model->get_datatables('eb_raw_materials_units',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+			$list         = $this->MY_Model->get_datatables('eb_units',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
 
 			$list_of_units = array(
 												"draw" => $draw,
@@ -427,7 +426,7 @@ class ManageRawMaterials extends MY_Controller {
 		public function add_unit() {
 			$category         = $this->input->post();
 
-			$insert_data  = $this->MY_Model->insert('eb_raw_materials_units',$category);
+			$insert_data  = $this->MY_Model->insert('eb_units',$category);
 
 			if ($insert_data) {
 				$response = array( 'result' => 'success', );
@@ -440,7 +439,7 @@ class ManageRawMaterials extends MY_Controller {
 		public function viewUnitDetails() {
 			$data_id          = $this->input->post('id');
 			$options['where'] = array( 'pk_unit_id' => $data_id );
-			$data             = $this->MY_Model->getRows('eb_raw_materials_units', $options, 'row');
+			$data             = $this->MY_Model->getRows('eb_units', $options, 'row');
 
 			echo json_encode($data);
 		}
@@ -450,11 +449,11 @@ class ManageRawMaterials extends MY_Controller {
 			if ($data['delete']) {
 				$set  = array( 'status' => 0, );
 			} else {
-				$set  = array( 'unit_name' => $data['unit_name'], 'unit_abbr' => $data['unit_abbr'], );
+				$set  = array( 'unit_name' => $data['unit_name'] );
 			}
 
 			$where        = array( 'pk_unit_id' => $data['id'] );
-			$update_data  = $this->MY_Model->update('eb_raw_materials_units',$set,$where);
+			$update_data  = $this->MY_Model->update('eb_units',$set,$where);
 
 			if ($update_data) {
 				$response = array( 'result' => 'success',

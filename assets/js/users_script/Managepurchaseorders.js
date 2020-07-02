@@ -231,6 +231,15 @@ $(document).ready(function () {
 		let qty = row.find(".item-qty").val()
 		let total = calculateTotal(item.sales_price, qty)
 
+
+		//get  item units
+
+		// axios.get(`${base_url}global_api/get_item_units`).then(res => {
+		// 	if (res.data.result) {
+
+		// 	}
+		// })
+
 		row.find(".item-price").val(item.sales_price)
 		row.find(".item-total").val(total)
 

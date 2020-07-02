@@ -67,8 +67,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $par["select"] = "*";
         $data = getData("eb_units", $par);
         return $data;
+        
+    }
+
+    function _get_item_units($item_id = 0){
+
+        $ci = & get_instance();
+        $par["select"] = "*";
+        $data = getData("eb_units", $par);
+        return $data;
 
     }
+
 
     function _count_stock_transfer(){
 

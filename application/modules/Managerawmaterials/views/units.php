@@ -38,22 +38,11 @@
                                             <tr>
                                                 <th class="text-center">Unit ID</th>
                                                 <th class="text-center">Unit Name</th>
-                                                <th class="text-center">Unit Abbreviation</th>
                                                 <th class="text-center">Date Added</th>
                                                 <th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          <tr>
-                                            <td>123</td>
-                                            <td>ae</td>
-                                            <td>Date</td>
-                                          </tr>
-                                          <tr>
-                                            <td>124</td>
-                                            <td>kg</td>
-                                            <td>Date</td>
-                                          </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -80,10 +69,6 @@
                                                     <label>Unit Name:</label>
                                                     <input type="text" class="form-control" name="unit_name">
                                                     <input type="hidden" class="form-control" name="status" value="1">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Abbreviation:</label>
-                                                    <input type="text" class="form-control" name="unit_abbr">
                                                 </div>
                                             </div>
                                         </div>
@@ -120,10 +105,6 @@
                                                     <label>Unit Name:</label>
                                                     <input type="text" class="form-control" name="unit_name">
                                                 </div>
-                                                <div class="form-group">
-                                                    <label>Abbreviation:</label>
-                                                    <input type="text" class="form-control" name="unit_abbr">
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -152,10 +133,6 @@
                                                 <div class="form-group">
                                                     <label>Unit</label>
                                                     <input type="text" class="form-control" name="unit_name">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Abbreviation:</label>
-                                                    <input type="text" class="form-control" name="unit_abbr">
                                                 </div>
                                             </div>
                                         </div>
