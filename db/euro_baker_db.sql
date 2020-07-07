@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2020 at 05:49 AM
+-- Generation Time: Jul 07, 2020 at 08:28 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.18
 
@@ -194,7 +194,9 @@ INSERT INTO `eb_purchase_order` (`PK_purchase_order_id`, `purchase_order_no`, `F
 (3, 'N/A', 2, 1, 2, 'processing', '2020-05-06 04:30:51', 311.85, ''),
 (4, 'N/A', 3, 1, 2, 'received', '2020-05-21 11:03:30', 1787.74, ''),
 (5, 'N/A', 2, 1, 1, 'received', '2020-06-01 07:11:05', 287.87, ''),
-(6, 'N/A', 4, 1, 1, 'pending', '2020-06-11 04:35:31', 1535.27, '');
+(6, 'N/A', 4, 1, 1, 'pending', '2020-06-11 04:35:31', 1535.27, ''),
+(7, 'N/A', 6, 1, 1, 'pending', '2020-06-11 11:04:53', 287.87, ''),
+(8, 'N/A', 4, 1, 1, 'pending', '2020-07-02 12:16:26', 333.85, '');
 
 -- --------------------------------------------------------
 
@@ -251,7 +253,10 @@ INSERT INTO `eb_purchase_order_item` (`PK_po_item_id`, `FK_purchase_id`, `FK_raw
 (8, 4, 7, 1, 1212, 1212, '1', 'box', '2020-05-21 11:03:30'),
 (9, 5, 1, 1, 287.87, 287.87, '1', 'kg', '2020-06-01 07:11:05'),
 (10, 6, 1, 1, 287.87, 287.87, '1', 'pc', '2020-06-11 04:35:31'),
-(11, 6, 2, 4, 1247.4, 311.85, '1', 'pc', '2020-06-11 04:35:31');
+(11, 6, 2, 4, 1247.4, 311.85, '1', 'pc', '2020-06-11 04:35:31'),
+(13, 7, 1, 1, 287.87, 287.87, '1', '', '2020-06-21 12:48:52'),
+(14, 8, 2, 1, 311.85, 311.85, '1', '6', '2020-07-02 12:16:26'),
+(15, 8, 10, 1, 22, 22, '1', '2', '2020-07-02 12:16:26');
 
 -- --------------------------------------------------------
 
@@ -3317,7 +3322,8 @@ INSERT INTO `eb_raw_materials_list` (`PK_raw_materials_id`, `FK_outlet_id`, `FK_
 (6, 1, 7, 1, 'jashdkja', 'ad', '1451', 0, '2020-04-07 19:50:32'),
 (7, 1, 3, 1, 'ksd', 'sa', '1212', 4, '2020-04-07 19:52:47'),
 (8, 1, 10, 1, 'test123', 'ea', '12', 5, '2020-04-07 19:59:18'),
-(9, 1, 10, 1, 'test1', 'ea', '12', 5, '2020-04-07 19:59:55');
+(9, 1, 10, 1, 'test1', 'ea', '12', 5, '2020-04-07 19:59:55'),
+(10, 1, 3, 1, 'test 333', 'Sack', '22', 6, '2020-07-02 13:17:29');
 
 -- --------------------------------------------------------
 
@@ -3351,7 +3357,7 @@ INSERT INTO `eb_raw_materials_price_logs` (`PK_log_id`, `FK_raw_material_id`, `p
 --
 
 CREATE TABLE `eb_raw_materials_units` (
-  `PK_unit_id` int(11) NOT NULL,
+  `pk_unit_id` int(11) NOT NULL,
   `unit_name` varchar(15) NOT NULL,
   `unit_abbr` varchar(10) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT '0-deleted 1-Active',
@@ -3362,10 +3368,12 @@ CREATE TABLE `eb_raw_materials_units` (
 -- Dumping data for table `eb_raw_materials_units`
 --
 
-INSERT INTO `eb_raw_materials_units` (`PK_unit_id`, `unit_name`, `unit_abbr`, `status`, `date_added`) VALUES
+INSERT INTO `eb_raw_materials_units` (`pk_unit_id`, `unit_name`, `unit_abbr`, `status`, `date_added`) VALUES
 (1, 'kilograms', 'kg', 1, '2020-04-28 17:17:36'),
 (2, 'grams', 'g', 1, '2020-04-28 17:17:36'),
-(3, 'testsss1', 'ts', 0, '2020-04-28 17:27:40');
+(10, 'test2', 'test', 1, '2020-06-12 05:27:29'),
+(11, 'test units', '', 1, '2020-07-02 01:58:17'),
+(12, 'test1', '', 1, '2020-07-02 01:58:26');
 
 -- --------------------------------------------------------
 
@@ -3735,7 +3743,9 @@ INSERT INTO `eb_units` (`PK_unit_id`, `unit_name`, `status`, `date_added`) VALUE
 (1, 'kg', 1, '2020-04-05 00:00:00'),
 (2, 'Sack', 1, '2020-04-05 00:00:00'),
 (3, 'pc', 1, '2020-04-05 00:00:00'),
-(4, 'box', 1, '2020-04-24 00:00:00');
+(4, 'box', 1, '2020-04-24 00:00:00'),
+(5, 'tesssssss', 0, '0000-00-00 00:00:00'),
+(6, 'ea', 1, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -3759,7 +3769,9 @@ CREATE TABLE `eb_unit_converted` (
 INSERT INTO `eb_unit_converted` (`pk_unit_con_id`, `fk_item_id`, `status`, `total_items`, `date_added`, `date_updated`) VALUES
 (4, 1, 1, 2, '2020-04-28', '2020-04-29'),
 (5, 7, 1, 3, '2020-04-28', '2020-04-29'),
-(6, 9, 1, 4, '2020-04-28', '2020-04-29');
+(6, 9, 1, 5, '2020-04-28', '2020-07-02'),
+(7, 3, 1, 1, '2020-07-01', '2020-07-01'),
+(8, 10, 1, 1, '2020-07-02', '2020-07-02');
 
 -- --------------------------------------------------------
 
@@ -3782,13 +3794,16 @@ CREATE TABLE `eb_unit_coverted_item` (
 INSERT INTO `eb_unit_coverted_item` (`pk_unit_con_item_id`, `fk_unit_con_id`, `fk_new_unit_id`, `uom_value`, `new_unit_value`) VALUES
 (15, 4, 2, 10, 1),
 (16, 4, 4, 65, 1),
-(17, 6, 2, 11, 1),
-(18, 6, 1, 22, 1),
-(19, 6, 4, 66, 1),
-(20, 6, 3, 666, 1),
 (21, 5, 2, 10, 1),
 (22, 5, 3, 11, 1),
-(23, 5, 4, 22, 1);
+(23, 5, 4, 22, 1),
+(24, 7, 0, 2, 3),
+(26, 8, 3, 1, 5),
+(32, 6, 2, 11, 1),
+(33, 6, 1, 22, 1),
+(34, 6, 4, 66, 1),
+(35, 6, 3, 666, 1),
+(36, 6, 5, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -3815,7 +3830,7 @@ INSERT INTO `eb_users` (`PK_user_id`, `username`, `password`, `user_type`, `user
 (2, 'test2', 'password', 2, 1, '1', '2020-03-31 00:00:00'),
 (8, 'Matt', 'password', 3, 1, '1', '2020-04-24 17:58:30'),
 (9, 'Frank', 'password', 3, 1, '3', '2020-04-24 18:42:22'),
-(10, 'Frank1', 'password', 1, 1, '4', '2020-04-24 18:58:45'),
+(10, 'admin2', 'password', 1, 1, '4', '2020-04-24 18:58:45'),
 (11, 'Brock', 'password', 2, 1, '1', '2020-05-05 18:54:09');
 
 -- --------------------------------------------------------
@@ -3934,6 +3949,12 @@ ALTER TABLE `eb_raw_materials_list`
 --
 ALTER TABLE `eb_raw_materials_price_logs`
   ADD PRIMARY KEY (`PK_log_id`);
+
+--
+-- Indexes for table `eb_raw_materials_units`
+--
+ALTER TABLE `eb_raw_materials_units`
+  ADD PRIMARY KEY (`pk_unit_id`);
 
 --
 -- Indexes for table `eb_segment`
@@ -4063,7 +4084,7 @@ ALTER TABLE `eb_po_discrepancy_items`
 -- AUTO_INCREMENT for table `eb_purchase_order`
 --
 ALTER TABLE `eb_purchase_order`
-  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_discrepancy`
@@ -4075,7 +4096,7 @@ ALTER TABLE `eb_purchase_order_discrepancy`
 -- AUTO_INCREMENT for table `eb_purchase_order_item`
 --
 ALTER TABLE `eb_purchase_order_item`
-  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_received`
@@ -4099,13 +4120,19 @@ ALTER TABLE `eb_raw_materials_cat`
 -- AUTO_INCREMENT for table `eb_raw_materials_list`
 --
 ALTER TABLE `eb_raw_materials_list`
-  MODIFY `PK_raw_materials_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `PK_raw_materials_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `eb_raw_materials_price_logs`
 --
 ALTER TABLE `eb_raw_materials_price_logs`
   MODIFY `PK_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `eb_raw_materials_units`
+--
+ALTER TABLE `eb_raw_materials_units`
+  MODIFY `pk_unit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `eb_segment`
@@ -4165,19 +4192,19 @@ ALTER TABLE `eb_suppliers`
 -- AUTO_INCREMENT for table `eb_units`
 --
 ALTER TABLE `eb_units`
-  MODIFY `PK_unit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `PK_unit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `eb_unit_converted`
 --
 ALTER TABLE `eb_unit_converted`
-  MODIFY `pk_unit_con_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `pk_unit_con_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `eb_unit_coverted_item`
 --
 ALTER TABLE `eb_unit_coverted_item`
-  MODIFY `pk_unit_con_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `pk_unit_con_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
