@@ -19,3 +19,4 @@ Completed:
 - done units conversion part
 - fix unit po
 - added counter checked
+- fixed added  initial inventory

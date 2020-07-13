@@ -231,12 +231,6 @@ class Managepurchaseorders extends MY_Controller {
 
 		$post 	  = $this->input->post();
 
-
-		echo '<pre>';
-		print_r($post);
-		echo '</pre>';
-		exit;
-
 		$response = array("result" => "error");
 
 		$po_id = $post["po_id"];
@@ -260,6 +254,8 @@ class Managepurchaseorders extends MY_Controller {
 			$where = array( "PK_purchase_order_id" => "$po_id" );
 
 			updateData("eb_purchase_order", $set, $where);
+
+			
 
 			if(!empty($disc_items)){
 				$data = array(
@@ -295,6 +291,26 @@ class Managepurchaseorders extends MY_Controller {
 		echo json_encode($response);
 
 	}
+
+	private function insert_inventory($post = array()){
+
+		$data = array(
+			'FK_raw_material_id' => $post["latest_id"],
+			'FK_outlet_id' => _get_branch_assigned(),
+			'amount' => $post["sales_price"],
+			'beginning_inventory' => $post["qty"],
+			'expected_quantity' => 0,
+			'quantity' => 0,
+			'status' => 1,
+			'type' => "initial",
+			'type' => "initial",
+			"discrepancy" => 0,
+			"date_added" => date("Y-m-d")
+		);
+		
+		insertData('eb_item_inventory', $data);
+
+	} 
 
 	public function process_purchase_order(){
 

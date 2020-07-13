@@ -417,6 +417,7 @@ $(document).ready(function () {
 			// let po_no = $("#purchase_no").val();
 
 			let disc_items = [];
+			let all_items = [];
 
 			$(".table-po-body-toreceive tr.discrep_item").each(function () {
 				let row = $(this);
@@ -430,8 +431,17 @@ $(document).ready(function () {
 				})
 			})
 
-
-
+			$(".table-po-body-toreceive tr").each(function () {
+				let row = $(this);
+				let item_ids = row.find(".item-data").attr("data-id")
+				all_items.push({
+					item_id: item_ids,
+					item_name: row.find(".item-data").text(),
+					quantity: row.find(".process-qty").text(),
+					rec_qty: row.find(".received-qty").val(),
+					units: row.find(".rcv-unit").val(),
+				})
+			})
 
 			let dreason = $("#discrepancy_reason").val();
 
@@ -440,6 +450,7 @@ $(document).ready(function () {
 			frmdata.append("counter_check", checkd);
 			// frmdata.append("po_no", po_no);
 			frmdata.append("disc_item", JSON.stringify(disc_items));
+			frmdata.append("all_items", JSON.stringify(all_items));
 			frmdata.append("reason", dreason);
 
 			axios.post(`${base_url}managepurchaseorders/receive_purchase_order`, frmdata).then(res => {

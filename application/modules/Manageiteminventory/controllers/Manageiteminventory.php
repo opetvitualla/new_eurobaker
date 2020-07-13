@@ -43,12 +43,12 @@ class Manageiteminventory extends MY_Controller {
 			$group        = array();
 			$list         = $this->MY_Model->get_datatables('eb_item_inventory',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
 
-      $list_of_raw_materials = array(
-			"draw" => $draw,
-			"recordsTotal" => $list['count_all'],
-			"recordsFiltered" => $list['count'],
-			"data" => $list['data']
-		);
+			$list_of_raw_materials = array(
+				"draw" => $draw,
+				"recordsTotal" => $list['count_all'],
+				"recordsFiltered" => $list['count'],
+				"data" => $list['data']
+			);
       echo json_encode($list_of_raw_materials);
 		}
 
