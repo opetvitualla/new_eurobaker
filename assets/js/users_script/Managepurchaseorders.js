@@ -427,7 +427,7 @@ $(document).ready(function () {
 					item_name: row.find(".item-data").text(),
 					quantity: row.find(".process-qty").text(),
 					rec_qty: row.find(".received-qty").val(),
-					units: row.find(".rcv-unit").val(),
+					units: row.find(".rcv-unit").html(),
 				})
 			})
 
@@ -439,7 +439,7 @@ $(document).ready(function () {
 					item_name: row.find(".item-data").text(),
 					quantity: row.find(".process-qty").text(),
 					rec_qty: row.find(".received-qty").val(),
-					units: row.find(".rcv-unit").val(),
+					units: row.find(".rcv-unit").html(),
 				})
 			})
 

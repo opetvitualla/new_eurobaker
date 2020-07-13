@@ -52,9 +52,9 @@
                                         <thead>
                                             <tr>
                                                 <th>Product Name</th>
-                                                <th>Beg</th>
-                                                <th>Purchase</th>
-                                                <th>Transfer</th>
+                                                <th>Beg.</th>
+                                                <th>Purchases</th>
+                                                <th>Transfers</th>
                                                 <th>Stock Out</th>
                                                 <th>Ending</th>
                                             </tr>

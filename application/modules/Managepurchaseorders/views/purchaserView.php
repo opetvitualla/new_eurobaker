@@ -150,10 +150,6 @@
                                                 <label class="fbold" for="supplier">Supplier</label>
                                                 <div class="div_value po_receive_supplier">sample text</div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <label class="fbold" for="supplier">Date Received</label>
-                                                <div class="div_value po_received_date">sample text</div>
-                                            </div>
                                             <div class="col-md-12">
                                                 <hr> </div>
                                         </div>

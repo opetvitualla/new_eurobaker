@@ -11,11 +11,23 @@ $(document).ready(function () {
         "order": [[0, 'asc']], //Initial no order.
         "columns": [
             { "data": "material_name" },
-            { "data": "material_name" },
-            { "data": "material_name" },
-            { "data": "material_name" },
-            { "data": "material_name" },
-            { "data": "material_name" }
+            { "data": "beginning_inventory" },
+            {
+                "data": "material_name", "render": function (data, type, row, meta) {
+                    return "+" + row.inv_data.tot_po
+                }
+            },
+            {
+                "data": "material_name", "render": function (data, type, row, meta) {
+                    return row.inv_data.tot_tr
+                }
+            },
+            {
+                "data": "material_name", "render": function (data, type, row, meta) {
+                    return "-" + row.inv_data.tot_so
+                }
+            },
+            { "data": "quantity" }
         ],
         "ajax": {
             "url": base_url + "inventory_movements/get_raw_materials",

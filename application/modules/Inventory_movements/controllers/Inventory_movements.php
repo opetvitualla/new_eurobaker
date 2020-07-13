@@ -25,29 +25,32 @@ class Inventory_movements extends MY_Controller {
 			$order        = $this->input->post('order');
 			$draw         = $this->input->post('draw');
 			$column_order = array(
-				'PK_raw_materials_id',
-				'category_name',
 				'material_name',
-				'unit',
+				'beginning_inventory',
+				'PK_raw_materials_id',
+				'PK_category_id',
 				'sales_price',
+				'env.quantity',
 			);
 			$join         = array(
-				"eb_raw_materials_cat" => "eb_raw_materials_cat.PK_category_id = eb_raw_materials_list.FK_category_id"
+				"eb_raw_materials_cat cat" => "cat.PK_category_id = mat.FK_category_id",
+				"eb_item_inventory env" => "env.FK_raw_material_id = mat.PK_raw_materials_id",
 			);
-			$select       = "PK_raw_materials_id, FK_outlet_id, FK_category_id, category_name, material_name, unit, sales_price";
+			$select       = "*";
 			$where        = array(
-				'eb_raw_materials_list.status' => 1,
-				'eb_raw_materials_list.FK_outlet_id' => _get_branch_assigned()
+				'mat.status' => 1,
+				'mat.FK_outlet_id' => _get_branch_assigned()
 			);
 
 			$group        = array();
-			$list         = $this->MY_Model->get_datatables('eb_raw_materials_list',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+			$list         = $this->MY_Model->get_datatables('eb_raw_materials_list mat',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+
 
 			if(!empty($list)){
 
 				$c =0;
 				foreach ($list["data"] as $key) {
-					
+					$list["data"][$c]->inv_data = $this->get_movements($key->PK_raw_materials_id);
 					$c++;
 				}
 
@@ -64,28 +67,35 @@ class Inventory_movements extends MY_Controller {
     }
 
 
-	private function get_movements($id){
+	private function get_movements($item_id){
+
+		$resp = [ "tot_po" => 0 , "tot_tr" => 0, "tot_so" => 0 ];
 
 		$branch_id = _get_branch_assigned();
 
 		$datefrom  = date("Y-m")."1";
 		$dateto  = date("Y-m-d");
 
-		$par['select'] = '*';
+		$par['select'] = 'SUM(value) as tot';
 		$par['where']  = array(
 			'branch_id' => $branch_id,
 			'date_added >=' => $datefrom,
 			'date_added <=' => $dateto,
+			"fk_item_id" => $item_id,
+			"type_entry" => "purchase",
 		);
 		
-		$getdata       = getData('eb_inventory_movement', $par, 'obj');
+		$po_data       = getData('eb_inventory_movement', $par, 'obj');
 
-
-
-		if(!empty($getdata)){
-
-
+		if(!empty($po_data)){
+			$resp = [
+				"tot_po"=>$po_data[0]->tot,
+				"tot_tr"=>0,
+				"tot_so"=>0,
+			];
 		}
+
+		return $resp;
 
 	}
 
