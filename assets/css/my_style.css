@@ -66,6 +66,8 @@ ul.pagination { float: right; }
 .po-table tbody  tr td:first-child{width: 250px;}
 .po-table tbody td{text-align: left;}
 
+#table_inventory{width: 100%!important;}
+
 @media only screen
 and (max-width : 1024px) {
 .login_container { padding: 15px; }

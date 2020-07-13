@@ -101,7 +101,7 @@ $(document).ready(function () {
           var formData = new FormData($(this)[0]);
 
           $.ajax({
-               url: base_url + 'managerawmaterials/addRawMaterial',
+               url: base_url + 'managerawmaterials/addrawmaterial',
                data: formData,
                processData: false,
                contentType: false,

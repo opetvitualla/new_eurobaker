@@ -21,85 +21,102 @@ class ManageRawMaterials extends MY_Controller {
 	}
 
     public function get_raw_materials() {
-
-
-
       $limit        = $this->input->post('length');
       $offset       = $this->input->post('start');
       $search       = $this->input->post('search');
       $order        = $this->input->post('order');
       $draw         = $this->input->post('draw');
       $column_order = array(
-                        'PK_raw_materials_id',
-                        'category_name',
-                        'material_name',
-                        'unit',
-                        // 'average_cost',
-                        'sales_price',
-                      );
-      $join         = array(
-                        "eb_raw_materials_cat" => "eb_raw_materials_cat.PK_category_id = eb_raw_materials_list.FK_category_id"
-                      );
+		'PK_raw_materials_id',
+		'category_name',
+		'material_name',
+		'unit',
+		// 'average_cost',
+		'sales_price',
+	  );
+      $join         = array( "eb_raw_materials_cat" => "eb_raw_materials_cat.PK_category_id = eb_raw_materials_list.FK_category_id" );
       $select       = "PK_raw_materials_id, FK_outlet_id, FK_category_id, category_name, material_name, unit, sales_price";
       $where        = array(
-                        'eb_raw_materials_list.status' => 1,
-                        'eb_raw_materials_list.FK_outlet_id' => _get_branch_assigned()
-                      );
-
-
+		'eb_raw_materials_list.status' => 1,
+		'eb_raw_materials_list.FK_outlet_id' => _get_branch_assigned()
+	  );
 
       $group        = array();
       $list         = $this->MY_Model->get_datatables('eb_raw_materials_list',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
 
       $list_of_raw_materials = array(
-                                  "draw" => $draw,
-                                  "recordsTotal" => $list['count_all'],
-                                  "recordsFiltered" => $list['count'],
-                                  "data" => $list['data']
-                                );
+			"draw" => $draw,
+			"recordsTotal" => $list['count_all'],
+			"recordsFiltered" => $list['count'],
+			"data" => $list['data']
+       );
       echo json_encode($list_of_raw_materials);
     }
 
-    public function addRawMaterial() {
-      $post         = $this->input->post();
+    public function addrawmaterial() {
+    	$post         = $this->input->post();
+		$response = array( 'result' => 'error' );
 
-			if (!empty($post['related_item_id'])) {
-				$data         = array(
-	                        'FK_outlet_id'        => 1,
-	                        'material_name'       => $post['material_name'],
-	                        'FK_category_id'      => $post['category'],
-	                        'unit'                => $post['unit'],
-	                        'sales_price'         => $post['sales_price'],
-													'related_item_id'			=> $post['related_item_id'],
-	                        'status'              => 1
-	                      );
-			} else {
-				$get_max_id  		= $this->MY_Model->raw('SELECT MAX(related_item_id) FROM eb_raw_materials_list', 'row'); //get max id of related items
-				$new_related_id	=	$get_max_id[0]['MAX(related_item_id)']+ 1;
-				$data       	  = array(
-		                        'FK_outlet_id'        => 1,
-		                        'material_name'       => $post['material_name'],
-		                        'FK_category_id'      => $post['category'],
-		                        'unit'                => $post['unit'],
-		                        'sales_price'         => $post['sales_price'],
-														'related_item_id'			=> $new_related_id,
-		                        'status'              => 1
-		                      );
-			}
+		if (!empty($post['related_item_id'])) {
+			$data         = array(
+				'FK_outlet_id'        => _get_branch_assigned(),
+				'material_name'       => $post['material_name'],
+				'FK_category_id'      => $post['category'],
+				'unit'                => $post['unit'],
+				'sales_price'         => $post['sales_price'],
+				'related_item_id'	  => $post['related_item_id'],
+				'status'              => 1
+			);
+		} 
+		else {
+			$get_max_id  		= $this->MY_Model->raw('SELECT MAX(related_item_id) FROM eb_raw_materials_list', 'row'); //get max id of related items
+			$new_related_id	=	$get_max_id[0]['MAX(related_item_id)']+ 1;
+			$data       	  = array(
+				'FK_outlet_id'        => _get_branch_assigned(),
+				'material_name'       => $post['material_name'],
+				'FK_category_id'      => $post['category'],
+				'unit'                => $post['unit'],
+				'sales_price'         => $post['sales_price'],
+				'related_item_id'	  => $new_related_id,
+				'status'              => 1
+			);
+		}
 
-      $insert_data  = $this->MY_Model->insert('eb_raw_materials_list',$data);
+		$latest_id = $insert_data  = $this->MY_Model->insert('eb_raw_materials_list',$data);
 
-      if ($insert_data) {
-        $response = array(
-                      'result' => 'success',
-                    );
-      } else {
-        $response = array(
-                      'result' => 'error',
-                    );
-      }
-      echo json_encode($response);
-    }
+		if ($insert_data) {
+			$post["latest_id"] = $latest_id;
+			$this->insert_inventory($post);
+
+			$response = array( 'result' => 'success' );
+			
+		} 
+		echo json_encode($response);
+	  
+	}
+
+	private function insert_inventory($post = array()){
+
+		$data = array(
+			'FK_raw_material_id' => $post["latest_id"],
+			'FK_outlet_id' => _get_branch_assigned(),
+			'amount' => $post["sales_price"],
+			'beginning_inventory' => $post["qty"],
+			'expected_quantity' => 0,
+			'expected_quantity' => 0,
+			'quantity' => 0,
+			'status' => 1,
+			'type' => "initial",
+			'type' => "initial",
+			"discrepancy" => 0,
+			"date_added" => date("Y-m-d")
+		);
+		
+		insertData('eb_item_inventory', $data);
+
+	} 
+	
+
 
     public function viewDetails() {
       $data_id          = $this->input->post('id');

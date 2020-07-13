@@ -218,17 +218,21 @@
                                             </div>
                                         </div>                        
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label class="fbold" for="supplier">Supplier</label>
                                                 <div class="div_value po_receive_supplier">sample text</div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label class="fbold" for="supplier">Date Received</label>
                                                 <div class="div_value po_received_date">sample text</div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label class="fbold" for="supplier">Received By</label>
                                                 <div class="div_value po_received_by">John Doe</div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="fbold" for="supplier">Counter Checked By</label>
+                                                <div class="div_value po_counter_by">John Doe</div>
                                             </div>
                                             <div class="col-md-12">
                                                 <hr> </div>
@@ -296,12 +300,18 @@
                                                     <div class="div_value po_receive_supplier2">sample text</div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="fbold" for="supplier">Date Received</label>
+                                                    <label class="fbold" for="supplier">Date Receiving</label>
                                                     <div class="div_value po_received_date2">sample text</div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <label class="fbold" for="supplier">Received By</label>
-                                                    <div class="div_value po_received_by2">John Doe</div>
+
+
+                                                <div class="col-md-12">
+                                                    <div class="form-row mt-3">
+                                                        <div class="col-md-3">
+                                                                <label class="fbold" for="supplier">Counter Checked By:</label>
+                                                        <input type="text" class="form-control" required name="counter_checked">
+                                                    </div>        
+                                                    </div> 
                                                 </div>
                                                 <div class="col-md-12">
                                                     <hr> </div>

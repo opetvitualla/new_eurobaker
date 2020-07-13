@@ -173,6 +173,7 @@ class Managepurchaseorders extends MY_Controller {
 				$par["where"]	= "po_item.FK_purchase_id = {$po_id}";
 				$par["join"] 	= array(
 					"eb_raw_materials raw_mat" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
+					// "eb_units units" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
 				);
 
 				$po_items = getData("eb_purchase_order_item po_item", $par, "obj");
@@ -199,6 +200,7 @@ class Managepurchaseorders extends MY_Controller {
 			$par["join"] 	= array(
 				"eb_suppliers supplier" => "supplier.PK_supplier_id = po.FK_supplier_id",
 				"eb_purchase_order_received po_rec" => "po_rec.FK_purchase_id = po.PK_purchase_order_id",
+				"eb_users_meta user" => "user.FK_user_id = po_rec.FK_received_user_id",
 			);
 
 			$po_data = getData("eb_purchase_order po", $par, "obj");
@@ -228,21 +230,27 @@ class Managepurchaseorders extends MY_Controller {
 	public function receive_purchase_order(){
 
 		$post 	  = $this->input->post();
+
+
+		echo '<pre>';
+		print_r($post);
+		echo '</pre>';
+		exit;
+
 		$response = array("result" => "error");
 
 		$po_id = $post["po_id"];
-		// $po_no = $post["po_no"];
-
+		$counter_chker = $post["counter_check"];
 		if(!empty($post["disc_item"])){
 			$disc_items = json_decode($post["disc_item"]);
 		}
-
 
 		if(!empty($po_id)){
 			$data = array(
 				"FK_purchase_id" => $po_id,
 				"FK_received_user_id" => my_user_id(),
 				"status" => 1,
+				"counter_checked" => $counter_chker,
 				"date_received" => date("Y-m-d h:i:s")
 			);
 

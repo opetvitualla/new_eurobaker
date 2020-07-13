@@ -17,7 +17,7 @@
                         </ol>
                     </div>
                     <div class="col-md-7 align-self-center text-right d-none d-md-block">
-                        <!-- <button type="button" class="btn btn-info" data-toggle="modal" data-target=".add_raw_material_modal"><i class="fa fa-plus-circle"></i> Add Purchase Order</button> -->
+                        <a  href="<?=base_url("inventory_movements")?>"  class="btn btn-info theme-bg" ><i class="fa fa-cube"></i> Inventory Movements</a>
                     </div>
                     <div class="">
                         <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>

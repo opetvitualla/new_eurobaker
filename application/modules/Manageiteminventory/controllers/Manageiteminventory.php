@@ -27,14 +27,14 @@ class Manageiteminventory extends MY_Controller {
 			$order        = $this->input->post('order');
 			$draw         = $this->input->post('draw');
 			$column_order = array(
-			                  'PK_inventory_id',
-			                  'material_name',
-			                  'amount',
-			                  'beginning_inventory',
-			                  'quantity',
-			                  'eb_item_inventory.status',
-			                  'eb_item_inventory.date_added',
-			                );
+				'PK_inventory_id',
+				'material_name',
+				'amount',
+				'beginning_inventory',
+				'quantity',
+				'eb_item_inventory.status',
+				'eb_item_inventory.date_added',
+			);
 			$join         = array(
 			                  "eb_raw_materials" => "eb_raw_materials.PK_raw_materials_id = eb_item_inventory.FK_raw_material_id"
 			                );
@@ -44,32 +44,32 @@ class Manageiteminventory extends MY_Controller {
 			$list         = $this->MY_Model->get_datatables('eb_item_inventory',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
 
       $list_of_raw_materials = array(
-                                  "draw" => $draw,
-                                  "recordsTotal" => $list['count_all'],
-                                  "recordsFiltered" => $list['count'],
-                                  "data" => $list['data']
-                                );
+			"draw" => $draw,
+			"recordsTotal" => $list['count_all'],
+			"recordsFiltered" => $list['count'],
+			"data" => $list['data']
+		);
       echo json_encode($list_of_raw_materials);
 		}
 
 		public function viewDetails() {
 			$data_id          = $this->input->post('id');
 			$options['select'] = array(
-					                  'PK_inventory_id',
-					                  'material_name',
-					                  'amount',
-					                  'beginning_inventory',
-					                  'quantity',
-					                  'eb_item_inventory.status',
-					                  'eb_item_inventory.date_added',
-					                  'eb_item_inventory.date_updated',
-					                );
+				'PK_inventory_id',
+				'material_name',
+				'amount',
+				'beginning_inventory',
+				'quantity',
+				'eb_item_inventory.status',
+				'eb_item_inventory.date_added',
+				'eb_item_inventory.date_updated',
+			);
 			$options['where'] = array(
-														'PK_inventory_id' => $data_id
-													);
+				'PK_inventory_id' => $data_id
+			);
 			$options['join'] = array(
-														"eb_raw_materials" => "eb_raw_materials.PK_raw_materials_id = eb_item_inventory.FK_raw_material_id"
-													);
+				"eb_raw_materials" => "eb_raw_materials.PK_raw_materials_id = eb_item_inventory.FK_raw_material_id"
+			);
 			$data             = $this->MY_Model->getRows('eb_item_inventory', $options, 'row');
 			echo json_encode($data);
 		}

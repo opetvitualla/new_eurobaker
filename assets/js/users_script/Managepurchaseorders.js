@@ -115,7 +115,6 @@ $(document).ready(function () {
 					return str;
 				}
 			},
-			{ "data": "purchase_order_no" },
 			{ "data": "outlet_name" },
 			{ "data": "supplier_name" },
 			{
@@ -144,7 +143,7 @@ $(document).ready(function () {
 
 					if (row.status == "processing" || row.status == "received") {
 						str = '<div class="mx-auto action-btn-div">';
-						str += '<a href="javascript:;" class="po_view_received text-success" data-id="' + row.PK_purchase_order_id + '" title="view"><i class="fa fa-eye"></i></a></div>';
+						str += '<a href="javascript:;" data-usertype="purchaser" class="po_view_received text-success" data-id="' + row.PK_purchase_order_id + '" title="view"><i class="fa fa-eye"></i></a></div>';
 					}
 					return str;
 				}
@@ -431,9 +430,14 @@ $(document).ready(function () {
 				})
 			})
 
+
+
+
 			let dreason = $("#discrepancy_reason").val();
 
 			frmdata.append("po_id", po_id);
+			let checkd = $("input[name=counter_checked]").val();
+			frmdata.append("counter_check", checkd);
 			// frmdata.append("po_no", po_no);
 			frmdata.append("disc_item", JSON.stringify(disc_items));
 			frmdata.append("reason", dreason);
@@ -441,6 +445,7 @@ $(document).ready(function () {
 			axios.post(`${base_url}managepurchaseorders/receive_purchase_order`, frmdata).then(res => {
 				if (res.data.result == "success") {
 					s_alert("Received Successfully!", "success");
+					$(".receive_po_modal").modal("hide")
 					table_purchase_order.ajax.reload();
 				}
 			})
@@ -486,7 +491,7 @@ $(document).ready(function () {
 								<span class="process-qty">${po_item.quantity}</span>
 							</td>
 							<td class="rcv-unit">
-								${po_item.item_unit}
+								${po_item.unit}
 							</td>
 							<td>
 								P${po_item.average_cost}
@@ -549,13 +554,22 @@ $(document).ready(function () {
 	$(document).on("click", ".po_view_received", function () {
 		let po_id = $(this).data("id");
 
-		axios.get(`${base_url}managepurchaseorders/get_received_po_details/${po_id}`).then(res => {
+		let user_types = $(this).data("usertype");
+
+		let url = "get_received_po_details";
+		if (user_types == "purchaser") {
+			url = "get_po_details";
+		}
+
+		axios.get(`${base_url}managepurchaseorders/${url}/${po_id}`).then(res => {
 			if (res.data.result == "success") {
 				let result = res.data.data;
 				get_po_data = res.data.data;
 				$(".table-po-body-received").html("")
 				$(".po_receive_supplier").html(result[0].supplier_name)
 				$(".po_received_date").html(result[0].date_received)
+				$(".po_received_by").html(result[0].firstname + " " + result[0].lastname)
+				$(".po_counter_by").html(result[0].counter_checked)
 				$(".purchase_no_received").html(`PO-${result[0].PK_purchase_order_id}`)
 
 				let po_items = result[0].po_items
@@ -574,7 +588,7 @@ $(document).ready(function () {
 									${po_item.quantity}
 								</td>
 								<td>
-									${po_item.item_unit}
+									${po_item.unit}
 								</td>
 								<td>
 									${po_item.average_cost}

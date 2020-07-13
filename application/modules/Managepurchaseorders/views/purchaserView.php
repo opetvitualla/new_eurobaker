@@ -39,7 +39,6 @@
                                 <thead>
                                     <tr>
                                         <th>P.O No.</th>
-                                        <th>P.O Number</th>
                                         <th>Outlet Name</th>
                                         <th>Supplier</th>
                                         <th>Status</th>
@@ -138,7 +137,7 @@
                     <div class="modal-dialog modal-lg" style="max-width:900px;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Received Purchase Order</h5>
+                                <h5 class="modal-title">Processed Purchase Order</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -154,10 +153,6 @@
                                             <div class="col-md-4">
                                                 <label class="fbold" for="supplier">Date Received</label>
                                                 <div class="div_value po_received_date">sample text</div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="fbold" for="supplier">Received By</label>
-                                                <div class="div_value po_received_by">John Doe</div>
                                             </div>
                                             <div class="col-md-12">
                                                 <hr> </div>
@@ -184,8 +179,7 @@
                                                 <hr>
                                                 <div class="card-body text-right ">
                                                                           
-                                                    <button type="button" class="btn btn-success btn-generate-arf"> Generate ARF</button>
-                                                    <button type="button" class="btn btn-danger"> Close</button>
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"> Close</button>
                                                 </div>
                                             </div>
                                         </div>

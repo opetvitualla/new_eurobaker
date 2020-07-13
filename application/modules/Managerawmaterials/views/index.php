@@ -126,6 +126,12 @@
                                                   <input type="number" step="0.01" class="form-control" name="sales_price">
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                  <label>Initial Qty</label>
+                                                  <input type="number" value="0" step="1" class="form-control" name="qty">
+                                                </div>
+                                            </div>
                                             <!--/span-->
                                         </div>
                                         <div class="form-actions">
