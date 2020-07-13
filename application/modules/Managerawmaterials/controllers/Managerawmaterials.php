@@ -64,6 +64,7 @@ class ManageRawMaterials extends MY_Controller {
 				'FK_category_id'      => $post['category'],
 				'unit'                => $post['unit'],
 				'sales_price'         => $post['sales_price'],
+				'min_stock'         => $post['min_stock'],
 				'related_item_id'	  => $post['related_item_id'],
 				'status'              => 1
 			);
@@ -78,6 +79,7 @@ class ManageRawMaterials extends MY_Controller {
 				'unit'                => $post['unit'],
 				'sales_price'         => $post['sales_price'],
 				'related_item_id'	  => $new_related_id,
+				'min_stock'         => $post['min_stock'],
 				'status'              => 1
 			);
 		}
@@ -100,19 +102,28 @@ class ManageRawMaterials extends MY_Controller {
 		$data = array(
 			'FK_raw_material_id' => $post["latest_id"],
 			'FK_outlet_id' => _get_branch_assigned(),
-			'amount' => $post["sales_price"],
 			'beginning_inventory' => $post["qty"],
-			'expected_quantity' => 0,
-			'expected_quantity' => 0,
-			'quantity' => 0,
+			'quantity' => $post["qty"],
 			'status' => 1,
 			'type' => "initial",
-			'type' => "initial",
 			"discrepancy" => 0,
+			"date_added" => date("Y-m-d"),
+			"date_updated" => date("Y-m-d")
+		);
+
+		insertData('eb_item_inventory', $data);
+
+		$data = array(
+			'fk_item_id' =>  $post["latest_id"],
+			'type_entry' => "initial",
+			'trans_id' => 0,
+			'from_value' =>  0,
+			'value' =>  $post["qty"],
+			"branch_id" => _get_branch_assigned(),
 			"date_added" => date("Y-m-d")
 		);
-		
-		insertData('eb_item_inventory', $data);
+
+		insertData('eb_inventory_movement', $data);
 
 	} 
 	

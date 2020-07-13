@@ -505,7 +505,7 @@ $(document).ready(function () {
 								${po_item.unit}
 							</td>
 							<td>
-								P${po_item.average_cost}
+								P${po_item.sales_price}
 							</td>
 							<td>
 								<input type="date" class="form-control">
@@ -588,7 +588,7 @@ $(document).ready(function () {
 				let gtotal = 0;
 
 				po_items.map(po_item => {
-					gtotal += Number(po_item.quantity) * Number(po_item.average_cost);
+					gtotal += Number(po_item.quantity) * Number(po_item.sales_price);
 					let html = `
 							<tr>
 								<td>
@@ -602,10 +602,10 @@ $(document).ready(function () {
 									${po_item.unit}
 								</td>
 								<td>
-									${po_item.average_cost}
+									${po_item.sales_price}
 								</td>
 								<td>
-									${(Number(po_item.quantity) * Number(po_item.average_cost)).toFixed(2)}
+									${(Number(po_item.quantity) * Number(po_item.sales_price)).toFixed(2)}
 								</td>
 									
 							</tr>
@@ -697,14 +697,14 @@ $(document).ready(function () {
 			let t_rows = "";
 			po_items.map(po_item => {
 
-				gtotal += Number(po_item.quantity) * Number(po_item.average_cost);
+				gtotal += Number(po_item.quantity) * Number(po_item.sales_price);
 				t_rows += `
 						<tr style="border-bottom:1px solid #222;">
 							<td> ${po_item.material_name} </td>
 							<td> ${po_item.quantity} </td>
 							<td> ${po_item.item_unit} </td>
-							<td> ${po_item.average_cost} </td>
-							<td> <span style="font-weight:bold;"> ${(Number(po_item.quantity) * Number(po_item.average_cost)).toFixed(2)}</span> </td>
+							<td> ${po_item.sales_price} </td>
+							<td> <span style="font-weight:bold;"> ${(Number(po_item.quantity) * Number(po_item.sales_price)).toFixed(2)}</span> </td>
 						</tr>
 					`;
 			})

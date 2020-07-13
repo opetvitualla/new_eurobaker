@@ -172,7 +172,7 @@ class Managepurchaseorders extends MY_Controller {
 				$par["select"] 	= "*";
 				$par["where"]	= "po_item.FK_purchase_id = {$po_id}";
 				$par["join"] 	= array(
-					"eb_raw_materials raw_mat" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
+					"eb_raw_materials_list raw_mat" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
 					// "eb_units units" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
 				);
 
@@ -210,7 +210,7 @@ class Managepurchaseorders extends MY_Controller {
 				$par["select"] 	= "*";
 				$par["where"]	= "po_item.FK_purchase_id = {$po_id}";
 				$par["join"] 	= array(
-					"eb_raw_materials raw_mat" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
+					"eb_raw_materials_list raw_mat" => "raw_mat.PK_raw_materials_id = po_item.FK_raw_material_id",
 				);
 
 				$po_items = getData("eb_purchase_order_item po_item", $par, "obj");
@@ -238,7 +238,12 @@ class Managepurchaseorders extends MY_Controller {
 		if(!empty($post["disc_item"])){
 			$disc_items = json_decode($post["disc_item"]);
 		}
+		if(!empty($post["all_items"])){
+			$all_items = json_decode($post["all_items"]);
+		}
 
+
+		
 		if(!empty($po_id)){
 			$data = array(
 				"FK_purchase_id" => $po_id,
@@ -254,8 +259,6 @@ class Managepurchaseorders extends MY_Controller {
 			$where = array( "PK_purchase_order_id" => "$po_id" );
 
 			updateData("eb_purchase_order", $set, $where);
-
-			
 
 			if(!empty($disc_items)){
 				$data = array(
@@ -279,8 +282,11 @@ class Managepurchaseorders extends MY_Controller {
 					);
 
 					insertData("eb_po_discrepancy_items", $data);
-
 				}
+			}
+			if(!empty($all_items)){
+
+				$this->update_inventory($all_items, $po_id);
 
 			}
 
@@ -292,23 +298,49 @@ class Managepurchaseorders extends MY_Controller {
 
 	}
 
-	private function insert_inventory($post = array()){
+	private function update_inventory($items = array(), $trans_id= 0){
 
-		$data = array(
-			'FK_raw_material_id' => $post["latest_id"],
-			'FK_outlet_id' => _get_branch_assigned(),
-			'amount' => $post["sales_price"],
-			'beginning_inventory' => $post["qty"],
-			'expected_quantity' => 0,
-			'quantity' => 0,
-			'status' => 1,
-			'type' => "initial",
-			'type' => "initial",
-			"discrepancy" => 0,
-			"date_added" => date("Y-m-d")
-		);
-		
-		insertData('eb_item_inventory', $data);
+		if(!empty($items)){
+			foreach ($items as $item) {
+
+				// get qty
+				$par['select'] = 'quantity';
+				$par['where']  = array( 'FK_raw_material_id' => $item->item_id, 'FK_outlet_id' => _get_branch_assigned(), );
+				$qty_data= getData('eb_item_inventory', $par, 'obj');
+
+				$qty =0;       
+				if(!empty($qty_data)){
+					$qty = $qty_data[0]->quantity;   
+				}
+
+				$set = array(
+					// 'beginning_inventory' => $post["qty"],
+					'quantity' => $qty +  $item->rec_qty,
+					'type' => "purchase",
+					"date_updated" => date("Y-m-d")
+				);
+
+				$where = array(
+					'FK_raw_material_id' => $item->item_id,
+					'FK_outlet_id' => _get_branch_assigned(),
+				);
+				
+				updateData('eb_item_inventory', $set, $where);
+
+				$data = array(
+					'fk_item_id' =>  $item->item_id,
+					'type_entry' => "purchase",
+					'trans_id' => $trans_id,
+					'from_value' =>  $qty,
+					'value' =>  $item->rec_qty,
+					"branch_id" => _get_branch_assigned(),
+					"date_added" => date("Y-m-d")
+				);
+
+				insertData('eb_inventory_movement', $data);
+			}
+		}
+
 
 	} 
 

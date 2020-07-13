@@ -36,14 +36,13 @@
                                     <table id="item_Inventory" class="table table-bordered table-striped text-center">
                                         <thead>
                                             <tr>
-                                                <th>Item ID</th>
+                                                <th>Category</th>
                                                 <th>Item Name</th>
-                                                <th>Amount</th>
+                                                <th>Price</th>
                                                 <th>Beg. Inventory</th>
                                                 <th>Qty.</th>
                                                 <th>Status</th>
-                                                <th>Date Added</th>
-                                                <th>Actions</th>
+                                                <th>Date Modified</th>
                                             </tr>
                                         </thead>
                                         <tbody>

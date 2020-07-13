@@ -126,6 +126,7 @@ $(document).ready(function () {
                data: { "id": id },
                dataType: 'json',
                success: function (data) {
+                    $('.view_details_modal input[name="min_stock"]').val(data.min_stock);
                     $('.view_details_modal input[name="material_name"]').val(data.material_name);
                     $('.view_details_modal input[name="category"]').val(data.category_name);
                     $('.view_details_modal input[name="unit"]').val(data.unit);
@@ -147,8 +148,6 @@ $(document).ready(function () {
 
           $('.edit_details_modal').modal('show');
 
-
-
           $.ajax({
                url: base_url + 'managerawmaterials/viewDetails',
                type: "post",
@@ -156,11 +155,13 @@ $(document).ready(function () {
                dataType: 'json',
                success: function (data) {
                     $('.edit_details_modal input[name="material_name"]').val(data.material_name);
+                    $('.edit_details_modal .min_stock_edit').val(data.min_stock);
                     $('.edit_details_modal select[name="category"]').val(data.FK_category_id).trigger('change');
                     $('.edit_details_modal select[name="unit"]').val(data.unit);
                     $('.edit_details_modal input[name="average_cost"]').val(data.average_cost);
                     $('.edit_details_modal input[name="sales_price"]').val(data.sales_price);
                     $('.edit_details_modal .edit_Button').attr('data-id', data.PK_raw_materials_id);
+
                }
           });
      });

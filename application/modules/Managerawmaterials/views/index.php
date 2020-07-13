@@ -132,6 +132,12 @@
                                                   <input type="number" value="0" step="1" class="form-control" name="qty">
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                  <label>Minimum Stock</label>
+                                                  <input required type="number" min="0" class="form-control" name="min_stock">
+                                                </div>
+                                            </div>
                                             <!--/span-->
                                         </div>
                                         <div class="form-actions">
@@ -200,6 +206,12 @@
                                                   <input type="text" class="form-control" name="sales_price">
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                  <label>Minimum Stock</label>
+                                                  <input type="number" min="0" class="form-control" name="min_stock">
+                                                </div>
+                                            </div>
                                             <!--/span-->
                                         </div>
                                     </div>
@@ -264,6 +276,12 @@
                                                 <div class="form-group">
                                                   <label>Sales Price</label>
                                                   <input type="number" step="0.01" class="form-control" name="sales_price">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                  <label>Minimum Stock</label>
+                                                  <input type="number" min="0" required class="form-control min_stock_edit" name="min_stock">
                                                 </div>
                                             </div>
                                             <!--/span-->
