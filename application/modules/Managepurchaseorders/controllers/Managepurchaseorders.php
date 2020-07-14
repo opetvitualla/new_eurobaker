@@ -282,7 +282,6 @@ class Managepurchaseorders extends MY_Controller {
 					insertData("eb_po_discrepancy_items", $data);
 				}
 
-				
 			}
 
 			$this->update_expire_date($all_items, $po_id);
@@ -354,7 +353,6 @@ class Managepurchaseorders extends MY_Controller {
 				insertData('eb_inventory_movement', $data);
 			}
 		}
-
 
 	} 
 

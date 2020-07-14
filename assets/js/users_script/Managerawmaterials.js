@@ -76,7 +76,7 @@ $(document).ready(function () {
                { "data": "date_received" },
                {
                     "data": "PK_raw_materials_id", "render": function (data, type, row, meta) {
-                         var str = `<div class="action-btn-div"><a href="javascript:;"  class="text-danger btn_pull_out" title="pull out" data-type="${row.type_trans}" data-item_id="${row.FK_raw_material_id}"  data-trans_id="${row.FK_purchase_id}"><i class="fa fa-trash"></i></a></div>`;
+                         var str = `<div class="action-btn-div"><a href="javascript:;"  class="text-danger btn_pull_out" title="pull out" data-type="${row.type_trans}" data-item_id="${row.FK_raw_material_id}" data-qty="${row.quantity}" data-trans_id="${row.FK_purchase_id}"><i class="fa fa-trash"></i></a></div>`;
                          return str;
                     }
                },
@@ -97,6 +97,7 @@ $(document).ready(function () {
           let item_id = $(this).data("item_id");
           let trans_id = $(this).data("trans_id");
           let trans_type = $(this).data("type");
+          let qty = $(this).data("qty");
 
           confirm_alert("Are you sure to pull out this item and update inventory?").then(res => {
 
@@ -104,6 +105,7 @@ $(document).ready(function () {
                frmdata.append("type", trans_type);
                frmdata.append("item_id", item_id);
                frmdata.append("trans_id", trans_id);
+               frmdata.append("qty", qty);
                axios.post(`${base_url}managerawmaterials/pull_out_expired`, frmdata).then(res => {
                     if (res.data.status == "success") {
                          expired_table.ajax.reload();

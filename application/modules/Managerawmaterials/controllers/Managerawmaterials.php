@@ -655,12 +655,85 @@ class ManageRawMaterials extends MY_Controller {
 
 				if($updated){
 					$response = array("status" => "success");
+
+					$this->update_inventory($post["item_id"], $post["type"], $post["trans_id"], $post["qty"]);
 				}
 
 			}
 
 		}
+
 		echo json_encode($response);
+
+	}
+
+	private function update_inventory($item_id, $type, $trans_id, $post_qty){
+
+		$par['select'] = 'quantity';
+		$par['where']  = array( 'FK_raw_material_id' => $item_id, 'FK_outlet_id' => _get_branch_assigned(), );
+		$qty_data= getData('eb_item_inventory', $par, 'obj');
+
+		$qty =0;
+		$sub_qty =  $post_qty;
+
+		if(!empty($qty_data)){
+			$qty = $qty_data[0]->quantity;   
+		}
+
+		$discrep = $this->has_descripancy($item_id, $type, $trans_id);	
+
+		if($discrep != 0){
+			$sub_qty = $discrep;
+		}
+
+		$deducted = $qty - $sub_qty;
+
+		$set = array(
+			// 'beginning_inventory' => $post["qty"],
+			'quantity' => $deducted,
+			'type' => "pull_out",
+			"date_updated" => date("Y-m-d")
+		);
+
+		$where = array(
+			'FK_raw_material_id' => $item_id,
+			'FK_outlet_id' => _get_branch_assigned(),
+		);
+		
+		updateData('eb_item_inventory', $set, $where);
+
+		$data = array(
+			'fk_item_id' => $item_id,
+			'type_entry' => "pull_out",
+			'trans_id' => 0,
+			'from_value' =>  $qty,
+			'value' =>  $qty - $sub_qty,
+			"branch_id" => _get_branch_assigned(),
+			"date_added" => date("Y-m-d")
+		);
+
+		insertData('eb_inventory_movement', $data);
+
+	}
+
+	private function has_descripancy ($item_id, $type, $trans_id){
+
+		$res = 0;
+
+		if($type == "Purchase"){
+
+			$par['select'] = 'received_qty';
+			$par['where']  = array('disc.fk_purchase_id' => $trans_id);
+			$par["join"]   = array("eb_purchase_order_discrepancy disc" => "disc.pk_po_discrepancy_id = po_disc_item.fk_po_discrepancy_id");
+			
+			$getdata       = getData('eb_po_discrepancy_items po_disc_item', $par, 'obj');
+
+			if(!empty($getdata)){
+				$res = $getdata[0]->received_qty;
+			}
+		}
+
+		return $res;
 
 	}
 
