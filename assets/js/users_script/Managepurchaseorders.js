@@ -505,10 +505,10 @@ $(document).ready(function () {
 								${po_item.unit}
 							</td>
 							<td>
-								P${po_item.sales_price}
+								P${po_item.price}
 							</td>
 							<td>
-								<input type="date" class="form-control">
+								<input type="date"  required class="form-control exp_date">
 							</td>
 							<td>
 								<input type="number" min="0" max="${po_item.quantity}" value="${po_item.quantity}" class="form-control received-qty">
@@ -687,6 +687,24 @@ $(document).ready(function () {
 	})
 
 
+	$(document).on('change', '.exp_date', function () {
+		let dString = $(this).val();
+
+		if (dString != "") {
+			let exdate = new Date(dString)
+			let cur_date = new Date();
+			let ex_year = exdate.getFullYear();
+			let cur_year = cur_date.getFullYear();
+
+			if (ex_year == cur_year) {
+				s_alert("Expiration date at least more than 1 year of the current date", "error");
+				$(this).val("");
+			}
+
+		}
+
+	})
+
 	$(".btn-generate-arf").click(function () {
 
 		if (get_po_data.length != 0) {
@@ -738,8 +756,6 @@ $(document).ready(function () {
 			printJS('print_div', 'html')
 			$("#print_div").html("");
 		}
-
-
 
 	})
 	// $(".view_received_modal").modal()
