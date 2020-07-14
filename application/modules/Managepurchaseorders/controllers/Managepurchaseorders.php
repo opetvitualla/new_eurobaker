@@ -242,8 +242,6 @@ class Managepurchaseorders extends MY_Controller {
 			$all_items = json_decode($post["all_items"]);
 		}
 
-
-		
 		if(!empty($po_id)){
 			$data = array(
 				"FK_purchase_id" => $po_id,
@@ -283,18 +281,34 @@ class Managepurchaseorders extends MY_Controller {
 
 					insertData("eb_po_discrepancy_items", $data);
 				}
+
+				
 			}
+
+			$this->update_expire_date($all_items, $po_id);
+
 			if(!empty($all_items)){
-
 				$this->update_inventory($all_items, $po_id);
-
 			}
-
 
 			$response = array("result" => "success");
 		}
 
 		echo json_encode($response);
+
+	}
+
+	private function update_expire_date($items = array(), $po_id){
+
+		foreach ($items as $item) {
+			$set   = array('expire_date' => $item->expire_date);
+			$where = array(
+				'FK_purchase_id' => $po_id,
+				'FK_raw_material_id' => $item->item_id,
+			);
+			
+			updateData('eb_purchase_order_item', $set, $where);
+		}
 
 	}
 

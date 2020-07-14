@@ -579,6 +579,92 @@ class ManageRawMaterials extends MY_Controller {
 	}
 
 
+	public function get_expired_items() {
+
+		$limit        = $this->input->post('length');
+		$offset       = $this->input->post('start');
+		$search       = $this->input->post('search');
+		$order        = $this->input->post('order');
+		$draw         = $this->input->post('draw');
+
+		$column_order = array(
+			'material_name',
+			'sup.supplier_name',
+			'po.PK_purchase_order_id',
+			'po_item.expire_date',
+			'po_rec.date_received',
+		);
+
+		$join         = array(
+			"eb_purchase_order po" => "po.PK_purchase_order_id = po_item.FK_purchase_id",
+			"eb_purchase_order_received po_rec" => "po_rec.FK_purchase_id = po.PK_purchase_order_id",
+			"eb_raw_materials_list mat" => "mat.PK_raw_materials_id = po_item.FK_raw_material_id",
+			"eb_suppliers sup" => "sup.PK_supplier_id = po.FK_supplier_id",
+		);
+		$select       = "*, po.PK_purchase_order_id as trans_id ";
+
+		$curr_date = date("Y-m-d");
+
+		$where        = array(
+			'mat.status' => 1,
+			'mat.FK_outlet_id' => _get_branch_assigned(),
+			'po_item.expire_date <=' => $curr_date,
+			'po_item.expire_date !=' => "NULL",
+			'po.status' => "received",
+		);
+
+		$group        = array();
+		$list         = $this->MY_Model->get_datatables('eb_purchase_order_item po_item',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+
+		if(!empty($list["data"])){
+			$c =0;
+			foreach ($list['data'] as $key) {
+				$list['data'][$c]->type_trans = "Purchase";
+				$c++;
+			}
+		}
+
+		$list_items = array(
+			"draw" => $draw,
+			"recordsTotal" => $list['count_all'],
+			"recordsFiltered" => $list['count'],
+			"data" => $list['data']
+		);
+
+		echo json_encode($list_items);
+
+    }
+	
+	public function pull_out_expired(){
+
+		$response = array("status" => "error");
+
+		$post = $this->input->post();
+
+		if(!empty($post)){
+
+			if($post["type"] == "Purchase"){
+				
+				$where   = array(
+					'FK_purchase_id' => $post["trans_id"],
+					'FK_raw_material_id' => $post["item_id"],
+				);
+				$set = array('expire_date' => "0000-00-00");
+				
+				$updated =  updateData('eb_purchase_order_item', $set, $where);
+
+				if($updated){
+					$response = array("status" => "success");
+				}
+
+			}
+
+		}
+		echo json_encode($response);
+
+	}
+
+
 	public function check_unit_exist($id = 0){
 
 		$response = array("status" => "error");

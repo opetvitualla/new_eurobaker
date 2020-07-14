@@ -59,6 +59,61 @@ $(document).ready(function () {
                },
           ],
      });
+
+
+     var expired_table = $('#expired_table').DataTable({
+          "language": { "infoFiltered": "" },
+          "processing": true, //Feature control the processing indicator.
+          "serverSide": true, //Feature control DataTables' server-side processing mode.
+          "responsive": true,
+          "order": [[0, 'desc']], //Initial no order.
+          "columns": [
+               { "data": "material_name" },
+               { "data": "supplier_name" },
+               { "data": "type_trans" },
+               { "data": "trans_id" },
+               { "data": "expire_date" },
+               { "data": "date_received" },
+               {
+                    "data": "PK_raw_materials_id", "render": function (data, type, row, meta) {
+                         var str = `<div class="action-btn-div"><a href="javascript:;"  class="text-danger btn_pull_out" title="pull out" data-type="${row.type_trans}" data-item_id="${row.FK_raw_material_id}"  data-trans_id="${row.FK_purchase_id}"><i class="fa fa-trash"></i></a></div>`;
+                         return str;
+                    }
+               },
+          ],
+          "ajax": {
+               "url": base_url + "managerawmaterials/get_expired_items",
+               "type": "POST"
+          },
+          "columnDefs": [
+               {
+                    "targets": [5],
+                    "orderable": false,
+               },
+          ],
+     });
+
+     $(document).on('click', '.btn_pull_out', function () {
+          let item_id = $(this).data("item_id");
+          let trans_id = $(this).data("trans_id");
+          let trans_type = $(this).data("type");
+
+          confirm_alert("Are you sure to pull out this item and update inventory?").then(res => {
+
+               let frmdata = new FormData();
+               frmdata.append("type", trans_type);
+               frmdata.append("item_id", item_id);
+               frmdata.append("trans_id", trans_id);
+               axios.post(`${base_url}managerawmaterials/pull_out_expired`, frmdata).then(res => {
+                    if (res.data.status == "success") {
+                         expired_table.ajax.reload();
+                    }
+               })
+
+          })
+
+     })
+
      $(document).on('click', '.add_new', function () {
           let html = '';
           let options = '<option value="" selected>Select here</option>';

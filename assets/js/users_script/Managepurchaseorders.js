@@ -440,6 +440,7 @@ $(document).ready(function () {
 					quantity: row.find(".process-qty").text(),
 					rec_qty: row.find(".received-qty").val(),
 					units: row.find(".rcv-unit").html(),
+					expire_date: row.find(".exp_date").val(),
 				})
 			})
 

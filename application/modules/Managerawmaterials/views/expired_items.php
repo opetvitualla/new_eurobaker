@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-md-7 align-self-center text-right d-none d-md-block">
                       <form class="export" action="<?= base_url('ManageRawMaterials/generatePriceLogs') ?>" method="post">
-                          <button type="submit" class="btn btn-info theme-bg"><i class="fa fa-download"></i> Export </button>
+                          <!-- <button type="submit" class="btn btn-info theme-bg"><i class="fa fa-download"></i> Export </button> -->
                       </form>
                     </div>
                     <div class="">
@@ -35,14 +35,16 @@
                     <div class="col-12">
                         <div class="card">
                                 <div class="table-responsive m-t-40">
-                                    <table id="raw_Materials_Price_Logs" class="table table-bordered table-striped">
+                                    <table id="expired_table" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th class="text-center" style="width: 100px">Log ID</th>
-                                                <th class="text-center">Raw Material</th>
-                                                <th class="text-center">Previous Price</th>
-                                                <th class="text-center">Current Price</th>
-                                                <th class="text-center">Date Expired</th>
+                                                <th class="text-center" style="width: 100px">Item Name</th>
+                                                <th class="text-center">Supplier</th>
+                                                <th class="text-center">Trans. Type</th>
+                                                <th class="text-center">Trans. No</th>
+                                                <th class="text-center">Expiry Date</th>
+                                                <th class="text-center">Date Added</th>
+                                                <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
