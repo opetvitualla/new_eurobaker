@@ -658,9 +658,7 @@ class ManageRawMaterials extends MY_Controller {
 
 					$this->update_inventory($post["item_id"], $post["type"], $post["trans_id"], $post["qty"]);
 				}
-
 			}
-
 		}
 
 		echo json_encode($response);

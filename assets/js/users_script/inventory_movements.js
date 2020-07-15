@@ -11,7 +11,11 @@ $(document).ready(function () {
         "order": [[0, 'asc']], //Initial no order.
         "columns": [
             { "data": "material_name" },
-            { "data": "beginning_inventory" },
+            {
+                "data": "material_name", "render": function (data, type, row, meta) {
+                    return row.inv_data.beg_env
+                }
+            },
             {
                 "data": "material_name", "render": function (data, type, row, meta) {
                     return "+" + row.inv_data.tot_po

@@ -69,7 +69,7 @@ class Inventory_movements extends MY_Controller {
 
 	private function get_movements($item_id){
 
-		$resp = [ "tot_po" => 0 , "tot_tr" => 0, "tot_so" => 0 ];
+		$resp = [ "tot_po" => 0 , "tot_tr" => 0, "tot_so" => 0, "beg_env" => 0 ];
 
 		$branch_id = _get_branch_assigned();
 
@@ -89,14 +89,39 @@ class Inventory_movements extends MY_Controller {
 
 		if(!empty($po_data)){
 			$resp = [
-				"tot_po"=>$po_data[0]->tot,
-				"tot_tr"=>0,
-				"tot_so"=>0,
+				"tot_po"  => $po_data[0]->tot,
+				"tot_tr"  => 0,
+				"tot_so"  => 0,
+				"beg_env" => $this->get_beg_inventory($item_id)
 			];
 		}
 
 		return $resp;
+	}
 
+	private function get_beg_inventory ($item_id){
+		
+		$cur_date = date("m");
+
+		$res = 0;
+
+		$par['select'] = '*';
+		$par['where']  = array(
+			'fk_item_id' => $item_id,
+			'MONTH(date_added)' => $cur_date,
+			'branch_id' => _get_branch_assigned(),
+		);
+		$par['order'] = 'pk_inv_move_id ASC, date_added ASC';
+		$par['limit2'][0] = 1;
+		
+		$getdata       = getData('eb_inventory_movement', $par, 'obj');
+
+		if(!empty($getdata)){
+
+			$res = $getdata[0]->value;
+
+		}
+		return $res;
 	}
 
 }

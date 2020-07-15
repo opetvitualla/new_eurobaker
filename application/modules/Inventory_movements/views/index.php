@@ -30,7 +30,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 mb-3">
                         <h4>Coverage:</h4>
                         <div>
                             <?= date('F')?> 1, <?= date('Y')?> to <?= date('F'). " ".date('d').", ".date('Y')  ?>
