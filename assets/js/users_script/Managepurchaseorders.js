@@ -244,7 +244,7 @@ $(document).ready(function () {
 				generateOverTotal();
 			}
 			else {
-
+				alert("something wrong!")
 			}
 		})
 

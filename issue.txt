@@ -5,6 +5,8 @@ Checklist:
 Error Encountered:
 -
 
+In progress:
+- requested supervisor process
 
 
 Pending:
@@ -23,3 +25,4 @@ Completed:
 - expired items po done and pullout function
 - done update profile
 - update price update
+- fixng units stockout

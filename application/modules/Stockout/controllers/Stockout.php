@@ -13,6 +13,8 @@ class Stockout extends MY_Controller {
 			$data['has_modal'] = "modal/modal";
 			$data['has_footer']	= "includes/index_footer";
 
+			$data["supervisors"] = $this->get_branch_supervisors();
+
 			$par["select"] = "*";
 			$par["where"] = array(
 				"FK_branch_id" => _get_branch_assigned(),
@@ -77,7 +79,6 @@ class Stockout extends MY_Controller {
 
 		$post = $this->input->post();
 
-
 		if(!empty($post)){
 
 			$data = array(
@@ -86,6 +87,7 @@ class Stockout extends MY_Controller {
 				"FK_segment_id" 	=> $post["segment_id"],
 				"total_items"	  	=> $post["total_items"],
 				"total_amount"	  	=> $post["over_total"],
+				"fk_requested_id"	=> $post["requested_by"],
 				"status"		  	=> "pending",
 				"date_added"	  	=> date("Y-m-d h:i:s")
 			);
@@ -256,6 +258,24 @@ class Stockout extends MY_Controller {
 
 		echo json_encode($response);
 	}
+	
 
+	private function get_branch_supervisors (){
+		
+		$res = [];
+
+		$par['select'] = '*';
+		$par['where']  = array(
+			'user_type' => 3,
+			'user_status' => 1,
+			'branch_assigned' => _get_outlet_assigned(),
+		);
+		$par['join']   = array('eb_users_meta meta' => 'meta.FK_user_id  = user.PK_user_id');
+		
+		$getdata       = getData('eb_users user', $par, 'obj');
+
+		return $getdata;
+
+	}
 
 }

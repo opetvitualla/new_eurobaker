@@ -21,6 +21,7 @@ $(document).ready(function () {
         $(".btn-add-item").trigger("click")
         $(".table-po-body").html("");
         $(".supplier_select").select2();
+        $("#request_user_select").select2();
         is_add_item = true;
         $(".total-item").html(0)
         $(".over-total").html(0)
@@ -146,6 +147,7 @@ $(document).ready(function () {
         e.preventDefault();
         let overTotal = $(".over-total").html();
         let segment_id = $(".supplier_select option:selected").val()
+        let requested_by = $(".request_user_select option:selected").val()
 
         if (Number(overTotal) == 0) {
             s_alert("Please add atleast one item", "error")
@@ -154,6 +156,10 @@ $(document).ready(function () {
             s_alert("Please input the required items", "error")
             return
         } else if (segment_id == 0 || segment_id == undefined) {
+            s_alert("Please select a supplier first", "error")
+            return
+        }
+        else if (requested_by == 0 || requested_by == undefined) {
             s_alert("Please select a supplier first", "error")
             return
         }
@@ -177,6 +183,7 @@ $(document).ready(function () {
             })
 
             frmdata.append("segment_id", segment_id);
+            frmdata.append("requested_by", requested_by);
             frmdata.append("over_total", over_total);
             frmdata.append("total_items", total_items);
             frmdata.append("so_items", JSON.stringify(po_items));
@@ -453,20 +460,47 @@ $(document).ready(function () {
 
         let item = items.find(itm => itm.PK_raw_materials_id == item_id);
 
-        let row = $(this).closest('tr');
-        if (is_item_exist(item_id)) {
-            s_alert("This item is already added!", "error")
-            row.remove()
-            return;
-        }
+        axios.get(`${base_url}managepurchaseorders/get_item_unit/${item.unit}`).then(res => {
+            if (res.data.status == "success") {
+                let resdata = res.data.data;
 
-        let qty = row.find(".item-qty").val()
-        let total = calculateTotal(item.sales_price, qty)
+                let row = $(this).closest('tr');
+                if (is_item_exist(item_id)) {
+                    s_alert("This item is already added!", "error")
+                    row.remove()
+                    return;
+                }
+                let qty = row.find(".item-qty").val()
+                let total = calculateTotal(item.sales_price, qty)
 
-        row.find(".item-price").val(item.sales_price)
-        row.find(".item-total").val(total)
+                row.find(".item-price").val(item.sales_price)
+                row.find(".item-total").val(total)
 
-        generateOverTotal();
+                let html = `<option value="${resdata.PK_unit_id}">${resdata.unit_name}</option>`
+
+                row.find(".item-unit").html(html)
+
+                generateOverTotal();
+            }
+            else {
+                alert("something wrong!")
+            }
+        })
+
+        // let row = $(this).closest('tr');
+        // if (is_item_exist(item_id)) {
+        //     s_alert("This item is already added!", "error")
+        //     row.remove()
+        //     return;
+        // }
+
+        // let qty = row.find(".item-qty").val()
+        // let total = calculateTotal(item.sales_price, qty)
+
+        // row.find(".item-price").val(item.sales_price)
+        // row.find(".item-total").val(total)
+
+        // generateOverTotal();
     })
 
     $(document).on("change", ".item-qty", function () {

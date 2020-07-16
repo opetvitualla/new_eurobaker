@@ -14,11 +14,23 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="fbold" for="supplier">Select Segment</label>
-                                    <select name="segment_id" class="supplier_select form-control" style="width: 100%;">
+                                    <select name="segment_id" required class="supplier_select form-control" style="width: 100%;">
                                         <optgroup label="Select Segment">
                                             <?php
                                                 foreach ($segments as $seg) {
                                                     echo "<option value='{$seg->PK_segment_id}' >{$seg->segment_name}</option>";
+                                                }
+                                            ?>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="fbold" for="supplier">Select User Requested</label>
+                                    <select required name="request_user" id="request_user_select" class="request_user_select form-control" style="width: 100%;">
+                                        <optgroup label="Select Supervisor">
+                                            <?php
+                                                foreach ($supervisors as $sup) {
+                                                    echo "<option value='{$sup->PK_user_id}' >{$sup->firstname} {$sup->lastname}</option>";
                                                 }
                                             ?>
                                         </optgroup>
