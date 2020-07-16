@@ -185,7 +185,9 @@ class Login extends MY_Controller {
 				);
 
 				$par["join"] = array(
-					"eb_users_meta u_meta" => "u_meta.FK_user_id = user.PK_user_id"
+					"eb_users_meta u_meta" => "u_meta.FK_user_id = user.PK_user_id",
+					"eb_outlets outlet" => "outlet.PK_branch_id = user.branch_assigned",
+					
 				);
 
 			  	$user_data =  getData("eb_users user", $par);

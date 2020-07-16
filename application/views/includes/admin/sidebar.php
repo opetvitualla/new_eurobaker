@@ -18,7 +18,7 @@
                         <li><a href="<?= base_url('Managerawmaterials/price_log') ?>">Price Logs</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/Categories') ?>">Categories</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/Units') ?>">Units</a></li>
-                        <li><a href="<?= base_url('Managerawmaterials/unit_conversion') ?>">Item Unit Conversion</a></li>
+                        <!-- <li><a href="<?= base_url('Managerawmaterials/unit_conversion') ?>">Item Unit Conversion</a></li> -->
                         <li><a href="<?= base_url('Managerawmaterials/expired_items') ?>">Expired Items</a></li>
                     </ul>
                 </li>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ManageOutlets extends MY_Controller {
+class Manageoutlets extends MY_Controller {
 			public function __construct() {
 					parent::__construct();
 
@@ -13,7 +13,7 @@ class ManageOutlets extends MY_Controller {
 			$data['has_header'] = "includes/admin/header";
 			$data['has_footer']	= "includes/index_footer";
 
-			if (get_user_type() == 1 || get_user_type() == 2) {
+			if (get_user_type() == 1) {
 				$this->load_page('index',$data);
 			} else {
 				$this->load_purchaser_page('index',$data);
@@ -21,7 +21,7 @@ class ManageOutlets extends MY_Controller {
 
 		}
 
-		public function getOutlets() {
+		public function get_outlets() {
 			$limit        = $this->input->post('length');
 			$offset       = $this->input->post('start');
 			$search       = $this->input->post('search');
@@ -48,7 +48,7 @@ class ManageOutlets extends MY_Controller {
 			echo json_encode($list_of_outlets);
 		}
 
-		public function addOutlet() {
+		public function add_outlet() {
 			$post         = $this->input->post();
 			$data         = array(
 												'outlet_name'  => $post['outlet_name'],
@@ -68,7 +68,7 @@ class ManageOutlets extends MY_Controller {
 			echo json_encode($response);
 		}
 
-		public function viewDetails() {
+		public function view_details() {
 			$data_id          = $this->input->post('id');
 			$options['where'] = array(
 														'PK_branch_id' => $data_id
@@ -77,7 +77,7 @@ class ManageOutlets extends MY_Controller {
 			echo json_encode($data);
 		}
 
-		public function updateDetails() {
+		public function update_details() {
 			$data         = $this->input->post();
 			$set          = array(
 												'outlet_name'  => $data['outlet_name'],

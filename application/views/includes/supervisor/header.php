@@ -67,6 +67,7 @@
                                 </div>
                             </li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="<?= base_url("manageprofile")?>"><i class="fa fa-user"></i> My Profile</a></li>
                             <li><a href="<?= base_url("logout")?>"><i class="fa fa-power-off"></i> Logout</a></li>
                         </ul>
                     </div>

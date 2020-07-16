@@ -29,22 +29,26 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <div class="row">
+
+                    <?php 
+                        $userdata = $this->session->userdata();
+                    ?>
                     <!-- Column -->
                     <div class="col-lg-4 col-xlg-3 col-md-5">
                         <div class="card">
                             <div class="card-body">
-                                <center class="m-t-30"> <img src="<?= base_url("assets/img/dummy.png")?>" class="img-circle" width="150" />
-                                    <h4 class="card-title m-t-10">opet vitualla</h4>
+                                <div class="m-t-30 text-center"> <img src="<?= base_url("assets/img/dummy.png")?>" class="img-circle" width="150" />
+                                    <h4 class="card-title m-t-10"><?= $userdata["firstname"]. " ". $userdata["lastname"]?></h4>
                                     <h6 class="card-subtitle">Outlet Admin</h6>
-                                </center>
+                                </div>
                             </div>
                             <div>
                                 <hr> </div>
                             <div class="card-body">
                                 <small class="text-muted">Email address </small>
-                                <h6>web2.juphetvitualla@gmail.com</a></h6>
+                                <h6><?= $userdata["email_address"]?></a></h6>
                                 <small class="text-muted p-t-30 db">Assigned Outlet</small>
-                                <h6>Bajada</h6>
+                                <h6><?= $userdata["outlet_name"]?></h6>
                             </div>
                         </div>
                     </div>
@@ -60,46 +64,54 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="profile" role="tabpanel">
                                     <div class="card-body">
-                                        <form class="form-horizontal form-material">
+                                        <form class="form-horizontal form-material" id="form_profile" method="POST" action="#">
                                             <div class="form-group">
-                                                <label class="col-md-12">Full Name</label>
+                                                <label class="col-md-12">First Name</label>
                                                 <div class="col-md-12">
-                                                    <input type="text" placeholder="opet vitualla" class="form-control form-control-line">
+                                                    <input type="text" name="firstname" value="<?= $userdata["firstname"]?>" placeholder="Enter name" class="form-control form-control-line">
                                                 </div>
+                                                
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-12">Last Name</label>
+                                                <div class="col-md-12">
+                                                    <input type="text" required name="lastname" value="<?= $userdata["lastname"]?>" placeholder="Enter name" class="form-control form-control-line">
+                                                </div>
+                                                
                                             </div>
                                             <div class="form-group">
                                                 <label for="example-email" class="col-md-12">Email</label>
                                                 <div class="col-md-12">
-                                                    <input type="email" placeholder="web2.juphetvitualla@gmail.com" class="form-control form-control-line" name="example-email" id="example-email">
+                                                    <input type="email" required name="email" value="<?= $userdata["email_address"]?>" placeholder="Enter email" class="form-control form-control-line" id="example-email">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-12">Username</label>
+                                                <div class="col-md-12">
+                                                    <input type="text" required name="username" value="<?= $userdata["username"]?>" class="form-control form-control-line">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-md-12">Password</label>
                                                 <div class="col-md-12">
-                                                    <input type="password" value="123456" class="form-control form-control-line">
+                                                    <input type="password" required name="password" value="<?= $userdata["password"]?>" class="form-control form-control-line">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-md-12">Age</label>
                                                 <div class="col-md-12">
-                                                    <input type="text" placeholder="21" class="form-control form-control-line">
+                                                    <input type="text" name="age" required  placeholder="Enter Age" value="<?= $userdata["age"]?>" class="form-control form-control-line">
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                              <label>Gender:</label><br>
-                                              <input type="radio" id="male" name="gender" value="male">
-                                              <label for="male">Male</label><br>
-                                              <input type="radio" id="female" name="gender" value="female">
-                                              <label for="female">Female</label><br>
-
-                                            </div>
-                                            <div class="form-group">
                                                 <label class="col-md-12">Address</label>
-                                                <input type="text" placeholder="" class="form-control form-control-line">
+                                                 <div class="col-md-12">
+                                                    <input type="text" required name="address"  placeholder="Enter address" value="<?= $userdata["address"]?>" class="form-control form-control-line">
+                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-sm-12">
-                                                    <button class="btn btn-success">Update Profile</button>
+                                                    <button class="btn btn-success"><i class="fa fa-check"></i> Update Profile</button>
                                                 </div>
                                             </div>
                                         </form>

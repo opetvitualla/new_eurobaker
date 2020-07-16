@@ -13,7 +13,7 @@ class Manageemployees extends MY_Controller {
       $this->load_page('index',$data);
 		}
 
-    public function getEmployees() {
+    public function get_employees() {
       $limit        = $this->input->post('length');
       $offset       = $this->input->post('start');
       $search       = $this->input->post('search');
@@ -42,7 +42,7 @@ class Manageemployees extends MY_Controller {
       echo json_encode($list_of_employees);
     }
 
-    public function addEmployee() {
+    public function add_employee() {
       $post         = $this->input->post();
 
       $data         = array(
@@ -79,7 +79,7 @@ class Manageemployees extends MY_Controller {
       echo json_encode($response);
     }
 
-    public function viewDetails() {
+    public function view_details() {
       $data_id          = $this->input->post('id');
       $options['where'] = array(
                             'PK_user_id' => $data_id
@@ -91,7 +91,7 @@ class Manageemployees extends MY_Controller {
       echo json_encode($data);
     }
 
-    public function updateDetails() {
+    public function update_details() {
       $data         = $this->input->post();
 			// echo "<pre>";
 			// print_r($data); exit;
