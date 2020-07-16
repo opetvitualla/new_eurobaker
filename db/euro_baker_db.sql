@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2020 at 06:39 PM
+-- Generation Time: Jul 16, 2020 at 09:25 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.18
 
@@ -3829,6 +3829,7 @@ CREATE TABLE `eb_users` (
 --
 
 INSERT INTO `eb_users` (`PK_user_id`, `username`, `password`, `user_type`, `user_status`, `branch_assigned`, `date_added`) VALUES
+(0, 'Cory', 'password', 3, 1, '3', '2020-07-17 00:45:20'),
 (1, 'admin', '123456', 1, 1, '1', '2020-03-30 00:00:00'),
 (2, 'test2', 'password', 2, 1, '1', '2020-03-31 00:00:00'),
 (8, 'Matt', 'password', 3, 1, '1', '2020-04-24 17:58:30'),
@@ -3858,7 +3859,7 @@ CREATE TABLE `eb_users_meta` (
 --
 
 INSERT INTO `eb_users_meta` (`PK_user_meta_id`, `FK_user_id`, `firstname`, `lastname`, `email_address`, `age`, `gender`, `address`) VALUES
-(1, 1, 'opet', 'vitualla', 'web2.juphetvitualla@gmail.com', '21', 'male', ''),
+(1, 1, 'opet', 'vitualla', 'web2.juphetvitualla@gmail.com2', '333', 'male', 'test address 2'),
 (2, 2, 'John', 'Doe', 'sample@sample.com', '21', 'male', 'cebu'),
 (4, 8, 'Cruiser', 'Marion', 'proweaver@example.com', '0', 'female', '9170 N. Summerhouse St.'),
 (5, 9, 'Uy', 'Marion', 'example@proweaver.com', '76', 'female', '7669 Gulf Drive'),
