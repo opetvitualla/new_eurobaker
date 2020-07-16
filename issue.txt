@@ -21,3 +21,5 @@ Completed:
 - added counter checked
 - fixed added  initial inventory
 - expired items po done and pullout function
+- done update profile
+- update price update

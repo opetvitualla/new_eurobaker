@@ -33,7 +33,7 @@
                             <?php endif; ?>
                           </a>
                         </li>
-                        <li><a href="<?= base_url('Stockout') ?>">Stock Out</a></li>
+                        <li><a href="<?= base_url('stockout') ?>">Stock Out</a></li>
                         <li><a href="<?= base_url('Managestocks/StockAdjustments') ?>">Stock Adjustment</a></li>
                     </ul>
                 </li>

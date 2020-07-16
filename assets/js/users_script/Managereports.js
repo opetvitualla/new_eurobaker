@@ -39,7 +39,7 @@ $(document).ready(function () {
         },
       ],
       "ajax": {
-        "url": base_url + "Managereports/getPendingDeliveries",
+        "url": base_url + "managereports/get_pending_deliveries",
         "type": "POST",
         "data": { date_start: date_start, date_end: date_end }
       },
@@ -73,7 +73,7 @@ $(document).ready(function () {
         },
       ],
       "ajax": {
-        "url": base_url + "Managereports/getTransferReports",
+        "url": base_url + "managereports/get_transfer_reports",
         "type": "POST",
         "data": { date_start: date_start, date_end: date_end }
       },
@@ -108,7 +108,7 @@ $(document).ready(function () {
         },
       ],
       "ajax": {
-        "url": base_url + "Managereports/getEndingInventory",
+        "url": base_url + "managereports/get_ending_inventory",
         "type": "POST",
         "data": { ymonth: ymonth }
       },

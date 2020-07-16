@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ManageReports extends MY_Controller {
+class Managereports extends MY_Controller {
 			public function __construct() {
 					parent::__construct();
 			}
@@ -38,38 +38,38 @@ class ManageReports extends MY_Controller {
 			$this->load_page('endinginventory',$data);
     }
 
-		public function getEndingInventory() {
-			$date		=	!empty($this->input->post('ymonth')) ? $this->input->post('ymonth') : date('Y-m');
-			$outlet_id 		= 2;
+	public function get_ending_inventory() {
+		$date		=	!empty($this->input->post('ymonth')) ? $this->input->post('ymonth') : date('Y-m');
+		$outlet_id 		= 2;
 
-			$limit        = $this->input->post('length');
-			$offset       = $this->input->post('start');
-			$search       = $this->input->post('search');
-			$order        = $this->input->post('order');
-			$draw         = $this->input->post('draw');
-			$column_order = array(
-												'raw.`PK_raw_materials_id',
-												'raw.`material_name',
-												'inv.`beginning_inventory',
-												'inv.`quantity',
-												'inv.`date_added'
-											);
-			$join         = array(
-			                  "eb_item_inventory inv" => "inv.`FK_raw_material_id` = raw.`PK_raw_materials_id`"
-			                );
-			$select       = "raw.`PK_raw_materials_id`, raw.`material_name`, inv.`FK_raw_material_id`, inv.`beginning_inventory`, inv.`quantity`, inv.`date_added`";
-			$where        = "(SELECT max(`date_added`) FROM `eb_item_inventory` AS maxdate WHERE maxdate.`FK_raw_material_id`=raw.`PK_raw_materials_id` && date_format( `date_added`, '%Y-%m' ) = '$date' && `FK_outlet_id`='$outlet_id' LIMIT 1)=inv.`date_added`";
-			$group        = array();
-			$list         = $this->MY_Model->get_datatables('eb_raw_materials raw',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+		$limit        = $this->input->post('length');
+		$offset       = $this->input->post('start');
+		$search       = $this->input->post('search');
+		$order        = $this->input->post('order');
+		$draw         = $this->input->post('draw');
+		$column_order = array(
+			'raw.`PK_raw_materials_id',
+			'raw.`material_name',
+			'inv.`beginning_inventory',
+			'inv.`quantity',
+			'inv.`date_added'
+		);
+		$join         = array(
+							"eb_item_inventory inv" => "inv.`FK_raw_material_id` = raw.`PK_raw_materials_id`"
+						);
+		$select       = "raw.`PK_raw_materials_id`, raw.`material_name`, inv.`FK_raw_material_id`, inv.`beginning_inventory`, inv.`quantity`, inv.`date_added`";
+		$where        = "(SELECT max(`date_added`) FROM `eb_item_inventory` AS maxdate WHERE maxdate.`FK_raw_material_id`=raw.`PK_raw_materials_id` && date_format( `date_added`, '%Y-%m' ) = '$date' && `FK_outlet_id`='$outlet_id' LIMIT 1)=inv.`date_added`";
+		$group        = array();
+		$list         = $this->MY_Model->get_datatables('eb_raw_materials raw',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
 
-			$list_of_ending = array(
-																	"draw" => $draw,
-																	"recordsTotal" => $list['count_all'],
-																	"recordsFiltered" => $list['count'],
-																	"data" => $list['data']
-																);
-			echo json_encode($list_of_ending);
-		}
+		$list_of_ending = array(
+			"draw" => $draw,
+			"recordsTotal" => $list['count_all'],
+			"recordsFiltered" => $list['count'],
+			"data" => $list['data']
+		);
+		echo json_encode($list_of_ending);
+	}
 
 		public function generateEndingInventory() {
 				$date 										= $this->input->post('date');
@@ -114,7 +114,7 @@ class ManageReports extends MY_Controller {
 		}
 
     public function StockForTransfer() {
-      $data["title"] 		  = "Stock Transfer Reports";
+      		$data["title"] 		  = "Stock Transfer Reports";
 			$data["page_name"]  = "Stock Transfer Reports";
 			$data['has_header'] = "includes/admin/header";
 			$data['has_footer']	= "includes/index_footer";
@@ -122,7 +122,7 @@ class ManageReports extends MY_Controller {
 			$this->load_page('stocktransfer',$data);
     }
 
-		public function getTransferReports() {
+		public function get_transfer_reports() {
 			$date_start		=	!empty($this->input->post('date_start')) ? $this->input->post('date_start') : date('Y-m-d');
 			$date_end			=	!empty($this->input->post('date_end')) ? $this->input->post('date_end') : date('Y-m-d');
 			$outlet_id 		= 1;
@@ -247,7 +247,7 @@ class ManageReports extends MY_Controller {
 			$this->load_page('pendingdeliveries',$data);
     }
 
-    public function getPendingDeliveries() {
+    public function get_pending_deliveries() {
 			$date_start		=	!empty($this->input->post('date_start')) ? $this->input->post('date_start') : date('Y-m-d');
 			$date_end			=	!empty($this->input->post('date_end')) ? $this->input->post('date_end') : date('Y-m-d');
 			$type 				= 'Stock Transfer';

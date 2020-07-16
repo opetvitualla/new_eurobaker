@@ -20,7 +20,7 @@ class Managestocks extends MY_Controller {
 			$this->load_page('stocktransfer',$data);
     }
 
-		public function getStockTransfer() {
+		public function get_stock_transfer() {
 			$limit        = $this->input->post('length');
 			$offset       = $this->input->post('start');
 			$search       = $this->input->post('search');
@@ -272,7 +272,7 @@ class Managestocks extends MY_Controller {
 			$this->load_page('stockadjustments',$data);
     }
 
-		public function getStockDiscrepancy() {
+		public function get_stock_discrepancy() {
 			$limit        = $this->input->post('length');
 			$offset       = $this->input->post('start');
 			$search       = $this->input->post('search');

@@ -155,10 +155,15 @@
                     <div class="form-body">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <input type="hidden" name="so_app_id" class="so_app_id">
                                     <label class="fbold" for="supplier">Segment</label>
                                     <div class="div_value so_receive_segment">sample text</div>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="hidden" name="so_app_id" class="so_app_id">
+                                    <label class="fbold" for="supplier">Counter Checked By</label>
+                                    <input type="text" name="counter_checked" id="counter_checked"  required class="form-control">
                                 </div>
                                 <div class="col-md-12">
                                     <hr> </div>

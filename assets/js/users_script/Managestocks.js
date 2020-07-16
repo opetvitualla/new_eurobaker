@@ -1,9 +1,9 @@
-$(document).ready(function() {
+$(document).ready(function () {
   var base_url = $('.base_url').val();
 
-	let items = [];
+  let items = [];
 
-	let is_add_item = false;
+  let is_add_item = false;
 
   $(".show-add-modal").click(function () {
     $(".table-po-body").html("");
@@ -12,10 +12,10 @@ $(document).ready(function() {
 
   })
 
-	axios.get(`${base_url}Global_api/get_items`).then(res => {
-		//  suppliers = JSON.parse(res.data.data);
-		items = res.data.data;
-	})
+  axios.get(`${base_url}global_api/get_items`).then(res => {
+    //  suppliers = JSON.parse(res.data.data);
+    items = res.data.data;
+  })
   var stock_adjustments = $('#stock_Adjustments').DataTable({
     "language": { "infoFiltered": "" },
     "processing": true, //Feature control the processing indicator.
@@ -46,7 +46,7 @@ $(document).ready(function() {
       },
     ],
     "ajax": {
-      "url": base_url + "Managestocks/getStockDiscrepancy",
+      "url": base_url + "managestocks/get_stock_discrepancy",
       "type": "POST"
     },
     "columnDefs": [
@@ -102,7 +102,7 @@ $(document).ready(function() {
       },
     ],
     "ajax": {
-      "url": base_url + "Managestocks/getStockTransfer",
+      "url": base_url + "managestocks/get_stock_transfer",
       "type": "POST"
     },
     "columnDefs": [
@@ -113,11 +113,11 @@ $(document).ready(function() {
     ],
   });
 
-  $(document).on("click",".transfer_edit_details", function () {
+  $(document).on("click", ".transfer_edit_details", function () {
     let transferred_id = $(this).data("id");
     is_add_item = false;
     $(".transferred_id").val(transferred_id)
-    axios.get(`${base_url}Managestocks/get_transferred_details/${transferred_id}`).then(res => {
+    axios.get(`${base_url}managestocks/get_transferred_details/${transferred_id}`).then(res => {
       console.log(res);
       if (res.data.result == "success") {
         let datas = res.data.data;
@@ -166,11 +166,11 @@ $(document).ready(function() {
     })
   })
 
-  $(document).on('click', '.transfer_view_details', function() {
+  $(document).on('click', '.transfer_view_details', function () {
     let transferred_id = $(this).data("id");
     $('.transfer_view_details_modal input').prop('disabled', true);
 
-    axios.get(`${base_url}Managestocks/get_transferred_details/${transferred_id}`).then(res => {
+    axios.get(`${base_url}managestocks/get_transferred_details/${transferred_id}`).then(res => {
       if (res.data.result == "success") {
         let result = res.data.data;
         get_po_data = res.data.data;
@@ -214,11 +214,11 @@ $(document).ready(function() {
 
   $(document).on("change", ".item-qty", function () {
 
-    let qty 		= Number($(this).val())
-    let row 		= $(this).closest('tr');
-    let selected 	= row.find(".itemselect option:selected");
-    let item_id 	= selected.attr("data-id")
-    let item 		= items.find(itm => itm.PK_raw_materials_id == item_id);
+    let qty = Number($(this).val())
+    let row = $(this).closest('tr');
+    let selected = row.find(".itemselect option:selected");
+    let item_id = selected.attr("data-id")
+    let item = items.find(itm => itm.PK_raw_materials_id == item_id);
 
     // let total 	= calculateTotal(item.sales_price, qty)
 
@@ -229,12 +229,12 @@ $(document).ready(function() {
 
   $(".btn-add-item.transfer").click(function () {
 
-		let options = "<option  value=''>Please select an item<option>";
+    let options = "<option  value=''>Please select an item<option>";
     items.map(item => {
-			options += `<option data-id="${item.PK_raw_materials_id}" value="${item.material_name}">${item.material_name}<option>`;
-		})
+      options += `<option data-id="${item.PK_raw_materials_id}" value="${item.material_name}">${item.material_name}<option>`;
+    })
 
-		let html = `
+    let html = `
 			<tr>
 				<td>
 					<select required class="itemselect form-control" style="width: 100%;">
@@ -258,138 +258,138 @@ $(document).ready(function() {
 
 			</tr>
 		`
-		$(".po-table.transfer tbody").append(html);
-		$(".itemselect").select2();
-	})
+    $(".po-table.transfer tbody").append(html);
+    $(".itemselect").select2();
+  })
 
   $(document).on("click", ".remove-po-item", function () {
-		let row = $(this).closest('tr');
-		row.remove();
-		generateOverTotal();
-	})
+    let row = $(this).closest('tr');
+    row.remove();
+    generateOverTotal();
+  })
 
   $(document).on("change", ".itemselect", function () {
 
-		var elm 	= $("option:selected", this);
-		let item_id = elm.attr("data-id");
+    var elm = $("option:selected", this);
+    let item_id = elm.attr("data-id");
 
-		let item = items.find(itm => itm.PK_raw_materials_id == item_id);
+    let item = items.find(itm => itm.PK_raw_materials_id == item_id);
 
-		let row = $(this).closest('tr');
-		if (is_item_exist(item_id)) {
-			s_alert("This item is already added!", "error")
-			row.remove()
-			return;
-		}
-		let qty 	= row.find(".item-qty").val()
-		let total 	= calculateTotal(item.sales_price, qty)
+    let row = $(this).closest('tr');
+    if (is_item_exist(item_id)) {
+      s_alert("This item is already added!", "error")
+      row.remove()
+      return;
+    }
+    let qty = row.find(".item-qty").val()
+    let total = calculateTotal(item.sales_price, qty)
 
-		row.find(".item-unit").val(item.unit)
-		row.find(".item-price").val(item.sales_price)
-		row.find(".item-total").val(total)
+    row.find(".item-unit").val(item.unit)
+    row.find(".item-price").val(item.sales_price)
+    row.find(".item-total").val(total)
 
-		generateOverTotal();
-	})
+    generateOverTotal();
+  })
 
   $("#Stock_Transfer_Add").submit(function (e) {
-		e.preventDefault();
-		// let overTotal = $(".over-total").html();
-		// let supplier_id = $(".supplier_select option:selected").val()
+    e.preventDefault();
+    // let overTotal = $(".over-total").html();
+    // let supplier_id = $(".supplier_select option:selected").val()
     //
-		// if (Number(overTotal) == 0) {
-		// 	s_alert("Please add atleast one item", "error")
-		// 	return
-		// }
-		// else if (!validated_table()) {
-		// 	s_alert("Please input the required items", "error")
-		// 	return
-		// }
+    // if (Number(overTotal) == 0) {
+    // 	s_alert("Please add atleast one item", "error")
+    // 	return
+    // }
+    // else if (!validated_table()) {
+    // 	s_alert("Please input the required items", "error")
+    // 	return
+    // }
 
-		confirm_alert("Are you sure to transfer these items?").then(res => {
-			var frmdata = new FormData($(this)[0]);
+    confirm_alert("Are you sure to transfer these items?").then(res => {
+      var frmdata = new FormData($(this)[0]);
 
-			let po_items = [];
-			let total_items = $(".total-item").html();
-			let over_total = $(".over-total").html();
+      let po_items = [];
+      let total_items = $(".total-item").html();
+      let over_total = $(".over-total").html();
 
-			$("#Stock_Transfer_Add .po-table.transfer .table-po-body tr").each(function () {
-				let row 		= $(this);
-				let item_ids 	= row.find(".itemselect option:selected").attr("data-id")
-				po_items.push({
-					item_id: item_ids,
-					quantity: row.find(".item-qty").val(),
-					unit: row.find(".item-unit").val(),
-					price: row.find(".item-price").val(),
-				})
-			})
+      $("#Stock_Transfer_Add .po-table.transfer .table-po-body tr").each(function () {
+        let row = $(this);
+        let item_ids = row.find(".itemselect option:selected").attr("data-id")
+        po_items.push({
+          item_id: item_ids,
+          quantity: row.find(".item-qty").val(),
+          unit: row.find(".item-unit").val(),
+          price: row.find(".item-price").val(),
+        })
+      })
 
-			frmdata.append("over_total", 	over_total);
-			frmdata.append("total_items", 	total_items);
-			frmdata.append("po_items",		JSON.stringify(po_items));
+      frmdata.append("over_total", over_total);
+      frmdata.append("total_items", total_items);
+      frmdata.append("po_items", JSON.stringify(po_items));
 
-			axios.post(`${base_url}Managestocks/save_stock_transfer`, frmdata).then(res => {
+      axios.post(`${base_url}managestocks/save_stock_transfer`, frmdata).then(res => {
         console.log('res', res);
-				if (res.data.result == "success") {
-					s_alert("Successfully Saved!", "success");
-					stock_transfer.ajax.reload();
-					setTimeout(() => { $('.add_stock_transfer_modal').modal('hide'); }, 1000);
-				}
-			})
-		})
+        if (res.data.result == "success") {
+          s_alert("Successfully Saved!", "success");
+          stock_transfer.ajax.reload();
+          setTimeout(() => { $('.add_stock_transfer_modal').modal('hide'); }, 1000);
+        }
+      })
+    })
 
-	})
+  })
 
   // $("#Stock_Transfer_Edit").submit(function (e) {
-	// 	e.preventDefault();
-	// 	// let overTotal = $(".over-total").html();
-	// 	// let supplier_id = $(".supplier_select option:selected").val()
+  // 	e.preventDefault();
+  // 	// let overTotal = $(".over-total").html();
+  // 	// let supplier_id = $(".supplier_select option:selected").val()
   //   //
-	// 	// if (Number(overTotal) == 0) {
-	// 	// 	s_alert("Please add atleast one item", "error")
-	// 	// 	return
-	// 	// }
-	// 	// else if (!validated_table()) {
-	// 	// 	s_alert("Please input the required items", "error")
-	// 	// 	return
-	// 	// }
+  // 	// if (Number(overTotal) == 0) {
+  // 	// 	s_alert("Please add atleast one item", "error")
+  // 	// 	return
+  // 	// }
+  // 	// else if (!validated_table()) {
+  // 	// 	s_alert("Please input the required items", "error")
+  // 	// 	return
+  // 	// }
   //
-	// 	confirm_alert("Are you sure to update these items?").then(res => {
-	// 		var frmdata = new FormData($(this)[0]);
+  // 	confirm_alert("Are you sure to update these items?").then(res => {
+  // 		var frmdata = new FormData($(this)[0]);
   //
-	// 		let po_items = [];
-	// 		let total_items = $(".total-item").html();
-	// 		let over_total = $(".over-total").html();
+  // 		let po_items = [];
+  // 		let total_items = $(".total-item").html();
+  // 		let over_total = $(".over-total").html();
   //
-	// 		$("#Stock_Transfer_Edit .po-table.transfer .table-po-body tr").each(function () {
-	// 			let row 		= $(this);
-	// 			let item_ids 	= row.find(".itemselect option:selected").attr("data-id")
-	// 			po_items.push({
-	// 				item_id: item_ids,
-	// 				quantity: row.find(".item-qty").val(),
-	// 				unit: row.find(".item-unit").val(),
-	// 			})
-	// 		})
+  // 		$("#Stock_Transfer_Edit .po-table.transfer .table-po-body tr").each(function () {
+  // 			let row 		= $(this);
+  // 			let item_ids 	= row.find(".itemselect option:selected").attr("data-id")
+  // 			po_items.push({
+  // 				item_id: item_ids,
+  // 				quantity: row.find(".item-qty").val(),
+  // 				unit: row.find(".item-unit").val(),
+  // 			})
+  // 		})
   //
-	// 		frmdata.append("over_total", 	over_total);
-	// 		frmdata.append("total_items", 	total_items);
-	// 		frmdata.append("po_items",		JSON.stringify(po_items));
+  // 		frmdata.append("over_total", 	over_total);
+  // 		frmdata.append("total_items", 	total_items);
+  // 		frmdata.append("po_items",		JSON.stringify(po_items));
   //
-	// 		axios.post(`${base_url}Managestocks/save_stock_transfer`, frmdata).then(res => {
+  // 		axios.post(`${base_url}managestocks/save_stock_transfer`, frmdata).then(res => {
   //       console.log('res', res);
-	// 			if (res.data.result == "success") {
-	// 				s_alert("Successfully Saved!", "success");
-	// 				stock_transfer.ajax.reload();
-	// 				setTimeout(() => { $('.add_stock_transfer_modal').modal('hide'); }, 1000);
-	// 			}
-	// 		})
-	// 	})
+  // 			if (res.data.result == "success") {
+  // 				s_alert("Successfully Saved!", "success");
+  // 				stock_transfer.ajax.reload();
+  // 				setTimeout(() => { $('.add_stock_transfer_modal').modal('hide'); }, 1000);
+  // 			}
+  // 		})
+  // 	})
   //
-	// })
+  // })
 
-  $(document).on("click",".received_details", function(){
+  $(document).on("click", ".received_details", function () {
     let transferred_id = $(this).data("id");
 
-    axios.get(`${base_url}Managestocks/get_transferred_details/${transferred_id}`).then(res => {
+    axios.get(`${base_url}managestocks/get_transferred_details/${transferred_id}`).then(res => {
       console.log(res);
       if (res.data.result == "success") {
         let result = res.data.data;
@@ -434,7 +434,7 @@ $(document).ready(function() {
     //   let frmdata = new FormData();
     //   frmdata.append("transferred_id", transferred_id);
     //
-    //   axios.post(`${base_url}Managestocks/delivered_transfer`, frmdata).then(res => {
+    //   axios.post(`${base_url}managestocks/delivered_transfer`, frmdata).then(res => {
     //     if (res.data.result == "success") {
     //       s_alert("Delivered Successfully!", "success");
     //       stock_transfer.ajax.reload();
@@ -452,7 +452,7 @@ $(document).ready(function() {
         // console.log(frmdata);
         // console.log('actual',actual_quantity);
 
-        axios.post(`${base_url}Managestocks/delivered_transfer`, frmdata).then(res => {
+        axios.post(`${base_url}managestocks/delivered_transfer`, frmdata).then(res => {
           if (res.data.result == "success") {
             s_alert("Delivered Successfully!", "success");
             stock_transfer.ajax.reload();
@@ -466,17 +466,17 @@ $(document).ready(function() {
 
 
 
-  $(document).on('click', '.discrepancy_view_Details', function() {
+  $(document).on('click', '.discrepancy_view_Details', function () {
     var id = $(this).data('id');
     $('.view_details_modal_adj').modal('show');
 
     $.ajax({
-      url: base_url + 'Managestocks/viewDetailsAdjustments',
+      url: base_url + 'managestocks/viewDetailsAdjustments',
       type: "post",
       data: { "id": id },
       dataType: 'json',
       success: function (data) {
-        console.log('dataaa',data);
+        console.log('dataaa', data);
         var status = '';
         if (data.status == 1) {
           status = 'In Stock'
@@ -515,12 +515,12 @@ $(document).ready(function() {
   }
 
   function validated_table() {
-    $("#" + form_id+" .itemselect").each(function () {
+    $("#" + form_id + " .itemselect").each(function () {
       if ($(this).val() == "") {
         resp = false;
       }
     })
-    $("#" + form_id +" .item-price").each(function () {
+    $("#" + form_id + " .item-price").each(function () {
       if ($(this).val() == "") {
         resp = false;
       }
@@ -540,9 +540,9 @@ $(document).ready(function() {
     let count = 0;
     let countqty = 0;
     let mod = "add_stock_transfer_modal";
-		if (!is_add_item) {
-			mod = "edit_stock_transfer_modal";
-		}
+    if (!is_add_item) {
+      mod = "edit_stock_transfer_modal";
+    }
     $(".item-total").each(function (e) {
       over_total += Number($(this).val());
       count++;

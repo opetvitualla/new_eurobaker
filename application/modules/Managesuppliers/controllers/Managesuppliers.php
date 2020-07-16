@@ -18,7 +18,7 @@ class Managesuppliers extends MY_Controller {
 
 		}
 
-    public function getSuppliers() {
+    public function get_suppliers() {
       $limit        = $this->input->post('length');
       $offset       = $this->input->post('start');
       $search       = $this->input->post('search');
@@ -49,7 +49,7 @@ class Managesuppliers extends MY_Controller {
       echo json_encode($list_of_suppliers);
     }
 
-    public function addSupplier() {
+    public function add_supplier() {
       $post         = $this->input->post();
       $data         = array(
                         'supplier_name'  => $post['supplier_name'],
@@ -72,7 +72,7 @@ class Managesuppliers extends MY_Controller {
       echo json_encode($response);
     }
 
-    public function viewDetails() {
+    public function view_details() {
       $data_id          = $this->input->post('id');
       $options['where'] = array(
                             'PK_supplier_id' => $data_id
@@ -81,7 +81,7 @@ class Managesuppliers extends MY_Controller {
       echo json_encode($data);
     }
 
-    public function updateDetails() {
+    public function update_details() {
       $data         = $this->input->post();
       $set          = array(
                         'supplier_name'  => $data['supplier_name'],
