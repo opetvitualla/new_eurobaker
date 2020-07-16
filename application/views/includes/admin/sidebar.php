@@ -15,7 +15,7 @@
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="icon-Bag-Items"></i><span class="hide-menu">Raw Materials</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="<?= base_url('Managerawmaterials/') ?>">List of Raw Materials</a></li>
-                        <li><a href="<?= base_url('Managerawmaterials/PriceLogs') ?>">Price Logs</a></li>
+                        <li><a href="<?= base_url('Managerawmaterials/price_log') ?>">Price Logs</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/Categories') ?>">Categories</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/Units') ?>">Units</a></li>
                         <li><a href="<?= base_url('Managerawmaterials/unit_conversion') ?>">Item Unit Conversion</a></li>

@@ -24,7 +24,7 @@ $(document).ready(function () {
       { "data": "category_name" },
       { "data": "material_name" },
       { "data": "sales_price" },
-      { "data": "beginning_inventory" },
+      { "data": "beg_inv" },
       { "data": "quantity" },
       {
         "data": "PK_raw_materials_id", "render": function (data, type, row, meta) {

@@ -884,7 +884,7 @@ $(document).ready(function () {
                { "data": "date_added" },
           ],
           "ajax": {
-               "url": base_url + "managerawmaterials/getPriceLogs",
+               "url": base_url + "managerawmaterials/get_price_logs",
                "type": "POST"
           },
      });

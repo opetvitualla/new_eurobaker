@@ -491,7 +491,7 @@ class ManageRawMaterials extends MY_Controller {
 		echo json_encode($response);
 	}
 
-	public function PriceLogs(){
+	public function price_log(){
 		$data["title"] 		  = "Price Logs";
 		$data["page_name"]  = "Raw Materials > Price Logs";
 		$data['has_header'] = "includes/admin/header";
@@ -500,22 +500,22 @@ class ManageRawMaterials extends MY_Controller {
 		$this->load_page('pricelogs',$data);
 	}
 
-	public function getPriceLogs() {
+	public function get_price_logs() {
 		$limit        = $this->input->post('length');
 		$offset       = $this->input->post('start');
 		$search       = $this->input->post('search');
 		$order        = $this->input->post('order');
 		$draw         = $this->input->post('draw');
 		$column_order = array(
-											'PK_log_id',
-											'material_name',
-											'previous_price',
-											'current_price',
-											'eb_raw_materials_price_logs.date_added',
-										);
+			'PK_log_id',
+			'material_name',
+			'previous_price',
+			'current_price',
+			'eb_raw_materials_price_logs.date_added',
+		);
 		$join         = array(
-											'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
-										);
+			'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
+		);
 		$select       = "*";
 		$where        = array();
 		$group        = array();
