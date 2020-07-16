@@ -81,9 +81,12 @@ class Managepurchaseorders extends MY_Controller {
 				"date_added"	  => date("Y-m-d h:i:s")
 			);
 
+			
+
 			$po_id = insertData("eb_purchase_order", $data); // insert po
 
 			$items = json_decode($post["po_items"]);
+			$changed_price = json_decode($post["changed_price_item"]);
 
 			foreach ($items as $item) {
 				$data = array(
@@ -100,6 +103,25 @@ class Managepurchaseorders extends MY_Controller {
 				insertData("eb_purchase_order_item", $data);
 			}
 
+			foreach ($changed_price as $item) {
+
+				$prev_price =  $this->get_current_price($item->item_id);
+
+				$set = array( "sales_price" 		 => $item->new_price, );
+				$where = array("PK_raw_materials_id" => $item->item_id);
+
+				updateData("eb_raw_materials_list", $set, $where);
+
+				$data = array(
+					'FK_raw_material_id' => $item->item_id,
+					'previous_price' => $prev_price,
+					'current_price' => $item->new_price,
+					'outlet_id' => _get_outlet_assigned(),
+				);
+				
+				insertData('eb_raw_materials_price_logs', $data);
+			}
+
 			$response = array( "result" => "success" );
 
 			echo json_encode($response);
@@ -108,6 +130,23 @@ class Managepurchaseorders extends MY_Controller {
 	}
 
 	public function received_purchase_order(){
+
+	}
+
+	private function get_current_price ($item_id ){
+
+		$res = 0;
+
+		$par['select'] = 'sales_price';
+		$par['where']  = array("PK_raw_materials_id" => $item_id, "FK_outlet_id" => _get_outlet_assigned());
+		
+		$getdata       = getData('eb_raw_materials_list', $par, 'obj');
+
+		if(!empty($getdata)){
+			$res = $getdata[0]->sales_price;
+		}
+
+		return $res;
 
 	}
 
@@ -355,6 +394,24 @@ class Managepurchaseorders extends MY_Controller {
 		}
 
 	} 
+
+	public function check_item_price($item_id = 0){
+
+		$response = array("status" => "error");
+		$par['select'] = 'sales_price';
+		$par['where']  = array('PK_raw_materials_id' => $item_id, "FK_outlet_id" => _get_branch_assigned());
+		
+		$getdata       = getData('eb_raw_materials_list', $par, 'obj');
+
+		if(!empty($getdata)){
+
+			$response = array("status" => "success", "data" => $getdata[0]);
+
+		}
+
+		echo json_encode($response);
+
+	}
 
 	public function process_purchase_order(){
 

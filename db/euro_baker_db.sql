@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2020 at 05:48 AM
+-- Generation Time: Jul 16, 2020 at 06:39 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.18
 
@@ -64,7 +64,14 @@ INSERT INTO `eb_inventory_movement` (`pk_inv_move_id`, `fk_item_id`, `type_entry
 (14, 3, 'initial', 0, 0, 20, 1, '2020-07-13'),
 (15, 1, 'purchase', 5, 30, 3, 1, '2020-07-13'),
 (16, 2, 'purchase', 5, 10, 5, 1, '2020-07-13'),
-(17, 3, 'purchase', 6, 20, 1, 1, '2020-07-13');
+(17, 3, 'purchase', 6, 20, 1, 1, '2020-07-13'),
+(18, 1, 'purchase', 7, 33, 1, 1, '2020-07-14'),
+(19, 1, 'purchase', 7, 34, 1, 1, '2020-07-14'),
+(20, 1, 'purchase', 7, 35, 1, 1, '2020-07-14'),
+(21, 1, 'purchase', 7, 36, 1, 1, '2020-07-14'),
+(23, 3, 'pull_out', 0, 20, 19, 1, '2020-07-14'),
+(24, 1, 'purchase', 8, 37, 6, 1, '2020-07-15'),
+(25, 3, 'purchase', 8, 19, 5, 1, '2020-07-15');
 
 -- --------------------------------------------------------
 
@@ -90,9 +97,9 @@ CREATE TABLE `eb_item_inventory` (
 --
 
 INSERT INTO `eb_item_inventory` (`PK_inventory_id`, `FK_raw_material_id`, `FK_outlet_id`, `beginning_inventory`, `quantity`, `status`, `type`, `discrepancy`, `date_added`, `date_updated`) VALUES
-(23, 1, 1, 30, 33, 1, 'purchase', 0, '2020-07-13', '2020-07-13'),
+(23, 1, 1, 30, 43, 1, 'purchase', 0, '2020-07-13', '2020-07-15'),
 (24, 2, 1, 10, 15, 1, 'purchase', 0, '2020-07-13', '2020-07-13'),
-(25, 3, 1, 20, 21, 1, 'purchase', 0, '2020-07-13', '2020-07-13');
+(25, 3, 1, 20, 24, 1, 'purchase', 0, '2020-07-13', '2020-07-15');
 
 -- --------------------------------------------------------
 
@@ -202,7 +209,11 @@ CREATE TABLE `eb_purchase_order` (
 
 INSERT INTO `eb_purchase_order` (`PK_purchase_order_id`, `purchase_order_no`, `FK_supplier_id`, `FK_user_id`, `FK_branch_id`, `status`, `date_added`, `total_amount`, `remarks`) VALUES
 (5, 'N/A', 2, 1, 1, 'received', '2020-07-13 09:55:01', 210, ''),
-(6, 'N/A', 2, 1, 1, 'received', '2020-07-13 10:00:06', 66, '');
+(6, 'N/A', 2, 1, 1, 'received', '2020-07-13 10:00:06', 66, ''),
+(7, 'N/A', 2, 1, 1, 'received', '2020-07-14 05:02:41', 5, ''),
+(8, 'N/A', 16, 1, 1, 'received', '2020-07-15 06:24:06', 390, ''),
+(9, 'N/A', 3, 1, 1, 'pending', '2020-07-15 06:28:47', 90, ''),
+(12, 'N/A', 2, 1, 1, 'pending', '2020-07-16 06:38:21', 33, '');
 
 -- --------------------------------------------------------
 
@@ -240,17 +251,23 @@ CREATE TABLE `eb_purchase_order_item` (
   `price` float NOT NULL,
   `status` varchar(55) NOT NULL,
   `item_unit` varchar(50) NOT NULL,
-  `date_added` datetime NOT NULL
+  `date_added` datetime NOT NULL,
+  `expire_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `eb_purchase_order_item`
 --
 
-INSERT INTO `eb_purchase_order_item` (`PK_po_item_id`, `FK_purchase_id`, `FK_raw_material_id`, `quantity`, `total`, `price`, `status`, `item_unit`, `date_added`) VALUES
-(8, 5, 1, 3, 30, 10, '1', '2', '2020-07-13 09:55:01'),
-(9, 5, 2, 6, 180, 30, '1', '1', '2020-07-13 09:55:01'),
-(10, 6, 3, 1, 66, 66, '1', '2', '2020-07-13 10:00:06');
+INSERT INTO `eb_purchase_order_item` (`PK_po_item_id`, `FK_purchase_id`, `FK_raw_material_id`, `quantity`, `total`, `price`, `status`, `item_unit`, `date_added`, `expire_date`) VALUES
+(8, 5, 1, 3, 30, 10, '1', '2', '2020-07-13 09:55:01', '2022-07-08'),
+(9, 5, 2, 6, 180, 30, '1', '1', '2020-07-13 09:55:01', '0000-00-00'),
+(10, 6, 3, 1, 66, 66, '1', '2', '2020-07-13 10:00:06', '0000-00-00'),
+(12, 7, 1, 1, 5, 5, '1', '2', '2020-07-14 05:03:27', '0000-00-00'),
+(13, 8, 1, 6, 60, 10, '1', '2', '2020-07-15 06:24:06', '2019-01-28'),
+(14, 8, 3, 5, 330, 66, '1', '2', '2020-07-15 06:24:06', '2034-06-27'),
+(15, 9, 2, 3, 90, 30, '1', '1', '2020-07-15 06:28:47', '0000-00-00'),
+(18, 12, 1, 1, 33, 33, '1', '2', '2020-07-16 06:38:21', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -273,7 +290,9 @@ CREATE TABLE `eb_purchase_order_received` (
 
 INSERT INTO `eb_purchase_order_received` (`PK_po_received_id`, `FK_purchase_id`, `FK_received_user_id`, `status`, `counter_checked`, `date_received`) VALUES
 (10, 5, 1, 1, 'opets ', '2020-07-13 09:56:44'),
-(11, 6, 1, 1, 'opets', '2020-07-13 10:21:49');
+(11, 6, 1, 1, 'opets', '2020-07-13 10:21:49'),
+(13, 7, 1, 1, 'tasd asd a', '2020-07-14 07:45:33'),
+(14, 8, 1, 1, 'test only', '2020-07-15 06:25:10');
 
 -- --------------------------------------------------------
 
@@ -3308,7 +3327,7 @@ CREATE TABLE `eb_raw_materials_list` (
 --
 
 INSERT INTO `eb_raw_materials_list` (`PK_raw_materials_id`, `FK_outlet_id`, `FK_category_id`, `status`, `material_name`, `unit`, `sales_price`, `related_item_id`, `min_stock`, `date_added`) VALUES
-(1, 1, 3, 1, 'Coffee', 'Sack', '10', 1, 10, '2020-07-14 03:53:03'),
+(1, 1, 3, 1, 'Coffee', 'Sack', '33', 1, 10, '2020-07-14 03:53:03'),
 (2, 1, 3, 1, 'Milk', 'kg', '30', 2, 5, '2020-07-14 03:53:41'),
 (3, 1, 5, 1, 'Sugar', 'Sack', '66', 3, 10, '2020-07-14 03:54:13');
 
@@ -3323,6 +3342,7 @@ CREATE TABLE `eb_raw_materials_price_logs` (
   `FK_raw_material_id` int(11) NOT NULL,
   `previous_price` varchar(10) NOT NULL,
   `current_price` varchar(10) NOT NULL,
+  `outlet_id` int(11) NOT NULL,
   `date_added` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -3330,12 +3350,8 @@ CREATE TABLE `eb_raw_materials_price_logs` (
 -- Dumping data for table `eb_raw_materials_price_logs`
 --
 
-INSERT INTO `eb_raw_materials_price_logs` (`PK_log_id`, `FK_raw_material_id`, `previous_price`, `current_price`, `date_added`) VALUES
-(1, 1, '287.87', '287.87', '2020-05-13 18:26:32'),
-(2, 2, '311.85', '311.85', '2020-05-13 18:26:32'),
-(3, 3, '10.71', '12.21', '2020-05-13 18:27:02'),
-(4, 1, '287.87', '300', '2020-05-22 18:40:14'),
-(5, 1, '287.87', '300', '2020-05-22 18:40:55');
+INSERT INTO `eb_raw_materials_price_logs` (`PK_log_id`, `FK_raw_material_id`, `previous_price`, `current_price`, `outlet_id`, `date_added`) VALUES
+(6, 1, '10', '33', 1, '2020-07-17 00:38:21');
 
 -- --------------------------------------------------------
 
@@ -4047,7 +4063,7 @@ ALTER TABLE `eb_forgot_password_keys`
 -- AUTO_INCREMENT for table `eb_inventory_movement`
 --
 ALTER TABLE `eb_inventory_movement`
-  MODIFY `pk_inv_move_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `pk_inv_move_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `eb_item_inventory`
@@ -4083,7 +4099,7 @@ ALTER TABLE `eb_po_discrepancy_items`
 -- AUTO_INCREMENT for table `eb_purchase_order`
 --
 ALTER TABLE `eb_purchase_order`
-  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `PK_purchase_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_discrepancy`
@@ -4095,13 +4111,13 @@ ALTER TABLE `eb_purchase_order_discrepancy`
 -- AUTO_INCREMENT for table `eb_purchase_order_item`
 --
 ALTER TABLE `eb_purchase_order_item`
-  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `PK_po_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `eb_purchase_order_received`
 --
 ALTER TABLE `eb_purchase_order_received`
-  MODIFY `PK_po_received_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `PK_po_received_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `eb_raw_materials`
@@ -4125,7 +4141,7 @@ ALTER TABLE `eb_raw_materials_list`
 -- AUTO_INCREMENT for table `eb_raw_materials_price_logs`
 --
 ALTER TABLE `eb_raw_materials_price_logs`
-  MODIFY `PK_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `PK_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `eb_raw_materials_units`

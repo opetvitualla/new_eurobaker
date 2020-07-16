@@ -274,7 +274,7 @@ $(document).ready(function () {
 		generateOverTotal();
 	})
 
-	$(document).on("change", ".item-price", function () {
+	$(document).on("change keyup", ".item-price", function () {
 
 		let price = Number($(this).val());
 
@@ -290,11 +290,21 @@ $(document).ready(function () {
 		if (item_id != undefined && item_id != "") {
 			let qty = row.find(".item-qty").val();
 
-			console.log(qty, price)
-
 			let total = calculateTotal(price, qty)
 
 			row.find(".item-total").val(total)
+
+			axios.get(`${base_url}managepurchaseorders/check_item_price/${item_id}`).then(res => {
+				if (res.data.status == "success") {
+					let dta = res.data.data;
+					if (dta.sales_price != price) {
+						row.find(".item-price").addClass("changed_price");
+					}
+					else {
+						row.find(".item-price").removeClass("changed_price");
+					}
+				}
+			})
 
 			generateOverTotal();
 		}
@@ -324,6 +334,7 @@ $(document).ready(function () {
 			let frmdata = new FormData();
 
 			let po_items = [];
+			let changed_price_item = [];
 			let total_items = $(".total-item").html();
 			let over_total = $(".over-total").html();
 
@@ -337,10 +348,18 @@ $(document).ready(function () {
 					price: row.find(".item-price").val(),
 					total: row.find(".item-total").val(),
 				})
+
+				if (row.find(".item-qty").val() != undefined) {
+					changed_price_item.push({
+						item_id: item_ids,
+						new_price: row.find(".item-price").val()
+					})
+				}
 			})
 
 			frmdata.append("supplier_id", supplier_id);
 			frmdata.append("over_total", over_total);
+			frmdata.append("changed_price_item", JSON.stringify(changed_price_item));
 			frmdata.append("total_items", total_items);
 			frmdata.append("po_items", JSON.stringify(po_items));
 

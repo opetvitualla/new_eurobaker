@@ -20,3 +20,4 @@ Completed:
 - fix unit po
 - added counter checked
 - fixed added  initial inventory
+- expired items po done and pullout function
