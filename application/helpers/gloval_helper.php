@@ -263,7 +263,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function _get_items($params = array()){
 
             $par["select"] = "PK_raw_materials_id, FK_category_id, material_name, unit, sales_price, related_item_id";
+            $par["where"]  = array(
+                "FK_outlet_id" => _get_branch_assigned()
+            );
+
             $items = getData("eb_raw_materials_list", $par, "obj");
+
+            $c = 0;
+            foreach ($items as $item) {
+                
+                $par['select'] = 'quantity';
+                $par['where']  = array(
+                    'FK_raw_material_id' => $item->PK_raw_materials_id,
+                    'status' => 1,
+                    "FK_outlet_id" => _get_branch_assigned()
+                );
+                
+                $getdata       = getData('eb_item_inventory', $par, 'obj');
+                $qty           = (!empty($getdata) ? $getdata[0]->quantity : 0);
+                $items[$c]->inventory_quantity = $qty;
+
+                $c++;
+
+            }
 
 			return $items;
         }

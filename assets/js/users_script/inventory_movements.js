@@ -11,6 +11,7 @@ $(document).ready(function () {
         "order": [[0, 'asc']], //Initial no order.
         "columns": [
             { "data": "material_name" },
+            { "data": "category_name" },
             {
                 "data": "material_name", "render": function (data, type, row, meta) {
                     return row.inv_data.beg_env

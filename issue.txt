@@ -1,5 +1,5 @@
 Checklist:
-- 
+- check inventory stock out
 
 
 Error Encountered:
@@ -7,6 +7,7 @@ Error Encountered:
 
 In progress:
 - requested supervisor process
+- stock out desc
 
 
 Pending:
@@ -26,3 +27,6 @@ Completed:
 - done update profile
 - update price update
 - fixng units stockout
+- done check inventory stockout
+- done inventory stockout
+-fixed modal so

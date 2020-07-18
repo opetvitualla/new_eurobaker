@@ -52,6 +52,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Product Name</th>
+                                                <th>Category</th>
                                                 <th>Beg.</th>
                                                 <th>Purchases</th>
                                                 <th>Transfers</th>

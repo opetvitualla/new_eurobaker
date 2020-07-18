@@ -6,12 +6,12 @@ $(document).ready(function () {
 
     let is_add_item = false;
 
-    axios.get(`${base_url}Global_api/get_items`).then(res => {
+    axios.get(`${base_url}global_api/get_items`).then(res => {
         //  suppliers = JSON.parse(res.data.data);
         items = res.data.data;
     })
 
-    axios.get(`${base_url}Global_api/get_units`).then(res => {
+    axios.get(`${base_url}global_api/get_units`).then(res => {
         //  suppliers = JSON.parse(res.data.data);
         units = res.data.data;
     })
@@ -283,18 +283,12 @@ $(document).ready(function () {
                     let html = `
                         <tr>
                             <td class="item-data" data-id="${so_item.FK_raw_material_id}"> ${so_item.material_name} </td>
-                        <td>
-                            <span class="process-qty">${so_item.quantity}</span>
-                        </td>
-                        <td>
-                            ${so_item.item_unit}
-                        </td>
-                        <td>
-                            P${so_item.average_cost}
-                        </td>
-                        <td>
-                            <input type="number" min="0" max="${so_item.quantity}" value="${so_item.quantity}" class="form-control received-qty">
-                        </td>
+                            <td> <span class="process-qty">${so_item.quantity}</span> </td>
+                            <td class="item_unit">${so_item.unit}</td>
+                            <td> P${so_item.sales_price} </td>
+                            <td>
+                                <input type="number" min="0" max="${so_item.quantity}" value="${so_item.quantity}" class="form-control received-qty">
+                            </td>
                         
                         </tr>
                     `
@@ -367,10 +361,10 @@ $(document).ready(function () {
                     </select>
                 </td>
                 <td>
-                    <input required readonly type="text" value="${so_item.average_cost}" class="form-control item-price">
+                    <input required readonly type="text" value="${so_item.sales_price}" class="form-control item-price">
                 </td>
                 <td>
-                    <input required readonly type="text" value="${Number(so_item.quantity) * Number(so_item.average_cost)}" class="form-control item-total">
+                    <input required readonly type="text" value="${Number(so_item.quantity) * Number(so_item.sales_price)}" class="form-control item-total">
                 </td>
                 <td>
                     <a style="font-size:16px;" href="javascript:;" class="mx-auto fa fa-trash text-danger remove-po-item"></a>
@@ -405,10 +399,15 @@ $(document).ready(function () {
                 $(".supplier_select_edit option[value=" + datas[0].FK_segment_id + "]").attr("selected", "selected").change()
 
                 let fname = datas[0].approved_data[0].firstname + " " + datas[0].approved_data[0].lastname
-                let appname = datas[0].firstname + " " + datas[0].firstname
+                let appname = datas[0].request_user[0].firstname + " " + datas[0].request_user[0].firstname
+                let checked_by = datas[0].approved_data[0].counter_checked
+                let date_app = datas[0].approved_data[0].date_approved
 
                 $(".so_view_approved").html(fname);
                 $(".so_view_requested").html(appname);
+                $(".so_checked").html(checked_by);
+                $(".so_date_approve").html(date_app);
+
 
                 so_items.map(so_item => {
 
@@ -424,13 +423,13 @@ $(document).ready(function () {
                              ${so_item.quantity}
                         </td>
                         <td>
-                             ${so_item.item_unit}
+                             ${so_item.unit}
                         </td>
                         <td>
-                            ${so_item.average_cost}
+                            ${so_item.sales_price}
                         </td>
                         <td>
-                            <span class="stotal">${Number(so_item.quantity) * Number(so_item.average_cost)}</span>
+                            <span class="stotal">${Number(so_item.quantity) * Number(so_item.sales_price)}</span>
                         </td>
                             
                         </tr>
@@ -460,6 +459,12 @@ $(document).ready(function () {
 
         let item = items.find(itm => itm.PK_raw_materials_id == item_id);
 
+        if (item.inventory_quantity <= 0) {
+            s_alert("This item is out of stock!", "error");
+            $(this).closest("tr").remove();
+            return;
+        }
+
         axios.get(`${base_url}managepurchaseorders/get_item_unit/${item.unit}`).then(res => {
             if (res.data.status == "success") {
                 let resdata = res.data.data;
@@ -470,6 +475,7 @@ $(document).ready(function () {
                     row.remove()
                     return;
                 }
+                row.find(".item-qty").val(1)
                 let qty = row.find(".item-qty").val()
                 let total = calculateTotal(item.sales_price, qty)
 
@@ -487,29 +493,21 @@ $(document).ready(function () {
             }
         })
 
-        // let row = $(this).closest('tr');
-        // if (is_item_exist(item_id)) {
-        //     s_alert("This item is already added!", "error")
-        //     row.remove()
-        //     return;
-        // }
-
-        // let qty = row.find(".item-qty").val()
-        // let total = calculateTotal(item.sales_price, qty)
-
-        // row.find(".item-price").val(item.sales_price)
-        // row.find(".item-total").val(total)
-
-        // generateOverTotal();
     })
 
-    $(document).on("change", ".item-qty", function () {
+    $(document).on("change keyup", ".item-qty", function () {
 
         let qty = Number($(this).val())
+
         let row = $(this).closest('tr');
         let selected = row.find(".itemselect option:selected");
         let item_id = selected.attr("data-id")
         let item = items.find(itm => itm.PK_raw_materials_id == item_id);
+
+        if (item.inventory_quantity < qty) {
+            s_alert(`This item have  ${item.inventory_quantity} left only!`, "error");
+            $(this).val(1);
+        }
 
         let total = calculateTotal(item.sales_price, qty)
 
@@ -525,6 +523,7 @@ $(document).ready(function () {
             let so_id = $(".so_app_id").val()
 
             let disc_items = [];
+            let all_items = [];
 
             $(".table-po-body-approve tr.discrep_item").each(function () {
                 let row = $(this);
@@ -534,14 +533,30 @@ $(document).ready(function () {
                     item_name: row.find(".item-data").text(),
                     quantity: row.find(".process-qty").text(),
                     rec_qty: row.find(".received-qty").val(),
-                    unit: row.find(".item-unit").val(),
+                    unit: row.find(".item_unit").text(),
+                })
+            })
+
+            $(".table-po-body-approve tr").each(function () {
+                let row = $(this);
+                let item_ids = row.find(".item-data").attr("data-id")
+                all_items.push({
+                    item_id: item_ids,
+                    item_name: row.find(".item-data").text(),
+                    quantity: row.find(".process-qty").text(),
+                    rec_qty: row.find(".received-qty").val(),
+                    unit: row.find(".item_unit").text(),
                 })
             })
 
             let dreason = $("#discrepancy_reason").val();
+            let counter_check = $("#counter_checked").val();
+
 
             frmdata.append("so_id", so_id);
+            frmdata.append("counter_check", counter_check);
             frmdata.append("disc_item", JSON.stringify(disc_items));
+            frmdata.append("all_items", JSON.stringify(all_items));
             frmdata.append("reason", dreason);
 
             axios.post(`${base_url}stockout/approve_request_form`, frmdata).then(res => {
@@ -599,6 +614,8 @@ $(document).ready(function () {
             mod = modal_name;
         }
 
+        console.log(mod)
+
         if (mod == "view_so_modal") {
             $(`.${mod} .stotal`).each(function (e) {
                 over_total += Number($(this).html());
@@ -612,15 +629,14 @@ $(document).ready(function () {
             })
         }
 
-
-
         if (mod == "approved_so_modal") {
             count = 0;
             $(`.table-po-body-approve tr`).each(function (e) {
                 count++;
             })
-            $(".total-  ").html(count)
+            $(".total-item").html(count)
             $(".over-total").remove();
+            $(".over-total").html(over_total.toFixed(2))
             $(".approved_so_modal .o-total:last-child").hide()
 
         }

@@ -198,8 +198,10 @@
                                     <hr/>
                                     <div class="row">
                                         <div class="col-md-5">
+                                            <h3 class="fbold">Total Purchased Item: <span class="total-item">0</span></h3>
+                                            <!-- <h3 class="fbold o-total">Overall Total: <span>&#8369;</span><span class="over-total">0</span></h3>
                                             <h3 class="fbold o-total">Total Purchased Item: <span class="total-item">0</span></h3>
-                                            <h3 class="fbold o-total">Overall Total: <span>&#8369;</span><span class="over-total">0</span></h3>
+                                            <h3 class="fbold">Overall Total: <span>&#8369;</span><span class="over-total">0</span></h3> -->
                                         </div>
                                         <div class="col-md-7">
                                             <label for="" class="fbold">Discrepancy Reason: </label>
@@ -234,18 +236,26 @@
                     <div class="form-body">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <input type="hidden" name="so_app_id" class="so_app_id">
                                     <label class="fbold" for="supplier">Segment:</label>
                                     <div class="div_value so_view_segment">sample text</div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="fbold" for="supplier">Requested By:</label>
                                     <div class="div_value so_view_requested">sample text</div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="fbold" for="supplier">Approved By:</label>
                                     <div class="div_value so_view_approved">sample text</div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="fbold" for="supplier">Counter Checked:</label>
+                                    <div class="div_value so_checked">sample text</div>
+                                </div>
+                                <div class="col-md-3 mt-3">
+                                    <label class="fbold" for="supplier">Date Approved:</label>
+                                    <div class="div_value so_date_approve">sample text</div>
                                 </div>
                                 <div class="col-md-12">
                                     <hr> </div>

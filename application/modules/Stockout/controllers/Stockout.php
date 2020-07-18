@@ -176,18 +176,19 @@ class Stockout extends MY_Controller {
 
 			if(!empty($so_data)){
 			
-				$par['select'] = 'firstname, lastname';
+				$par['select'] = 'firstname, lastname, counter_checked, date_approved';
 				$par['where']  = array('fk_stockout_id' => $so_id);
 				$par["join"] 	= array(
 					"eb_users_meta user_meta" => "user_meta.FK_user_id = so_app.fk_approve_user_id",
 				);
 				$app_data       = getData('eb_stock_out_approved so_app', $par, 'obj');
 				$so_data[0]->{"approved_data"} = $app_data;
+				$so_data[0]->{"request_user"} = $this->get_request_user($so_id);
 
 				$par["select"] 	= "*";
 				$par["where"]	= "so_item.FK_stock_out_id = {$so_id}";
 				$par["join"] 	= array(
-					"eb_raw_materials raw_mat" => "raw_mat.PK_raw_materials_id = so_item.FK_raw_material_id",
+					"eb_raw_materials_list raw_mat" => "raw_mat.PK_raw_materials_id = so_item.FK_raw_material_id",
 				);
 
 				$so_items = getData("eb_stock_out_items so_item", $par, "obj");
@@ -203,19 +204,38 @@ class Stockout extends MY_Controller {
 		echo json_encode($response);
 	}
 
+	private function get_request_user ($so_id){
+		
+		$par['select'] = 'firstname, lastname';
+		$par['where']  = array(
+			'so.PK_stock_out_id' => $so_id,
+			'so.status' => "approved",
+			"so.FK_outlet_id" => _get_branch_assigned()
+		);
+		$par['join']   = array('eb_stock_out so' => 'so.fk_requested_id = meta.FK_user_id');
+		
+		$getdata       = getData('eb_users_meta meta', $par, 'obj');
+
+		return $getdata;
+
+	}
 
 	public function approve_request_form(){
 		$post 	  = $this->input->post();
 		$response = array("result" => "error");
 
 		$so_id = $post["so_id"];
+		$counter_checked = $post["counter_check"];
 		$disc_items = json_decode($post["disc_item"]);
+		$all_items = json_decode($post["all_items"]);
+
 
 		if(!empty($so_id)){
 
 			$data = array(
 				"fk_stockout_id" => $so_id,
 				"fk_approve_user_id" => my_user_id(),
+				"counter_checked" => $counter_checked,
 				"status" => 1,
 				"date_approved" => date("Y-m-d h:i:s")
 			);
@@ -243,6 +263,7 @@ class Stockout extends MY_Controller {
 						"fk_material_id" => $item->item_id,
 						"material_name" => $item->item_name,
 						"qty" => $item->quantity,
+						"unit" => $item->unit,
 						"received_qty" => $item->rec_qty,
 						"date_added" => date("Y-m-d h:i:s")
 					);
@@ -253,12 +274,61 @@ class Stockout extends MY_Controller {
 
 			}
 
+			if(!empty($all_items)){
+				$this->update_inventory($all_items, $so_id);
+			}
+
 			$response = array("result" => "success");
 		}
 
 		echo json_encode($response);
 	}
 	
+	// update inventory
+
+	private function update_inventory($items = array(), $trans_id= 0){
+
+		if(!empty($items)){
+			foreach ($items as $item) {
+
+				// get qty
+				$par['select'] = 'quantity';
+				$par['where']  = array( 'FK_raw_material_id' => $item->item_id, 'FK_outlet_id' => _get_branch_assigned() );
+				$qty_data= getData('eb_item_inventory', $par, 'obj');
+
+				$qty =0;       
+				if(!empty($qty_data)){
+					$qty = $qty_data[0]->quantity;   
+				}
+
+				$set = array(
+					'quantity' => $qty -  $item->rec_qty,
+					'type' => "stockout",
+					"date_updated" => date("Y-m-d")
+				);
+
+				$where = array(
+					'FK_raw_material_id' => $item->item_id,
+					'FK_outlet_id' => _get_branch_assigned(),
+				);
+				
+				updateData('eb_item_inventory', $set, $where);
+
+				$data = array(
+					'fk_item_id' =>  $item->item_id,
+					'type_entry' => "stockout",
+					'trans_id' => $trans_id,
+					'from_value' =>  $qty,
+					'value' =>  $item->rec_qty,
+					"branch_id" => _get_branch_assigned(),
+					"date_added" => date("Y-m-d")
+				);
+
+				insertData('eb_inventory_movement', $data);
+			}
+		}
+
+	} 
 
 	private function get_branch_supervisors (){
 		

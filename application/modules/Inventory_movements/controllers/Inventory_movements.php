@@ -28,13 +28,14 @@ class Inventory_movements extends MY_Controller {
 				'material_name',
 				'beginning_inventory',
 				'PK_raw_materials_id',
-				'PK_category_id',
+				'category_name',
 				'sales_price',
 				'env.quantity',
 			);
 			$join         = array(
 				"eb_raw_materials_cat cat" => "cat.PK_category_id = mat.FK_category_id",
 				"eb_item_inventory env" => "env.FK_raw_material_id = mat.PK_raw_materials_id",
+				"eb_raw_materials_cat cat" => "cat.PK_category_id = mat.FK_category_id",
 			);
 			$select       = "*";
 			$where        = array(
@@ -69,7 +70,19 @@ class Inventory_movements extends MY_Controller {
 
 	private function get_movements($item_id){
 
-		$resp = [ "tot_po" => 0 , "tot_tr" => 0, "tot_so" => 0, "beg_env" => 0 ];
+		$resp = [
+			"tot_po"  => $this->get_trans_movements($item_id, "purchase"),
+			"tot_tr"  => 0,
+			"tot_so"  => $this->get_trans_movements($item_id, "stockout"),
+			"beg_env" => $this->get_beg_inventory($item_id)
+		];
+
+
+		return $resp;
+	}
+
+
+	private function get_trans_movements ($item_id, $trans_type){
 
 		$branch_id = _get_branch_assigned();
 
@@ -82,21 +95,14 @@ class Inventory_movements extends MY_Controller {
 			'date_added >=' => $datefrom,
 			'date_added <=' => $dateto,
 			"fk_item_id" => $item_id,
-			"type_entry" => "purchase",
+			"type_entry" => $trans_type,
 		);
 		
 		$po_data       = getData('eb_inventory_movement', $par, 'obj');
 
-		if(!empty($po_data)){
-			$resp = [
-				"tot_po"  => $po_data[0]->tot,
-				"tot_tr"  => 0,
-				"tot_so"  => 0,
-				"beg_env" => $this->get_beg_inventory($item_id)
-			];
-		}
 
-		return $resp;
+		return (isset($po_data[0]->tot) ? $po_data[0]->tot : 0);
+
 	}
 
 	private function get_beg_inventory ($item_id){

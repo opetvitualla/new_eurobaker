@@ -53,69 +53,11 @@
                 </div>
 
             
-                <!-- start -->
-                <div class="modal fade discrepancy_modal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" style="max-width:900px;">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Discrepancy</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-body">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label class="fbold" for="supplier">Supplier</label>
-                                                <div class="div_value po_receive_supplier">sample text</div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="fbold" for="supplier">Date Received</label>
-                                                <div class="div_value po_received_date">sample text</div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="fbold" for="supplier">Received By</label>
-                                                <div class="div_value po_received_by">John Doe</div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <hr> </div>
-                                        </div>
-                                        <div class="cont-po">
-
-                                            <table class="table table-bordered po-table">
-                                                <thead>
-                                                    <tr>
-                                                        <td>Item Name</td>
-                                                        <td>Quantity</td>
-                                                        <td style="width: 122px;">Item Unit</td>
-                                                        <td>Price</td>
-                                                        <td>Total</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="table-po-body-received"> </tbody>
-                                            </table>
-                                            <div class="form-actions">
-                                                <hr/>
-                                                <h3 class="fbold o-total">Total Purchased Item: <span class="total-item-received">0</span></h3>
-
-                                                <h3 class="fbold o-total">Overall Total: <span>&#8369;</span><span class="over-total-received">0</span></h3>
-                                                <hr>
-                                                <div class="card-body text-right ">
-                                                    <button type="button" class="btn btn-success btn-generate-arf"> Discrepancy</button>                            
-                                                    <button type="button" class="btn btn-success btn-generate-arf"> Generate ARF</button>
-                                                    <button type="button" class="btn btn-danger"> Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>                                                                   
-                <!-- end -->
+                <?php
+                    if(isset($has_modal)){
+                        $this->load->view($has_modal);
+                    }
+                ?>
                 </div>
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->

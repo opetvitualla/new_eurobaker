@@ -705,7 +705,7 @@ class ManageRawMaterials extends MY_Controller {
 			'type_entry' => "pull_out",
 			'trans_id' => 0,
 			'from_value' =>  $qty,
-			'value' =>  $qty - $sub_qty,
+			'value' =>  $sub_qty,
 			"branch_id" => _get_branch_assigned(),
 			"date_added" => date("Y-m-d")
 		);
