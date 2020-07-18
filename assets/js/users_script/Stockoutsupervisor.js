@@ -15,12 +15,17 @@ $(document).ready(function () {
         //  suppliers = JSON.parse(res.data.data);
         units = res.data.data;
     })
+    $("#request_user_select_edit").select2();
+    $("#supplier_select_edit").select2();
 
     $(".show-add-modal").click(function () {
         $(".add_so_modal").modal();
         $(".btn-add-item").trigger("click")
         $(".table-po-body").html("");
         $(".supplier_select").select2();
+        $("#request_user_select").select2();
+
+
         is_add_item = true;
         $(".total-item").html(0)
         $(".over-total").html(0)
@@ -28,53 +33,131 @@ $(document).ready(function () {
     })
 
     var table_purchase_order = $('#stock_Out').DataTable({
-        "language": { "infoFiltered": "" },
+        "language": {
+            "infoFiltered": ""
+        },
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
         "responsive": true,
-        "order": [[0, 'desc']], //Initial no order.
+        "order": [
+            [0, 'desc']
+        ], //Initial no order.
         "createdRow": function (row, data, dataIndex) {
             if (data.status == "approved") {
                 $(row).addClass("row_stock_received");
             }
         },
-        "columns": [
-            {
-                "data": "PK_stock_out_id", "render": function (data, type, row, meta) {
-                    var str = 'SO-' + row.PK_stock_out_id;
-                    return str;
-                }
-            },
-            { "data": "segment_name" },
-            { "data": "total_items" },
-            { "data": "total_amount" },
-            { "data": "firstname" },
-            { "data": "status" },
-            { "data": "date_added" },
-            {
-                "data": "PK_stock_out_id", "render": function (data, type, row, meta) {
-                    var str = '<div class="mx-auto action-btn-div"> <a href="javascript:;" class="edit-btn btn_edit_so" data-id="' + row.PK_stock_out_id + '"><i class="fa fa-edit"></i></a></div>';
-                 
+        "columns": [{
+            "data": "PK_stock_out_id",
+            "render": function (data, type, row, meta) {
+                var str = 'SO-' + row.PK_stock_out_id;
+                return str;
+            }
+        },
+        {
+            "data": "segment_name"
+        },
+        {
+            "data": "total_items"
+        },
+        {
+            "data": "total_amount"
+        },
+        {
+            "data": "firstname"
+        },
+        {
+            "data": "status"
+        },
+        {
+            "data": "date_added"
+        },
+        {
+            "data": "PK_stock_out_id",
+            "render": function (data, type, row, meta) {
+                var str = '<div class="mx-auto action-btn-div"> <a href="javascript:;" class="edit-btn btn_edit_so" data-id="' + row.PK_stock_out_id + '"><i class="fa fa-edit"></i></a>';
+                str += '</div>';
 
-                    if (row.status == "approved") {
-                        str = '<div class="mx-auto action-btn-div">';
-                        str += '<a href="javascript:;" class="po_view_received text-success" data-id="' + row.PK_stock_out_id + '" title="view"><i class="fa fa-eye"></i></a></div>';
-                    }
-                    return str;
+                if (row.status == "approved") {
+                    str = '<div class="mx-auto action-btn-div">';
+                    str += '<a href="javascript:;" class="so_view_details text-success" data-id="' + row.PK_stock_out_id + '" title="view"><i class="fa fa-eye"></i></a></div>';
                 }
-            },
+                return str;
+            }
+        },
         ],
         "ajax": {
-            "url": base_url + "stockout/get_stockout_data",
+            "url": base_url + "Stockout/get_stockout_data",
             "type": "POST"
         },
-        "columnDefs": [
-            {
-                "targets": [3],
-                "orderable": false,
-            },
-        ],
+        "columnDefs": [{
+            "targets": [3],
+            "orderable": false,
+        },],
     });
+
+    $(document).on('click', '.so_view_details', function () {
+
+        let so_id = $(this).data("id");
+        $(".so_edit_id").val(so_id)
+        is_add_item = false;
+        axios.get(`${base_url}stockout/get_so_details/${so_id}`).then(res => {
+            if (res.data.result == "success") {
+                let datas = res.data.data;
+                let so_items = datas[0].so_items
+                $(".table-po-body-approved").html("")
+                $(".so_view_segment").html(datas[0].segment_name)
+                $(".supplier_select_edit option").removeAttr("selected");
+                $("#supplier_select_edit option[value=" + datas[0].FK_segment_id + "]").attr("selected", "selected").change()
+
+
+                let fname = datas[0].approved_data[0].firstname + " " + datas[0].approved_data[0].lastname
+                let appname = datas[0].request_user[0].firstname + " " + datas[0].request_user[0].firstname
+                let checked_by = datas[0].approved_data[0].counter_checked
+                let date_app = datas[0].approved_data[0].date_approved
+
+                $(".so_view_approved").html(fname);
+                $(".so_view_requested").html(appname);
+                $(".so_checked").html(checked_by);
+                $(".so_date_approve").html(date_app);
+
+
+                so_items.map(so_item => {
+
+                    let options = items.find(item => item.PK_raw_materials_id == so_item.FK_raw_material_id);
+
+                    let html = `
+                        <tr>
+                            <td>
+                                <span> ${options.material_name}</span>
+                            </td>
+                        
+                        <td>
+                             ${so_item.quantity}
+                        </td>
+                        <td>
+                             ${so_item.unit}
+                        </td>
+                        <td>
+                            ${so_item.sales_price}
+                        </td>
+                        <td>
+                            <span class="stotal">${Number(so_item.quantity) * Number(so_item.sales_price)}</span>
+                        </td>
+                            
+                        </tr>
+                    `
+
+                    $(".table-po-body-approved").append(html);
+                    $(".itemselect").select2();
+                })
+                generateOverTotal("", "view_so_modal")
+            }
+            $(".view_so_modal").modal();
+
+        })
+
+    })
 
     $(".btn-add-item").click(function () {
         let options = "<option  value=''>Please select an item</option>";
@@ -132,21 +215,24 @@ $(document).ready(function () {
         e.preventDefault();
         let overTotal = $(".over-total").html();
         let segment_id = $(".supplier_select option:selected").val()
+        let requested_by = $(".request_user_select option:selected").val()
 
         if (Number(overTotal) == 0) {
             s_alert("Please add atleast one item", "error")
             return
-        }
-        else if (!validated_table()) {
+        } else if (!validated_table()) {
             s_alert("Please input the required items", "error")
             return
+        } else if (segment_id == 0 || segment_id == undefined) {
+            s_alert("Please select a supplier first", "error")
+            return
         }
-        else if (segment_id == 0 || segment_id == undefined) {
+        else if (requested_by == 0 || requested_by == undefined) {
             s_alert("Please select a supplier first", "error")
             return
         }
 
-        confirm_alert("Are you sure to save this Purchase Order?").then(res => {
+        confirm_alert("Are you sure to save this Stock Out?").then(res => {
             let frmdata = new FormData();
 
             let po_items = [];
@@ -165,6 +251,7 @@ $(document).ready(function () {
             })
 
             frmdata.append("segment_id", segment_id);
+            frmdata.append("requested_by", requested_by);
             frmdata.append("over_total", over_total);
             frmdata.append("total_items", total_items);
             frmdata.append("so_items", JSON.stringify(po_items));
@@ -173,7 +260,9 @@ $(document).ready(function () {
                 if (res.data.result == "success") {
                     s_alert("Successfully Saved!", "success");
                     table_purchase_order.ajax.reload();
-                    setTimeout(() => { $('.add_so_modal').modal('hide'); }, 1000);
+                    setTimeout(() => {
+                        $('.add_so_modal').modal('hide');
+                    }, 1000);
                 }
             })
         })
@@ -184,7 +273,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         let overTotal = $(".over-total").html();
-        let segment_id = $(".supplier_select_edit option:selected").val()
+        let segment_id = $("#supplier_select_edit option:selected").val()
         let so_id = $(".so_edit_id").val();
 
         if (Number(overTotal) == 0) {
@@ -235,6 +324,7 @@ $(document).ready(function () {
         })
     })
 
+
     $(document).on("click", ".po_recieved-btn", function () {
 
         let po_id = $(this).data("id");
@@ -263,7 +353,8 @@ $(document).ready(function () {
                 let so_items = datas[0].so_items
                 $(".table-po-body-edit").html("")
                 $(".supplier_select_edit option").removeAttr("selected");
-                $(".supplier_select_edit option[value=" + datas[0].FK_segment_id + "]").attr("selected", "selected").change()
+                $(".supplier_select_edit option[value=" + datas[0].FK_segment_id + "]").attr("selected", "selected")
+                $(".supplier_select_edit").change()
 
                 so_items.map(so_item => {
 
@@ -297,10 +388,10 @@ $(document).ready(function () {
 								</select>
 							</td>
 							<td>
-								<input required readonly type="text" value="${so_item.average_cost}" class="form-control item-price">
+								<input required readonly type="text" value="${so_item.sales_price}" class="form-control item-price">
 							</td>
 							<td>
-								<input required readonly type="text" value="${Number(so_item.quantity) * Number(so_item.average_cost)}" class="form-control item-total">
+								<input required readonly type="text" value="${Number(so_item.quantity) * Number(so_item.sales_price)}" class="form-control item-total">
 							</td>
 							<td>
 								<a style="font-size:16px;" href="javascript:;" class="mx-auto fa fa-trash text-danger remove-po-item"></a>
@@ -332,29 +423,55 @@ $(document).ready(function () {
 
         let item = items.find(itm => itm.PK_raw_materials_id == item_id);
 
-        let row = $(this).closest('tr');
-        if (is_item_exist(item_id)) {
-            s_alert("This item is already added!", "error")
-            row.remove()
+        if (item.inventory_quantity <= 0) {
+            s_alert("This item is out of stock!", "error");
+            $(this).closest("tr").remove();
             return;
         }
 
-        let qty = row.find(".item-qty").val()
-        let total = calculateTotal(item.sales_price, qty)
+        axios.get(`${base_url}managepurchaseorders/get_item_unit/${item.unit}`).then(res => {
+            if (res.data.status == "success") {
+                let resdata = res.data.data;
 
-        row.find(".item-price").val(item.sales_price)
-        row.find(".item-total").val(total)
+                let row = $(this).closest('tr');
+                if (is_item_exist(item_id)) {
+                    s_alert("This item is already added!", "error")
+                    row.remove()
+                    return;
+                }
+                row.find(".item-qty").val(1)
+                let qty = row.find(".item-qty").val()
+                let total = calculateTotal(item.sales_price, qty)
 
-        generateOverTotal();
+                row.find(".item-price").val(item.sales_price)
+                row.find(".item-total").val(total)
+
+                let html = `<option value="${resdata.PK_unit_id}">${resdata.unit_name}</option>`
+
+                row.find(".item-unit").html(html)
+
+                generateOverTotal();
+            }
+            else {
+                alert("something wrong!")
+            }
+        })
+
     })
 
-    $(document).on("change", ".item-qty", function () {
+    $(document).on("change keyup", ".item-qty", function () {
 
         let qty = Number($(this).val())
+
         let row = $(this).closest('tr');
         let selected = row.find(".itemselect option:selected");
         let item_id = selected.attr("data-id")
         let item = items.find(itm => itm.PK_raw_materials_id == item_id);
+
+        if (item.inventory_quantity < qty) {
+            s_alert(`This item have  ${item.inventory_quantity} left only!`, "error");
+            $(this).val(1);
+        }
 
         let total = calculateTotal(item.sales_price, qty)
 
@@ -390,7 +507,7 @@ $(document).ready(function () {
         return resp;
     }
 
-    function generateOverTotal() {
+    function generateOverTotal(modal = "", modal_name = "") {
         let over_total = 0;
         let count = 0;
         let mod = "add_so_modal";
@@ -398,13 +515,45 @@ $(document).ready(function () {
             mod = "edit_so_modal";
         }
 
-        $(`.${mod} .item-total`).each(function (e) {
-            over_total += Number($(this).val());
-            count++;
-        })
+        if (modal != "") {
+            mod = modal;
+        }
 
-        $(".total-item").html(count)
-        $(".over-total").html(over_total.toFixed(2))
+        if (modal_name != "") {
+            mod = modal_name;
+        }
+
+        console.log(mod)
+
+        if (mod == "view_so_modal") {
+            $(`.${mod} .stotal`).each(function (e) {
+                over_total += Number($(this).html());
+                count++;
+            })
+        }
+        else {
+            $(`.${mod} .item-total`).each(function (e) {
+                over_total += Number($(this).val());
+                count++;
+            })
+        }
+
+        if (mod == "approved_so_modal") {
+            count = 0;
+            $(`.table-po-body-approve tr`).each(function (e) {
+                count++;
+            })
+            $(".total-item").html(count)
+            $(".over-total").remove();
+            $(".over-total").html(over_total.toFixed(2))
+            $(".approved_so_modal .o-total:last-child").hide()
+
+        }
+        else {
+            $(".total-item").html(count)
+            $(".over-total").html(over_total.toFixed(2))
+        }
+
     }
 
     function is_item_exist(item_id) {

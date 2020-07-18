@@ -260,24 +260,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
 
     if(!function_exists('_get_items')){
-        function _get_items($params = array()){
+        function _get_items($only_branch = true){
 
             $par["select"] = "PK_raw_materials_id, FK_category_id, material_name, unit, sales_price, related_item_id";
             $par["where"]  = array(
-                "FK_outlet_id" => _get_branch_assigned()
+                //  "FK_outlet_id" => _get_branch_assigned()
             );
+
+            if($only_branch){
+                $par["where"]  = array(
+                    "FK_outlet_id" => _get_branch_assigned()
+                );
+            }
+
+
+            $par['group'] = 'material_name';
 
             $items = getData("eb_raw_materials_list", $par, "obj");
 
             $c = 0;
             foreach ($items as $item) {
-                
+                unset($par['group']);
                 $par['select'] = 'quantity';
                 $par['where']  = array(
                     'FK_raw_material_id' => $item->PK_raw_materials_id,
                     'status' => 1,
-                    "FK_outlet_id" => _get_branch_assigned()
                 );
+
+                if($only_branch){
+                     $par['where']  = array(
+                        'FK_raw_material_id' => $item->PK_raw_materials_id,
+                        'status' => 1,
+                        "FK_outlet_id" => _get_branch_assigned()
+                    );
+                }
                 
                 $getdata       = getData('eb_item_inventory', $par, 'obj');
                 $qty           = (!empty($getdata) ? $getdata[0]->quantity : 0);
@@ -290,5 +306,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			return $items;
         }
     }
+
+    if(!function_exists('get_auto_increment_id')){
+        function get_auto_increment_id($table){
+            $ci = & get_instance();
+            $get_next  		= $ci->db->query("SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = '{$table}' and table_schema = database()")->result(); //get max id of related items
+            $res = $get_next[0]->AUTO_INCREMENT;
+
+            return $res;
+        }
+    }
+
+
 
 ?>

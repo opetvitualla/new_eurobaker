@@ -18,9 +18,13 @@ class Global_api extends MY_Controller {
 			echo json_encode($response);
 		}
 
-		public function get_items(){
+		public function get_items($only_branch = 1){
+
+			$res = ($only_branch == 1) ;
+
+
 			$response = array(
-				"data" => _get_items()
+				"data" => _get_items($res)
 			);
 			echo json_encode($response);
 		}

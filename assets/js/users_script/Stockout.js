@@ -16,12 +16,16 @@ $(document).ready(function () {
         units = res.data.data;
     })
 
+    $("#request_user_select_edit").select2();
+    $("#supplier_select_edit").select2();
+
     $(".show-add-modal").click(function () {
         $(".add_so_modal").modal();
         $(".btn-add-item").trigger("click")
         $(".table-po-body").html("");
         $(".supplier_select").select2();
         $("#request_user_select").select2();
+
         is_add_item = true;
         $(".total-item").html(0)
         $(".over-total").html(0)
@@ -164,7 +168,7 @@ $(document).ready(function () {
             return
         }
 
-        confirm_alert("Are you sure to save this Purchase Order?").then(res => {
+        confirm_alert("Are you sure to save this Stock Out?").then(res => {
             let frmdata = new FormData();
 
             let po_items = [];
@@ -207,6 +211,7 @@ $(document).ready(function () {
         let overTotal = $(".over-total").html();
         let segment_id = $(".supplier_select_edit option:selected").val()
         let so_id = $(".so_edit_id").val();
+        let requested_by = $(".request_user_select_edit option:selected").val()
 
         if (Number(overTotal) == 0) {
             s_alert("Please add atleast one item", "error")
@@ -215,6 +220,10 @@ $(document).ready(function () {
             s_alert("Please input the required items", "error")
             return
         } else if (segment_id == 0 || segment_id == undefined) {
+            s_alert("Please select a supplier first", "error")
+            return
+        }
+        else if (requested_by == 0 || requested_by == undefined) {
             s_alert("Please select a supplier first", "error")
             return
         }

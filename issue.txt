@@ -6,13 +6,12 @@ Error Encountered:
 -
 
 In progress:
-- requested supervisor process
-- stock out desc
+- other deliveries
 
 
 Pending:
 - get units
-
+- fix inventory sa purchaser account
 
 
 Completed:
@@ -29,4 +28,5 @@ Completed:
 - fixng units stockout
 - done check inventory stockout
 - done inventory stockout
--fixed modal so
+- fixed modal so
+- done stock out all

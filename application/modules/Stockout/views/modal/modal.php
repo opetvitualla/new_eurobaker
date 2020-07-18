@@ -85,7 +85,7 @@
     <div class="modal-dialog modal-lg" style="max-width:900px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Purchase Order</h5>
+                <h5 class="modal-title">Edit Stock Out</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -98,11 +98,23 @@
                                 <div class="col-md-4">
                                     <input type="hidden" name="so_edit_id" class="so_edit_id">
                                     <label class="fbold" for="supplier">Select Supplier</label>
-                                    <select name="supplier" class="supplier_select_edit form-control" style="width: 100%;">
+                                    <select name="supplier" id="supplier_select_edit" class="supplier_select_edit form-control" style="width: 100%;">
                                         <optgroup label="Select Supplier">
                                             <?php
                                                 foreach ($segments as $seg) {
                                                     echo "<option value='{$seg->PK_segment_id}' >{$seg->segment_name}</option>";
+                                                }
+                                            ?>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="fbold" for="supplier">Select User Requested</label>
+                                    <select required name="request_user" id="request_user_select_edit" class="request_user_select_edit form-control" style="width: 100%;">
+                                        <optgroup label="Select Supervisor">
+                                            <?php
+                                                foreach ($supervisors as $sup) {
+                                                    echo "<option value='{$sup->PK_user_id}' >{$sup->firstname} {$sup->lastname}</option>";
                                                 }
                                             ?>
                                         </optgroup>

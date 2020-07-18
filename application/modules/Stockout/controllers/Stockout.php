@@ -59,7 +59,7 @@ class Stockout extends MY_Controller {
 			);
 			$select       = "so.PK_stock_out_id, seg.segment_name, so.total_items, so.total_amount, user.firstname, so.status, so.date_added";
 			$where        = array(
-
+				"so.FK_outlet_id " => _get_branch_assigned()
 			);
 			$group        = array();
 			$list         = getDataTables('eb_stock_out so',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);

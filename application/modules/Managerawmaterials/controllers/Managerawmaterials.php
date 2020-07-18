@@ -70,16 +70,16 @@ class ManageRawMaterials extends MY_Controller {
 			);
 		} 
 		else {
-			$get_max_id  		= $this->MY_Model->raw('SELECT MAX(related_item_id) FROM eb_raw_materials_list', 'row'); //get max id of related items
-			$new_related_id	=	$get_max_id[0]['MAX(related_item_id)']+ 1;
+			$get_max_id  	= get_auto_increment_id("eb_raw_materials_list");
+
 			$data       	  = array(
 				'FK_outlet_id'        => _get_branch_assigned(),
 				'material_name'       => $post['material_name'],
 				'FK_category_id'      => $post['category'],
 				'unit'                => $post['unit'],
 				'sales_price'         => $post['sales_price'],
-				'related_item_id'	  => $new_related_id,
-				'min_stock'         => $post['min_stock'],
+				'related_item_id'	  => $get_max_id,
+				'min_stock'         	=> $post['min_stock'],
 				'status'              => 1
 			);
 		}
@@ -511,15 +511,17 @@ class ManageRawMaterials extends MY_Controller {
 			'material_name',
 			'previous_price',
 			'current_price',
-			'eb_raw_materials_price_logs.date_added',
+			'plog.date_added',
 		);
 		$join         = array(
-			'eb_raw_materials_list'	=> 'eb_raw_materials_list.PK_raw_materials_id = eb_raw_materials_price_logs.FK_raw_material_id'
+			'eb_raw_materials_list mat'	=> 'mat.PK_raw_materials_id = plog.FK_raw_material_id'
 		);
 		$select       = "*";
-		$where        = array();
+		$where        = array(
+			"mat.FK_outlet_id" => _get_branch_assigned()
+		);
 		$group        = array();
-		$list         = $this->MY_Model->get_datatables('eb_raw_materials_price_logs',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+		$list         = $this->MY_Model->get_datatables('eb_raw_materials_price_logs plog',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
 
 		$list_of_price = array(
 			"draw" => $draw,
@@ -752,5 +754,35 @@ class ManageRawMaterials extends MY_Controller {
 		echo json_encode($response);
 
 	}
+
+	// new added
+
+	public function check_materials_item ($item_id = 0){
+		
+		$response = array("status" => "error");
+		
+
+		if($item_id != 0){
+			$par['select'] = '*';
+			$par['where']  = array(
+				'related_item_id' => $item_id,
+				'FK_outlet_id' => _get_branch_assigned(),
+			);
+			
+			$getdata       = getData('eb_raw_materials_list', $par, 'obj');
+
+			if(!empty($getdata)){
+				$response = array("status" => "exist");
+			}
+			else{
+				$response = array("status" => "not_exist");
+			}
+		}
+
+		echo json_encode($response);
+
+	}
+
+	
 
 }

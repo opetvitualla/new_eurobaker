@@ -38,6 +38,7 @@ class Stockout_discrepancy extends MY_Controller {
 		$select       = "sod.fk_stock_out_id, sod.date_added, user.firstname";
 		$where        = array(
 			'sod.status ' => 1,
+			'so.FK_outlet_id ' =>_get_branch_assigned(),
 		);
 		$group        = array();
 		$list         = $this->MY_Model->get_datatables('eb_stock_out_discrepancy sod', $column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);

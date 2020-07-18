@@ -40,6 +40,7 @@
     ?>
 
     <script src="<?= base_url("assets/js/users_script/stockoutsupervisor.js")?>"></script>
+    <script src="<?= base_url("assets/js/users_script/manageprofile.js")?>"></script>
 
 </body>
 

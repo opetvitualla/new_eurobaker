@@ -29,9 +29,9 @@ $(document).ready(function () {
       {
         "data": "PK_raw_materials_id", "render": function (data, type, row, meta) {
           var str = '';
-          if (row.quantity == 0) {
+          if (Number(row.quantity) == 0) {
             str = '<span class="out_of_stock"> Out of Stock</span>';
-          } else if (row.quantity > row.min_stock) {
+          } else if (Number(row.quantity) > Number(row.min_stock)) {
             str = '<span class="in_stock"> In Stock</span>';
           } else {
             str = '<span class="low_stock"> Low Stock</span>';

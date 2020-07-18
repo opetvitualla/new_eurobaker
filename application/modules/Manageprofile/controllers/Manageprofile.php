@@ -9,7 +9,17 @@ class Manageprofile extends MY_Controller {
 		$data['has_header'] = "includes/admin/header";
 		$data['has_footer']	= "includes/index_footer";
 
-		$this->load_page('index',$data);
+
+		if(get_user_type() == 1){
+			$this->load_page('index',$data);
+		}
+		else if(get_user_type() == 2){
+			$this->load_purchaser_page('index',$data);
+		}
+		else if(get_user_type() == 3){
+			$this->load_super_page('index',$data);
+		}
+		
 	}
 
     public function view_details() {

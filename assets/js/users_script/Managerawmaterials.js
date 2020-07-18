@@ -2,11 +2,11 @@ $(document).ready(function () {
      var base_url = $('.base_url').val();
      let items = [];
      let all_units = [];
-     axios.get(`${base_url}Global_api/get_units`).then(res => {
+     axios.get(`${base_url}global_api/get_units`).then(res => {
           all_units = res.data.data;
      })
 
-     axios.get(`${base_url}Global_api/get_items`).then(res => {
+     axios.get(`${base_url}global_api/get_items/0`).then(res => {
           items = res.data.data;
      })
 
@@ -141,35 +141,55 @@ $(document).ready(function () {
      $('select[name="related_item"]').on('change', function () {
           var elm = $("option:selected", this);
           let item_id = elm.attr("data-id");
+          $("#Raw_Material_Add button[type=submit]").attr("disabled", false)
+          if (item_id == undefined || item_id == 0 || item_id == "") {
+               return;
+          }
 
           let item = items.find(itm => itm.PK_raw_materials_id == item_id);
-          $('#Raw_Material_Add input, #Raw_Material_Add select[name="category"]').prop('readonly', true)
 
-          $('input[name="related_item_id"]').val(item.related_item_id);
-          $('input[name="material_name"]').val(item.material_name);
-          $('select[name="category"] option[value=' + item.FK_category_id + ']').attr('selected', 'selected');
-          $('input[name="unit"]').val(item.unit);
-          $('input[name="sales_price"]').val(item.sales_price);
-          console.log(item);
+
+          axios.get(`${base_url}managerawmaterials/check_materials_item/${item_id}`).then(res => {
+               if (res.data.status == "not_exist") {
+                    $('#Raw_Material_Add input, #Raw_Material_Add select[name="category"]').prop('readonly', true)
+
+                    $("#Raw_Material_Add input[name=qty]").attr('readonly', false).val(1)
+                    $("#Raw_Material_Add input[name=min_stock]").attr('readonly', false).val(1)
+
+                    $('input[name="related_item_id"]').val(item.related_item_id);
+                    $('input[name="material_name"]').val(item.material_name);
+                    $('select[name="category"] option[value=' + item.FK_category_id + ']').attr('selected', 'selected');
+                    $('.mat_units').val(item.unit).attr("readonly", true);
+                    $('input[name="sales_price"]').val(item.sales_price);
+               }
+               else if (res.data.status == "exist") {
+                    s_alert("This item is already added on list", "error");
+                    $("#Raw_Material_Add button[type=submit]").attr("disabled", true)
+               }
+          })
+
+
      })
 
      $(document).on('submit', '#Raw_Material_Add', function (e) {
           e.preventDefault();
           var formData = new FormData($(this)[0]);
 
-          $.ajax({
-               url: base_url + 'managerawmaterials/addrawmaterial',
-               data: formData,
-               processData: false,
-               contentType: false,
-               cache: false,
-               type: 'POST',
-               success: function (data) {
-                    s_alert("Successfully Saved!", "success");
-                    table_raw_materials.ajax.reload();
-                    $('.add_raw_material_modal').modal('hide');
-               }
-          });
+          confirm_alert("Are you sure to save this item?").then(res => {
+               $.ajax({
+                    url: base_url + 'managerawmaterials/addrawmaterial',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    type: 'POST',
+                    success: function (data) {
+                         s_alert("Successfully Saved!", "success");
+                         table_raw_materials.ajax.reload();
+                         $('.add_raw_material_modal').modal('hide');
+                    }
+               });
+          })
      });
 
      $(document).on('click', '#view_Details', function () {
