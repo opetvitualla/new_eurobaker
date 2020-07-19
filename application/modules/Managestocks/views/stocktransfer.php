@@ -17,6 +17,7 @@
                         </ol>
                     </div>
                     <div class="col-md-7 align-self-center text-right d-none d-md-block">
+                        <a href="<?=base_url("stock_transfer_discrepancy")?>" class="btn btn-success">Discrepancy</a>
                         <button type="button" class="btn btn-info theme-bg show-add-modal" data-toggle="modal" data-target=".add_stock_transfer_modal"><i class="fa fa-plus-circle"></i> Transfer </button>
                     </div>
                     <div class="">
@@ -101,6 +102,7 @@
                                                     <td>Quantity</td>
                                                     <td style="width: 122px;">Item Unit</td>
                                                     <td style="width: 122px;">Price</td>
+                                                    <td style="width: 122px;">Total</td>
                                                     <td>Action</td>
                                                 </tr>
                                             </thead>
@@ -117,6 +119,7 @@
                                             <hr/>
                                             <h3 class="fbold o-total">Total Items: <span class="total-item">0</span></h3>
                                             <h3 class="fbold o-total">Status: <span><em> Pending</em></span></h3>
+                                            <h3 class="fbold o-total">Total Amount: P<span class="over-total">0</span></h3>
 
                                             <!-- <h3 class="fbold o-total">Overall Total: <span>&#8369;</span><span class="over-total">0</span></h3> -->
                                             <hr>
@@ -216,7 +219,7 @@
                   <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title text-center">Item Information</h5>
+                        <h5 class="modal-title text-center">Stock Transfer Information</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -226,26 +229,45 @@
                           <div class="form-body">
                               <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>From:</label>
+                                            <label class="fbold">From:</label>
                                             <p>Bajada</p>
                                         </div>
                                     </div>
                                     <!--/span-->
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>To:</label>
-                                            <p class="destination">Commisary</p>
+                                            <label class="fbold">To:</label>
+                                            <p class="destination">asd</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fbold">Counter Checked:</label>
+                                            <p class="st_checked">asd</p>
                                         </div>
                                     </div>
                                     <!--/span-->
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>STR No./BI no.:</label>
+                                            <label class="fbold">Stock Transfer ID:</label>
+                                            <p class="str_id">123</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fbold">STR No./BI no.:</label>
                                             <p class="strno"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fbold">Received:</label>
+                                            <p class="st_received">asd</p>
                                         </div>
                                     </div>
                                 </div>
@@ -256,36 +278,24 @@
                                               <th>Item Name</th>
                                               <th>Quantity</th>
                                               <th style="width: 122px;">Item Unit</th>
-                                              <th>Action</th>
+                                              <th>Price</th>
+                                              <th>Total</th>
                                           </tr>
                                       </thead>
                                       <tbody class="table-po-body"> </tbody>
                                   </table>
                                 </div>
                                 <div class="row">
-                                  <div class="col-md-7">
-                                  </div>
-                                  <div class="col-md-5">
-                                      <div class="form-group">
-                                          <label>Received by:</label>
-                                          <input type="text" class="form-control" name="received_by" value="" readonly>
-                                      </div>
-                                      <div class="form-group">
-                                          <label>Counterchecked by:</label>
-                                          <input type="text" class="form-control" name="counterchecked_by" value="" readonly>
-                                      </div>
-                                  </div>
                                 </div>
                                   <div class="form-actions">
                                       <hr/>
-                                      <!-- <h3 class="fbold o-total">Total Items: <span class="total-item">0</span></h3> -->
+                                      <h3 class="fbold o-total">Total Items: <span class="total-item_st">0</span></h3>
                                       <!-- <h3 class="fbold o-total">Status: <span><em> Pending</em></span></h3> -->
 
                                       <!-- <h3 class="fbold o-total">Overall Total: <span>&#8369;</span><span class="over-total">0</span></h3> -->
-                                      <hr>
-                                      <!-- <div class="card-body text-right">
-                                          <button type="submit" class="btn btn-success"> Submit </button>
-                                      </div> -->
+                                      <div class="card-body text-right">
+                                          <button type="button" class="btn btn-danger" data-dismiss="modal"> Close </button>
+                                      </div>
                                   </div>
                                 </div>
                               </div>
@@ -309,19 +319,27 @@
                           <div class="form-body">
                               <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>From:</label>
                                             <p>Bajada</p>
                                         </div>
+                                        <input type="hidden" class="st_id">
                                     </div>
                                     <!--/span-->
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>To:</label>
                                             <p class="destination">Commisary</p>
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Counter checked by:</label>
+                                            <input type="text" class="form-control count_checked"  name="counterchecked_by" value="">
+                                        </div>
+                                    </div>
+                                    
                                     <!--/span-->
                                 </div>
                                 <div class="row">
@@ -346,25 +364,13 @@
                                   </table>
                                 </div>
                                 <div class="row">
-                                  <div class="col-md-7">
-                                  </div>
-                                  <div class="col-md-5">
-                                      <div class="form-group">
-                                          <label>Received by:</label>
-                                          <input type="text" class="form-control" name="received_by" value="">
-                                      </div>
-                                      <div class="form-group">
-                                          <label>Counterchecked by:</label>
-                                          <input type="text" class="form-control" name="counterchecked_by" value="">
-                                      </div>
-                                  </div>
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-7">
+                                          <label for="" class="fbold">Discrepancy Reason: </label>
+                                          <textarea id="discrepancy_reason" name="discrepancy_reason" class="form-control" ></textarea>
+                                    </div>
                                 </div>
                                   <div class="form-actions">
-                                      <!-- <hr/> -->
-                                      <!-- <h3 class="fbold o-total">Total Items: <span class="total-item">0</span></h3>
-                                      <h3 class="fbold o-total">Status: <span><em> Pending</em></span></h3> -->
-
-                                      <!-- <h3 class="fbold o-total">Overall Total: <span>&#8369;</span><span class="over-total">0</span></h3> -->
                                       <hr>
                                       <div class="card-body text-right">
                                           <button type="submit" class="btn btn-success"> Submit </button>

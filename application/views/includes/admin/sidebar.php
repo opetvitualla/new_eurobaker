@@ -42,9 +42,9 @@
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="icon-File-HorizontalText "></i><span class="hide-menu">Reports</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="<?= base_url('total_purchase_order') ?>">Total Purchases</a></li>
-                        <li><a href="#">Total Used/Stock Out</a></li>
+                        <li><a href="<?= base_url('total_stockout') ?>">Total Used/Stock Out</a></li>
                        <li><a href="<?= base_url('managereports/pendingdeliveries') ?>">Pending Deliveries</a></li>
-                        <li><a href="<?= base_url('managereports/endinginventory') ?>">Ending Inventory</a></li>
+                        <li><a href="<?= base_url('ending_inventory') ?>">Ending Inventory</a></li>
                         <li><a href="<?= base_url('managereports/stockfortransfer') ?>">Stock Transfer</a></li>
                         <li><a href="#">Descripancies</a></li>
                     </ul>

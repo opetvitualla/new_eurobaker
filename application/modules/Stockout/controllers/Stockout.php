@@ -321,7 +321,8 @@ class Stockout extends MY_Controller {
 					'from_value' =>  $qty,
 					'value' =>  $item->rec_qty,
 					"branch_id" => _get_branch_assigned(),
-					"date_added" => date("Y-m-d")
+					"date_added" => date("Y-m-d"),
+					"cal_type"	 => "sub"
 				);
 
 				insertData('eb_inventory_movement', $data);

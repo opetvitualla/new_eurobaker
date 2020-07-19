@@ -74,7 +74,8 @@ class Inventory_movements extends MY_Controller {
 
 		$resp = [
 			"tot_po"  => $this->get_trans_movements($item_id, "purchase"),
-			"tot_tr"  => 0,
+			"tot_tr_in"  => $this->get_trans_movements($item_id, "transfer_in"),
+			"tot_tr_out"  => $this->get_trans_movements($item_id, "transfer_out"),
 			"tot_so"  => $this->get_trans_movements($item_id, "stockout"),
 			"beg_env" => $this->get_beg_inventory($item_id)
 		];
@@ -91,7 +92,6 @@ class Inventory_movements extends MY_Controller {
 		$datefrom  = date("Y-m")."1";
 		$dateto  = date("Y-m-d");
 
-		$par['select'] = 'SUM(value) as tot';
 		$par['where']  = array(
 			'branch_id' => $branch_id,
 			'date_added >=' => $datefrom,
@@ -99,9 +99,31 @@ class Inventory_movements extends MY_Controller {
 			"fk_item_id" => $item_id,
 			"type_entry" => $trans_type,
 		);
-		
-		$po_data       = getData('eb_inventory_movement', $par, 'obj');
 
+		if($trans_type == "transfer_in"){
+			$par['where']  = array(
+				'branch_id' => $branch_id,
+				'date_added >=' => $datefrom,
+				'date_added <=' => $dateto,
+				"fk_item_id" => $item_id,
+				"type_entry" => "transfer",
+				"cal_type" => "add",
+			);
+		} else if(($trans_type == "transfer_out")) {
+			$par['where']  = array(
+				'branch_id' => $branch_id,
+				'date_added >=' => $datefrom,
+				'date_added <=' => $dateto,
+				"fk_item_id" => $item_id,
+				"type_entry" => "transfer",
+				"cal_type" => "sub",
+			);
+
+		}
+
+		$par['select'] = 'SUM(value) as tot';
+	
+		$po_data       = getData('eb_inventory_movement', $par, 'obj');
 
 		return (isset($po_data[0]->tot) ? $po_data[0]->tot : 0);
 

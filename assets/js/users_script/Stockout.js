@@ -504,6 +504,8 @@ $(document).ready(function () {
 
     })
 
+
+
     $(document).on("change keyup", ".item-qty", function () {
 
         let qty = Number($(this).val())

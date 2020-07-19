@@ -19,17 +19,22 @@ $(document).ready(function () {
             },
             {
                 "data": "material_name", "render": function (data, type, row, meta) {
-                    return "+" + row.inv_data.tot_po
+                    return (row.inv_data.tot_po != 0) ? "+" + row.inv_data.tot_po : "0"
                 }
             },
             {
                 "data": "material_name", "render": function (data, type, row, meta) {
-                    return row.inv_data.tot_tr
+                    return (row.inv_data.tot_tr_in != 0) ? "+" + row.inv_data.tot_tr_in : "0"
                 }
             },
             {
                 "data": "material_name", "render": function (data, type, row, meta) {
-                    return "-" + row.inv_data.tot_so
+                    return (row.inv_data.tot_tr_out != 0) ? "-" + row.inv_data.tot_tr_out : "0"
+                }
+            },
+            {
+                "data": "material_name", "render": function (data, type, row, meta) {
+                    return (row.inv_data.tot_so != 0) ? "-" + row.inv_data.tot_so : "0"
                 }
             },
             { "data": "quantity" }

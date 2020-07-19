@@ -44,11 +44,13 @@
                                     <table id="total_purchase_table" class="table table-bordered table-striped text-center">
                                         <thead>
                                             <tr>
-                                                <th>PO ID</th>
-                                                <th>Supplier Name</th>
-                                                <th>Outlet Name</th>
+                                                <th>Stock Out ID</th>
+                                                <th>Segment Name</th>
+                                                <th>Total Items</th>
                                                 <th>Total Amount</th>
-                                                <th>Date Received</th>
+                                                <th>Requested By</th>
+                                                <th>Status</th>
+                                                <th>Date Added</th>
                                             </tr>
                                         </thead>
                                         <tbody>

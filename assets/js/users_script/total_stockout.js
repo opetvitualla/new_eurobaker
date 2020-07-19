@@ -3,8 +3,6 @@ $(document).ready(function () {
 	// var purchase_orders = $('#purchase_Orders').DataTable();
 	var base_url = $('.base_url').val();
 
-
-
 	dataTableReport()
 
 	function dataTableReport(date_to = "", date_from = "") {
@@ -26,32 +24,35 @@ $(document).ready(function () {
 					$(row).addClass("row_po_received");
 				}
 			},
-			"columns": [{
-				"data": "PK_purchase_order_id",
-				"render": function (data, type, row, meta) {
-					var str = 'PO-' + row.PK_purchase_order_id;
-					return str;
+			"columns": [
+				{
+					"data": "PK_stock_out_id",
+					"render": function (data, type, row, meta) {
+						var str = 'SO-' + row.PK_stock_out_id;
+						return str;
+					}
+				},
+				{
+					"data": "segment_name"
+				},
+				{
+					"data": "total_items"
+				},
+				{
+					"data": "total_amount"
+				},
+				{
+					"data": "firstname"
+				},
+				{
+					"data": "status"
+				},
+				{
+					"data": "date_added"
 				}
-			},
-			{
-				"data": "supplier_name"
-			},
-			{
-				"data": "outlet_name"
-			},
-			{
-				"data": "total_amount",
-				"render": function (data, type, row, meta) {
-					var str = 'P' + row.total_amount;
-					return str;
-				}
-			},
-			{
-				"data": "date_received"
-			}
 			],
 			"ajax": {
-				"url": base_url + "total_purchase_order/get_purchase_data",
+				"url": base_url + "total_stockout/get_stockout_data",
 				"type": "POST",
 				"data": { date_to: date_to, date_from: date_from }
 			},
@@ -146,10 +147,6 @@ $(document).ready(function () {
 		$(".total-item").html(count)
 		$(".over-total").html(over_total.toFixed(2))
 	}
-
-
-
-
 
 })
 

@@ -120,7 +120,8 @@ class ManageRawMaterials extends MY_Controller {
 			'from_value' =>  0,
 			'value' =>  $post["qty"],
 			"branch_id" => _get_branch_assigned(),
-			"date_added" => date("Y-m-d")
+			"date_added" => date("Y-m-d"),
+			"cal_type"	 => "add"
 		);
 
 		insertData('eb_inventory_movement', $data);
@@ -709,7 +710,8 @@ class ManageRawMaterials extends MY_Controller {
 			'from_value' =>  $qty,
 			'value' =>  $sub_qty,
 			"branch_id" => _get_branch_assigned(),
-			"date_added" => date("Y-m-d")
+			"date_added" => date("Y-m-d"),
+			"cal_type"	 => "sub"
 		);
 
 		insertData('eb_inventory_movement', $data);

@@ -63,6 +63,7 @@ class Total_purchase_order extends MY_Controller {
 			$select       = "PK_purchase_order_id, outlet.outlet_name, sup.supplier_name, po.status, po_rec.date_received, po.total_amount";
 			$where        = array(
 				'po.status !=' => "deleted",
+				'po.FK_branch_id' => _get_branch_assigned(),
 			);
 
 			if(!empty($date_from) && !empty($date_to)){

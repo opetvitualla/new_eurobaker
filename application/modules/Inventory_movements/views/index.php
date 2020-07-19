@@ -55,7 +55,8 @@
                                                 <th>Category</th>
                                                 <th>Beg.</th>
                                                 <th>Purchases</th>
-                                                <th>Transfers</th>
+                                                <th>Transfer In</th>
+                                                <th>Transfer Out</th>
                                                 <th>Stock Out</th>
                                                 <th>Ending</th>
                                             </tr>
