@@ -21,12 +21,12 @@ $(document).ready(function () {
 			{ "data": "firstname" },
 			{
 				"data": "PK_purchase_order_id", "render": function (data, type, row, meta) {
-					return `<a href="javascript:;" class='text-success btn-view-items' data-id="${row.pk_po_discrepancy_id}" ><i class='fa fa-eye'></i></a>`;
+					return `<a href="javascript:;" class='text-success btn-view-items' data-id="${row.pk_other_discrepancy_id}" ><i class='fa fa-eye'></i></a>`;
 				}
 			},
 		],
 		"ajax": {
-			"url": base_url + "purchaseorderdiscrepancy/get_purchaseorder_discrepancy",
+			"url": base_url + "other_outlet_discrepancies/get_other_outlet_discrepancy",
 			"type": "POST"
 		},
 		"columnDefs": [
@@ -41,7 +41,7 @@ $(document).ready(function () {
 
 		let id = $(this).data("id");
 
-		axios.get(`${base_url}purchaseorderdiscrepancy/get_descripancy/${id}`).then(res => {
+		axios.get(`${base_url}other_outlet_discrepancies/get_descripancy/${id}`).then(res => {
 			if (res.data.result) {
 
 				let data = res.data.data;
@@ -55,7 +55,7 @@ $(document).ready(function () {
 							<td>${dta.material_name}</td>
 							<td>${dta.qty}</td>
 							<td>${dta.received_qty}</td>
-							<td>${dta.units}</td>
+							<td>${dta.unit}</td>
 						</tr>
 					`
 

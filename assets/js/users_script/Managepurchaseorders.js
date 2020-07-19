@@ -56,9 +56,13 @@ $(document).ready(function () {
 
 					if (row.status == "pending") {
 						return "<em class='po-stats'>Pending</em>"
-					} else if (row.status == "received") {
+					} else if (row.status == "received" && row.fk_received_outlet_id == row.FK_branch_id) {
 						return "<em class='po-stats'>Received</em>"
-					} else {
+					}
+					else if (row.status == "received" && row.fk_received_outlet_id != row.FK_branch_id) {
+						return "<em class='po-stats'>Other Outlet Received</em>"
+					}
+					else {
 						return "<em class='po-stats'>Processing</em>"
 					}
 				}
@@ -77,7 +81,8 @@ $(document).ready(function () {
 						str = '<div class="mx-auto action-btn-div"> <a href="javascript:;" class="edit-btn btn_edit_po" data-id="' + row.PK_purchase_order_id + '"><i class="fa fa-edit"></i></a>';
 					} else if (row.status == "processing") {
 						str += '<a href="javascript:;" id="view_Supplier_Details" class="po_recieved-btn text-success" data-id="' + row.PK_purchase_order_id + '" title="Receive"><i class="fa fa-check"></i></a></div>';
-					} else {
+					}
+					else {
 						str = '<div class="mx-auto action-btn-div">';
 						str += '<a href="javascript:;" class="po_view_received text-success" data-id="' + row.PK_purchase_order_id + '" title="view"><i class="fa fa-eye"></i></a></div>';
 					}

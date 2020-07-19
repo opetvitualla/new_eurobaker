@@ -15,7 +15,7 @@ $(document).ready(function () {
         $(".total-item").val("");
         $(".over-total").val("");
 
-        axios.get(`${base_url}Global_api/get_all_purchase_order_processing`).then(res => {
+        axios.get(`${base_url}global_api/get_all_purchase_order_processing`).then(res => {
             //  suppliers = JSON.parse(res.data.data);
             if (res.data.result) {
                 purchase_orders = res.data.data;
@@ -117,23 +117,17 @@ $(document).ready(function () {
 
                     items.map(item => {
 
-                        let tot = item.quantity * item.average_cost;
+                        let tot = item.quantity * item.sales_price;
 
                         let html = `
 							<tr>
 								<td class="item-data" data-id="${item.FK_raw_material_id}"> ${item.material_name} </td>
+							<td> <span class="process-qty">${item.quantity}</span> </td>
+							<td class="item-unit"> ${item.unit} </td>
 							<td>
-								<span class="process-qty">${item.quantity}</span>
-							</td>
-							<td>
-								${item.item_unit}
-							</td>
-							<td>
-                                <input class="form-control item_price" required type="text"  value="${item.average_cost}">
+                                <input class="form-control item_price" required type="text"  value="${item.sales_price}">
                             </td>
-                            <td>
-                                <span class="row_total">${tot.toFixed(2)}</span>
-							</td>
+                            <td> <span class="row_total">${tot.toFixed(2)}</span> </td>
 							<td>
 								<input type="number" min="0" max="${item.quantity}" value="${item.quantity}" class="form-control received-qty">
 							</td>
@@ -145,6 +139,9 @@ $(document).ready(function () {
 
                     $(".total-item").html(data[0].po_items.length)
                     $(".over-total").html(data[0].total_amount)
+                    $(".outlet_from").html(data[0].outlet_name)
+                    $(".outlet_id").val(data[0].FK_branch_id)
+
 
 
                 }
@@ -160,6 +157,7 @@ $(document).ready(function () {
             let po_id = $(".po_select").val()
 
             let disc_items = [];
+            let all_items = [];
 
             $(".table-po-body-other tr.discrep_item").each(function () {
                 let row = $(this);
@@ -169,20 +167,40 @@ $(document).ready(function () {
                     item_name: row.find(".item-data").text(),
                     quantity: row.find(".process-qty").text(),
                     rec_qty: row.find(".received-qty").val(),
-                    unit: row.find(".item-unit").val(),
+                    unit: row.find(".item-unit").html(),
+                })
+            })
+
+            $(".table-po-body-other tr").each(function () {
+                let row = $(this);
+                let item_ids = row.find(".item-data").attr("data-id")
+                all_items.push({
+                    item_id: item_ids,
+                    item_name: row.find(".item-data").text(),
+                    quantity: row.find(".process-qty").text(),
+                    rec_qty: row.find(".received-qty").val(),
+                    units: row.find(".rcv-unit").html(),
+
                 })
             })
 
             let dreason = $("#discrepancy_reason").val();
 
+            let checkd = $(".counter_checked").val();
+            let outlet_id = $(".outlet_id").val();
+
+            frmdata.append("outlet_id", outlet_id);
+            frmdata.append("counter_check", checkd);
             frmdata.append("po_id", po_id);
             frmdata.append("disc_item", JSON.stringify(disc_items));
+            frmdata.append("all_items", JSON.stringify(all_items));
             frmdata.append("reason", dreason);
 
             axios.post(`${base_url}other_outlet_deliveries/receive_purchase_order`, frmdata).then(res => {
-                if (res.data.result == "success") {
+                if (res.data.status == "success") {
                     s_alert("Received Successfully!", "success");
-                    table_purchase_order.ajax.reload();
+                    table_other_order.ajax.reload();
+                    $(".new_deliver_modal").modal("hide");
                 }
             })
 
@@ -292,11 +310,62 @@ $(document).ready(function () {
         })
     })
 
-    $(document).on('click', '.po_view_details', function () {
+    $(document).on("click", ".po_view_details", function () {
+        let po_id = $(this).data("id");
 
-        let id = $(this).data("id");
+        let user_types = $(this).data("usertype");
 
-        $(".view_received_modal").modal()
+        let url = "get_received_po_details";
+        if (user_types == "purchaser") {
+            url = "get_po_details";
+        }
+
+        axios.get(`${base_url}managepurchaseorders/${url}/${po_id}`).then(res => {
+            if (res.data.result == "success") {
+                let result = res.data.data;
+                get_po_data = res.data.data;
+                $(".table-po-body-received").html("")
+                $(".po_receive_supplier").html(result[0].supplier_name)
+                $(".po_received_date").html(result[0].date_received)
+                $(".po_received_by").html(result[0].firstname + " " + result[0].lastname)
+                $(".po_counter_by").html(result[0].counter_checked)
+                $(".purchase_no_received").html(`PO-${result[0].PK_purchase_order_id}`)
+
+                let po_items = result[0].po_items
+
+                let gtotal = 0;
+
+                po_items.map(po_item => {
+                    gtotal += Number(po_item.quantity) * Number(po_item.sales_price);
+                    let html = `
+							<tr>
+								<td>
+									${po_item.material_name}
+								</td>
+							
+								<td>
+									${po_item.quantity}
+								</td>
+								<td>
+									${po_item.unit}
+								</td>
+								<td>
+									${po_item.sales_price}
+								</td>
+								<td>
+									${(Number(po_item.quantity) * Number(po_item.sales_price)).toFixed(2)}
+								</td>
+									
+							</tr>
+						`
+                    $(".table-po-body-received").append(html);
+                })
+                $(".total-item-received").html(po_items.length)
+                $(".over-total-received").html(gtotal)
+            }
+        })
+
+        $(".view_received_modal").modal();
 
     })
 

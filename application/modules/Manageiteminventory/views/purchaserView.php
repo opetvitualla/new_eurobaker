@@ -17,7 +17,7 @@
                         </ol>
                     </div>
                     <div class="col-md-7 align-self-center text-right d-none d-md-block">
-                        <!-- <button type="button" class="btn btn-info" data-toggle="modal" data-target=".add_raw_material_modal"><i class="fa fa-plus-circle"></i> Add Purchase Order</button> -->
+                        <a  href="<?=base_url("inventory_movements")?>"  class="btn btn-info theme-bg" ><i class="fa fa-cube"></i> Inventory Movements</a>
                     </div>
                     <div class="">
                         <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
@@ -33,43 +33,19 @@
                     <div class="col-12">
                         <div class="card">
                                 <div class="table-responsive m-t-40">
-                                    <table id="purchaser_item_Inventory" class="table table-bordered table-striped text-center">
+                                    <table id="item_Inventory" class="table table-bordered table-striped text-center">
                                         <thead>
                                             <tr>
-                                                <th>Item ID</th>
-                                                <th>Outlet Name</th>
+                                                <th>Category</th>
                                                 <th>Item Name</th>
-                                                <th>Amount</th>
+                                                <th>Price</th>
                                                 <th>Beg. Inventory</th>
                                                 <th>Qty.</th>
                                                 <th>Status</th>
-                                                <th>Date Added</th>
-                                                <th>Actions</th>
+                                                <th>Date Modified</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          <tr>
-                                            <td>IT-1111</td>
-                                            <td>Bajada</td>
-                                            <td>Sample Name</td>
-                                            <td>100</td>
-                                            <td>59</td>
-                                            <td>60</td>
-                                            <td class="in_stock">In Stock</td>
-                                            <td>12/12/2020</td>
-                                            <td><span class="fa fa-eye view_Details"></span></td>
-                                          </tr>
-                                          <tr>
-                                            <td>IT-1111</td>
-                                            <td>Bajada</td>
-                                            <td>Sample Name</td>
-                                            <td>100</td>
-                                            <td>100</td>
-                                            <td>60</td>
-                                            <td class="in_stock">In Stock</td>
-                                            <td>12/12/2020</td>
-                                            <td><span class="fa fa-eye view_Details"></span></td>
-                                          </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -143,19 +119,9 @@
                                       <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group row">
-                                                    <label class="control-label text-right col-md-6">SKU:</label>
+                                                    <label class="control-label text-right col-md-6">Item Name:</label>
                                                     <div class="col-md-6">
-                                                        <p class="form-control-static"> Distrib, Inc. </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                      <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label class="control-label text-right col-md-6">Name:</label>
-                                                    <div class="col-md-6">
-                                                        <p class="form-control-static"> Sample Name </p>
+                                                        <p class="form-control-static name"> Sample Name </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -165,7 +131,17 @@
                                                 <div class="form-group row">
                                                     <label class="control-label text-right col-md-6">Amount:</label>
                                                     <div class="col-md-6">
-                                                        <p class="form-control-static"> 500.00 </p>
+                                                        <p class="form-control-static amount"> 500.00 </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label class="control-label text-right col-md-6">Beginning Inventory:</label>
+                                                    <div class="col-md-6">
+                                                        <p class="form-control-static beginning_inventory"> 500</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -175,7 +151,7 @@
                                                 <div class="form-group row">
                                                     <label class="control-label text-right col-md-6">Quantity</label>
                                                     <div class="col-md-6">
-                                                        <p class="form-control-static"> 150 </p>
+                                                        <p class="form-control-static quantity"> 150 </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -185,7 +161,27 @@
                                                 <div class="form-group row">
                                                     <label class="control-label text-right col-md-6">Status:</label>
                                                     <div class="col-md-6">
-                                                        <p class="form-control-static in_stock"> In-Stock </p>
+                                                        <p class="form-control-static status in_stock"> In-Stock </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label class="control-label text-right col-md-6">Date Added:</label>
+                                                    <div class="col-md-6">
+                                                        <p class="form-control-static status date_added"> In-Stock </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label class="control-label text-right col-md-6">Date Modified:</label>
+                                                    <div class="col-md-6">
+                                                        <p class="form-control-static status date_modified"> In-Stock </p>
                                                     </div>
                                                 </div>
                                             </div>

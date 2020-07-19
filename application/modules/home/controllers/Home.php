@@ -7,10 +7,10 @@ class Home extends MY_Controller {
 			
 
 			if (get_user_type() == 1) {
-				redirect(base_url("Managepurchaseorders"));
+				redirect(base_url("managepurchaseorders"));
 			} 
 			else if (get_user_type() == 2) {
-				redirect(base_url("Managepurchaseorders"));
+				redirect(base_url("managepurchaseorders"));
 			}
 			else{
 				redirect(base_url("stockout"));

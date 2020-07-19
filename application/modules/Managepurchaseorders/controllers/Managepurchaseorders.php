@@ -7,6 +7,13 @@ class Managepurchaseorders extends MY_Controller {
 
 	}
 
+	public function ttests (){
+		echo '<pre>';
+		print_r($this->session->userdata);
+		echo '</pre>';
+		exit;
+	}
+
 	public function index(){
 
 		$data["title"] 	 	= "Purchase Orders";
@@ -48,7 +55,8 @@ class Managepurchaseorders extends MY_Controller {
 			"eb_suppliers sup" => "sup.PK_supplier_id = po.FK_supplier_id",
 			"eb_outlets outlet" => "outlet.PK_branch_id = po.FK_branch_id",
 		);
-		$select       = "PK_purchase_order_id, purchase_order_no, outlet.outlet_name, sup.supplier_name, po.status, po.date_added, po.total_amount";
+		$select       = "PK_purchase_order_id, purchase_order_no, outlet.outlet_name, sup.supplier_name, po.status, po.date_added, po.total_amount, po.fk_received_outlet_id, po.FK_branch_id";
+		// $select       = "*";
 		$where        = array(
 			'po.status !=' => "deleted",
 			 'FK_branch_id' => _get_outlet_assigned()
@@ -73,9 +81,9 @@ class Managepurchaseorders extends MY_Controller {
 
 			$data = array(
 				"FK_supplier_id"  => $post["supplier_id"],
-				"FK_user_id" 	  => 1, // change if naa nay user
+				"FK_user_id" 	  => my_user_id(), // change if naa nay user
 				"purchase_order_no" => "N/A",
-				"FK_branch_id" 	  => 1,
+				"FK_branch_id" 	  => _get_branch_assigned(),
 				"status"		  => "pending",
 				"total_amount"	  => $post["over_total"],
 				"date_added"	  => date("Y-m-d h:i:s")
@@ -116,7 +124,7 @@ class Managepurchaseorders extends MY_Controller {
 					'FK_raw_material_id' => $item->item_id,
 					'previous_price' => $prev_price,
 					'current_price' => $item->new_price,
-					'outlet_id' => _get_outlet_assigned(),
+					'outlet_id' => _get_branch_assigned(),
 				);
 				
 				insertData('eb_raw_materials_price_logs', $data);
@@ -138,7 +146,7 @@ class Managepurchaseorders extends MY_Controller {
 		$res = 0;
 
 		$par['select'] = 'sales_price';
-		$par['where']  = array("PK_raw_materials_id" => $item_id, "FK_outlet_id" => _get_outlet_assigned());
+		$par['where']  = array("PK_raw_materials_id" => $item_id, "FK_outlet_id" => _get_branch_assigned());
 		
 		$getdata       = getData('eb_raw_materials_list', $par, 'obj');
 
@@ -160,8 +168,8 @@ class Managepurchaseorders extends MY_Controller {
 
 			$set = array(
 				"FK_supplier_id"  => $post["supplier_id"],
-				"FK_user_id" 	  => 1, // change if naa nay user
-				"FK_branch_id" 	  => 1,
+				"FK_user_id" 	  => my_user_id(), // change if naa nay user
+				"FK_branch_id" 	  => _get_branch_assigned(),
 				"status"		  => "pending",
 				"total_amount"	  => $post["over_total"],
 				// "date_added"	  => date("Y-m-d h:i:s")
@@ -292,7 +300,7 @@ class Managepurchaseorders extends MY_Controller {
 
 			insertData("eb_purchase_order_received", $data);
 
-			$set = array( "status" => "received",  "purchase_order_no" => "N/A");
+			$set = array( "status" => "received",  "purchase_order_no" => "N/A", "fk_received_outlet_id" => _get_branch_assigned());
 			$where = array( "PK_purchase_order_id" => "$po_id" );
 
 			updateData("eb_purchase_order", $set, $where);
@@ -309,7 +317,7 @@ class Managepurchaseorders extends MY_Controller {
 
 				foreach ($disc_items as $item) {
 					$data = array(
-						"fk_po_discrepancy_id" => $po_id,
+						"fk_po_discrepancy_id" => $disc_id,
 						"fk_material_id" => $item->item_id,
 						"material_name" => $item->item_name,
 						"qty" => $item->quantity,

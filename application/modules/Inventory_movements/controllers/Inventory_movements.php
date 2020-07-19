@@ -15,7 +15,9 @@ class Inventory_movements extends MY_Controller {
 			if (get_user_type() == 1) {
 				$this->load_page('index',$data);
 			}
-
+			if (get_user_type() == 2) {
+				$this->load_purchaser_page('index',$data);
+			}
 		}
 
 		 public function get_raw_materials() {

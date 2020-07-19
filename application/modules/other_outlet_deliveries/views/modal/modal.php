@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" style="max-width:900px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">New delivery form</h5>
+                <h5 class="modal-title">New delivery recieve form</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -12,14 +12,22 @@
                     <div class="form-body">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="fbold" for="supplier">Purchase Order No:</label>
                                     <select name="supplier" class="po_select form-control" style="width: 100%;">
-                                    <optgroup label="Select PO">
-                                       
-                                    </optgroup>
-                                </select>
-
+                                        <optgroup label="Select PO">
+                                        
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="fbold" for="supplier">Counter Checked By:</label>
+                                    <input type="text" required class="form-control counter_checked" name="counter_checked" >
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="fbold" for="supplier">Outlet From</label>
+                                    <div class="outlet_from">Bahada</div>
+                                    <input type="hidden" name="outlet_id" class="outlet_id">
                                 </div>
                                 <div class="col-md-12">
                                     <hr> </div>
@@ -192,7 +200,7 @@
                                 <hr>
                                 <div class="card-body text-right ">
                                                             
-                                    <button type="button" class="btn btn-success btn-generate-arf"> Generate ARF</button>
+                                    <!-- <button type="button" class="btn btn-success btn-generate-arf"> Generate ARF</button> -->
                                     <button type="button" class="btn btn-danger" data-dismiss="modal"> Close</button>
                                 </div>
                             </div>

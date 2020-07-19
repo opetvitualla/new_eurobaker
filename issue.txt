@@ -30,3 +30,5 @@ Completed:
 - done inventory stockout
 - fixed modal so
 - done stock out all
+- fixed add raw-materials other outlet
+- fixed other outlet
