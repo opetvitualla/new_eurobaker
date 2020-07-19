@@ -47,44 +47,45 @@ $(document).ready(function () {
                 $(row).addClass("row_stock_received");
             }
         },
-        "columns": [{
-            "data": "PK_stock_out_id",
-            "render": function (data, type, row, meta) {
-                var str = 'SO-' + row.PK_stock_out_id;
-                return str;
-            }
-        },
-        {
-            "data": "segment_name"
-        },
-        {
-            "data": "total_items"
-        },
-        {
-            "data": "total_amount"
-        },
-        {
-            "data": "firstname"
-        },
-        {
-            "data": "status"
-        },
-        {
-            "data": "date_added"
-        },
-        {
-            "data": "PK_stock_out_id",
-            "render": function (data, type, row, meta) {
-                var str = '<div class="mx-auto action-btn-div"> <a href="javascript:;" class="edit-btn btn_edit_so" data-id="' + row.PK_stock_out_id + '"><i class="fa fa-edit"></i></a>';
-                str += '<a href="javascript:;" id="view_Supplier_Details" class="po_recieved-btn text-success" data-id="' + row.PK_stock_out_id + '" title="Receive"><i class="fa fa-check"></i></a></div>';
-
-                if (row.status == "approved") {
-                    str = '<div class="mx-auto action-btn-div">';
-                    str += '<a href="javascript:;" class="so_view_details text-success" data-id="' + row.PK_stock_out_id + '" title="view"><i class="fa fa-eye"></i></a></div>';
+        "columns": [
+            {
+                "data": "PK_stock_out_id",
+                "render": function (data, type, row, meta) {
+                    var str = 'SO-' + row.PK_stock_out_id;
+                    return str;
                 }
-                return str;
-            }
-        },
+            },
+            {
+                "data": "segment_name"
+            },
+            {
+                "data": "total_items"
+            },
+            {
+                "data": "total_amount"
+            },
+            {
+                "data": "firstname"
+            },
+            {
+                "data": "status"
+            },
+            {
+                "data": "date_added"
+            },
+            {
+                "data": "PK_stock_out_id",
+                "render": function (data, type, row, meta) {
+                    var str = '<div class="mx-auto action-btn-div"> <a href="javascript:;" class="edit-btn btn_edit_so" data-id="' + row.PK_stock_out_id + '"><i class="fa fa-edit"></i></a>';
+                    str += '<a href="javascript:;" id="view_Supplier_Details" class="po_recieved-btn text-success" data-id="' + row.PK_stock_out_id + '" title="Receive"><i class="fa fa-check"></i></a></div>';
+
+                    if (row.status == "approved") {
+                        str = '<div class="mx-auto action-btn-div">';
+                        str += '<a href="javascript:;" class="so_view_details text-success" data-id="' + row.PK_stock_out_id + '" title="view"><i class="fa fa-eye"></i></a></div>';
+                    }
+                    return str;
+                }
+            },
         ],
         "ajax": {
             "url": base_url + "Stockout/get_stockout_data",

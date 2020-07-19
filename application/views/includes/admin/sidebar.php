@@ -46,7 +46,7 @@
                        <li><a href="<?= base_url('managereports/pendingdeliveries') ?>">Pending Deliveries</a></li>
                         <li><a href="<?= base_url('ending_inventory') ?>">Ending Inventory</a></li>
                         <li><a href="<?= base_url('managereports/stockfortransfer') ?>">Stock Transfer</a></li>
-                        <li><a href="#">Descripancies</a></li>
+                        <!-- <li><a href="#">Descripancies</a></li> -->
                     </ul>
                 </li>
 

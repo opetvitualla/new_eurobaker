@@ -44,6 +44,19 @@
     <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js "></script>
 
+    <script src="<?=base_url("assets/js/printjs.js")?>"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            $(".btn-print-inv").click(function(){
+                $(".printdiv").printElement()
+            })
+            
+
+        })
+    </script>
+
 
      <?php $this->load->view("modules/swal_vue_function") ?>
     <?php
