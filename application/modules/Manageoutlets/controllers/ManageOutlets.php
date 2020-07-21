@@ -37,7 +37,7 @@ class Manageoutlets extends MY_Controller {
 												'status' => 1,
 											);
 			$group        = array();
-			$list         = $this->MY_Model->get_datatables('EB_outlets',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
+			$list         = $this->MY_Model->get_datatables('eb_outlets',$column_order, $select, $where, $join, $limit, $offset ,$search, $order, $group);
 
 			$list_of_outlets = array(
 														"draw" => $draw,
@@ -54,7 +54,7 @@ class Manageoutlets extends MY_Controller {
 												'outlet_name'  => $post['outlet_name'],
 												'status'         => 1
 											);
-			$insert_data  = $this->MY_Model->insert('EB_outlets',$data);
+			$insert_data  = $this->MY_Model->insert('eb_outlets',$data);
 
 			if ($insert_data) {
 				$response = array(
@@ -73,7 +73,7 @@ class Manageoutlets extends MY_Controller {
 			$options['where'] = array(
 														'PK_branch_id' => $data_id
 													);
-			$data             = $this->MY_Model->getRows('EB_outlets', $options, 'row');
+			$data             = $this->MY_Model->getRows('eb_outlets', $options, 'row');
 			echo json_encode($data);
 		}
 
@@ -85,7 +85,7 @@ class Manageoutlets extends MY_Controller {
 			$where        = array(
 												'PK_branch_id' => $data['id']
 											);
-			$update_data  = $this->MY_Model->update('EB_outlets',$set,$where);
+			$update_data  = $this->MY_Model->update('eb_outlets',$set,$where);
 
 			if ($update_data) {
 				$response = array(

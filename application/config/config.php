@@ -11,7 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 	$config['modules_locations'] = array(
 		APPPATH . 'modules/' => '../modules/',
-	);
+  );
+  
+  $config["invi"] = "dev";
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -34,8 +36,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
- $config['base_url'] = 'http://localhost/eurobaker/';
-// $config['base_url'] = 'http://cbmcgroup.com.ph/portal/';
+$config['base_url'] = 'http://localhost/eurobaker';
+
+if($config["invi"] == "live"){
+    $config['base_url'] = 'https://eurobaker.web2.ph/inventory_system/';
+}
+ 
+
 
 /*
 |--------------------------------------------------------------------------

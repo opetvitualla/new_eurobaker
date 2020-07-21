@@ -61,9 +61,6 @@ $(document).ready(function () {
             "data": "total_items"
         },
         {
-            "data": "total_amount"
-        },
-        {
             "data": "firstname"
         },
         {
@@ -87,7 +84,7 @@ $(document).ready(function () {
         },
         ],
         "ajax": {
-            "url": base_url + "Stockout/get_stockout_data",
+            "url": base_url + "stockout/get_stockout_data",
             "type": "POST"
         },
         "columnDefs": [{

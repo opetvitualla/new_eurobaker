@@ -9,8 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
-    <title><?= $title?></title>
+    <title>Euro Baker</title>
     <!-- Bootstrap Core CSS -->
     <link href="<?= base_url("assets/module/select2/dist/css/select2.min.css")?>" rel="stylesheet">
     <link href="<?= base_url("assets/module/bootstrap/css/bootstrap.min.css")?>" rel="stylesheet">

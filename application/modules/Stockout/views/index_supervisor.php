@@ -39,7 +39,6 @@
                                                 <th>Stock Out ID</th>
                                                 <th>Segment Name</th>
                                                 <th>Total Items</th>
-                                                <th>Total Amount</th>
                                                 <th>Requested By</th>
                                                 <th>Status</th>
                                                 <th>Date Added</th>

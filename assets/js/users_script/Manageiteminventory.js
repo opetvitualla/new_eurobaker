@@ -42,7 +42,7 @@ $(document).ready(function () {
       { "data": "date_updated" }
     ],
     "ajax": {
-      "url": base_url + "Manageiteminventory/get_item_inventory",
+      "url": base_url + "manageiteminventory/get_item_inventory",
       "type": "POST"
     }
   });
@@ -52,7 +52,7 @@ $(document).ready(function () {
     $('.view_details_modal').modal('show');
 
     $.ajax({
-      url: base_url + 'Manageiteminventory/view_details',
+      url: base_url + 'manageiteminventory/view_details',
       type: "post",
       data: { "id": id },
       dataType: 'json',

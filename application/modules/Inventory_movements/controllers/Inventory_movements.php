@@ -89,7 +89,7 @@ class Inventory_movements extends MY_Controller {
 
 		$branch_id = _get_branch_assigned();
 
-		$datefrom  = date("Y-m")."1";
+		$datefrom  = date("Y-m-1");
 		$dateto  = date("Y-m-d");
 
 		$par['where']  = array(

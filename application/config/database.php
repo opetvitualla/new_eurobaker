@@ -73,13 +73,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+$invi = "dev";
 
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'euro_baker_db',
+	'username' =>  ($invi == "dev") ? 'root'		 : 'eurobake_inv_2020usr',
+	'password' =>  ($invi == "dev") ? '' 			 : 'V{HjkenOXKp{',
+	'database' =>  ($invi == "dev") ? 'euro_baker_db' : 'eurobake_inv_db',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
